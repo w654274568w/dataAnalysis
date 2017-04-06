@@ -1,7 +1,10 @@
 package cn.dataAnalysis.model;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "secondhandhouse_new")
 public class SecondhandhouseNew extends BaseEntity{
 
 	/**
@@ -86,6 +89,9 @@ public class SecondhandhouseNew extends BaseEntity{
 	 */
 	private Integer originalId;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	public Integer getId() {
 		return id;
 	}
@@ -94,6 +100,7 @@ public class SecondhandhouseNew extends BaseEntity{
 		this.id = id;
 	}
 
+	@Column(name = "title",length = 225)
 	public String getTitle() {
 		return title;
 	}
@@ -101,7 +108,7 @@ public class SecondhandhouseNew extends BaseEntity{
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
+	@Column(name = "community_name",length = 225)
 	public String getCommunityName() {
 		return communityName;
 	}
@@ -109,7 +116,7 @@ public class SecondhandhouseNew extends BaseEntity{
 	public void setCommunityName(String communityName) {
 		this.communityName = communityName;
 	}
-
+	@Column(name = "room_type",length = 225)
 	public String getRoomType() {
 		return roomType;
 	}
@@ -117,7 +124,7 @@ public class SecondhandhouseNew extends BaseEntity{
 	public void setRoomType(String roomType) {
 		this.roomType = roomType;
 	}
-
+	@Column(name = "area", length = 10, precision = 2)
 	public Double getArea() {
 		return area;
 	}
@@ -125,7 +132,7 @@ public class SecondhandhouseNew extends BaseEntity{
 	public void setArea(Double area) {
 		this.area = area;
 	}
-
+	@Column(name = "region_name", length = 225)
 	public String getRegionName() {
 		return regionName;
 	}
@@ -133,7 +140,7 @@ public class SecondhandhouseNew extends BaseEntity{
 	public void setRegionName(String regionName) {
 		this.regionName = regionName;
 	}
-
+	@Column(name = "comprehensive_information",length = 225)
 	public String getComprehensiveInformation() {
 		return comprehensiveInformation;
 	}
@@ -141,7 +148,7 @@ public class SecondhandhouseNew extends BaseEntity{
 	public void setComprehensiveInformation(String comprehensiveInformation) {
 		this.comprehensiveInformation = comprehensiveInformation;
 	}
-
+	@Column(name = "orientation",length = 225)
 	public String getOrientation() {
 		return orientation;
 	}
@@ -149,7 +156,7 @@ public class SecondhandhouseNew extends BaseEntity{
 	public void setOrientation(String orientation) {
 		this.orientation = orientation;
 	}
-
+	@Column(name = "high_low_area",length = 225)
 	public String getHighLowArea() {
 		return highLowArea;
 	}
@@ -157,7 +164,7 @@ public class SecondhandhouseNew extends BaseEntity{
 	public void setHighLowArea(String highLowArea) {
 		this.highLowArea = highLowArea;
 	}
-
+	@Column(name = "construction_year",length = 225)
 	public Integer getConstructionYear() {
 		return constructionYear;
 	}
@@ -165,7 +172,7 @@ public class SecondhandhouseNew extends BaseEntity{
 	public void setConstructionYear(Integer constructionYear) {
 		this.constructionYear = constructionYear;
 	}
-
+	@Column(name = "traffic_location",length = 225)
 	public String getTrafficLocation() {
 		return trafficLocation;
 	}
@@ -173,7 +180,7 @@ public class SecondhandhouseNew extends BaseEntity{
 	public void setTrafficLocation(String trafficLocation) {
 		this.trafficLocation = trafficLocation;
 	}
-
+	@Column(name = "total_price",length = 225)
 	public Double getTotalPrice() {
 		return totalPrice;
 	}
@@ -181,7 +188,7 @@ public class SecondhandhouseNew extends BaseEntity{
 	public void setTotalPrice(Double totalPrice) {
 		this.totalPrice = totalPrice;
 	}
-
+	@Column(name = "average_price",length = 225)
 	public Double getAveragePrice() {
 		return averagePrice;
 	}
@@ -189,7 +196,7 @@ public class SecondhandhouseNew extends BaseEntity{
 	public void setAveragePrice(Double averagePrice) {
 		this.averagePrice = averagePrice;
 	}
-
+	@Column(name = "attention_number",length = 11)
 	public Integer getAttentionNumber() {
 		return attentionNumber;
 	}
@@ -197,7 +204,8 @@ public class SecondhandhouseNew extends BaseEntity{
 	public void setAttentionNumber(Integer attentionNumber) {
 		this.attentionNumber = attentionNumber;
 	}
-
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "capture_time")
 	public Date getCaptureTime() {
 		return captureTime;
 	}
@@ -205,7 +213,7 @@ public class SecondhandhouseNew extends BaseEntity{
 	public void setCaptureTime(Date captureTime) {
 		this.captureTime = captureTime;
 	}
-
+	@Column(name = "original_id",length = 11)
 	public Integer getOriginalId() {
 		return originalId;
 	}

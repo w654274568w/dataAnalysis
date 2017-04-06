@@ -1,12 +1,25 @@
 package cn.dataAnalysis.controller;
 
 
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
+import cn.dataAnalysis.utils.ConvertUtils;
+import cn.dataAnalysis.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
@@ -14,6 +27,7 @@ import cn.dataAnalysis.model.SecondhandhouseNew;
 import cn.dataAnalysis.model.SecondhandhouseOriginal;
 import cn.dataAnalysis.service.SecondhandhouseNewService;
 import cn.dataAnalysis.service.SecondhandhouseOriginalService;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class SecondhandhouseOriginalController {
@@ -24,119 +38,120 @@ public class SecondhandhouseOriginalController {
 	
 	@Autowired
 	private SecondhandhouseNewService secondhandhouseNewService;
-	
-	@RequestMapping("/getSecondhandhouseOriginalById")
-	public void getSecondhandhouseOriginalById(Integer id){
-		id = 3212;
-		SecondhandhouseOriginal so = secondhandhouseOriginalService.getById(id);
-//		将综合信息预处理然后进行存储
-		
-		Double area= Double.valueOf(so.getArea().substring(0, so.getArea().length()-3));
-		Double area1 = Double.parseDouble(so.getAveragePrice().substring(0, so.getAveragePrice().length()-3));
-		
-		String ci = so.getComprehensiveInformation();
-		String ciNew = ci.replaceAll("\r|\n|\t| ", "");
-		/*
-		 * 综合信息可能存在的情形：
-		 * 杨浦|低区/6层
-		 * 杨浦|低区/6层|朝南
-		 * 杨浦|低区/6层|1993年建
-		 * 杨浦|低区/6层|朝南|1993年建
-		 */
-		String [] ciNewCon = ciNew.split("\\|");
-//		楼层区域
-		String a = null;
-//		朝向
-		String b = null;
-//		建造年份
-		Integer c = null;
-		if(ciNewCon.length == 1){
-			return;
-		} else if (ciNewCon.length == 2){
-			a = ciNewCon[1];
-		} else if (ciNewCon.length == 3){
-			a = ciNewCon[1];
-			if(ciNewCon[2].contains("朝")){
-				b = ciNewCon[2];
-			} else if(ciNewCon[2].contains("年")){
-				c = Integer.parseInt(ciNewCon[2].substring(0, 4));
-			}
-		}else if (ciNewCon.length == 4){
-			a = ciNewCon[1];
-			b = ciNewCon[2];
-			c = Integer.parseInt(ciNewCon[3].substring(0, 4));
-		}
-		
-		
-		
-		
-		System.out.println("--------------------------这是分割线————————————————————————————————————————");
-	}
-	
+
+
+    @RequestMapping("/index.html")
+    public ModelAndView getIndex(ModelAndView view){
+        view.setViewName("index");
+        return view;
+    }
+
 	/**
-	 * 批量插入处理后的房产信息
-	 */
-	@RequestMapping("/insertSecondhandhouseNew")
-	public void insertSecondhandhouseNew(HttpServletRequest request){
-		request.getParameter("");
-		int id = 3212;
-		SecondhandhouseOriginal so = secondhandhouseOriginalService.getById(id);
-		SecondhandhouseNew sn = dealWithSecondhandhouseOriginal(so);
-		secondhandhouseNewService.insert(sn);
-		System.out.println("--------------------------这是分割线————————————————————————————————————————");
-	}
-	
-	/**
-	 * 用于处理新老房产信息
-	 * @param SecondhandhouseOriginal
+	 * 获取数据库中已处理的数据量
 	 * @return
 	 */
-	public SecondhandhouseNew dealWithSecondhandhouseOriginal(SecondhandhouseOriginal so){
+	@RequestMapping("/index")
+	public ModelAndView index(ModelAndView view) throws ParseException {
+		/*
+		 * 获取总的数据处理数量
+		 */
+		//int totalCount = secondhandhouseNewService.countAllData();
+		//获取本周的周一及周日
+//		Calendar c = Calendar.getInstance();
+//        // 默认时，每周第一天为星期日，需要更改一下
+//        c.setFirstDayOfWeek(Calendar.MONDAY);
+//        c.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+//        Date beginDate = c.getTime();
+//        c.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+//        Date endDate = c.getTime();
+		DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+        /*
+		 *获取历史总数据
+		 */
+		Date beginDate = fmt.parse("2017-01-01");
+		Date endDate = new Date();
+//		List<SecondhandhouseNew> snListHistory = secondhandhouseNewService.getByDate(beginDate, endDate);
+		int a = secondhandhouseNewService.countAllData();
+//        Map<String, String> historyMap = new HashMap<String, String>();
+//        historyMap =calculateDataNewByDate(snListHistory);
+//        String historyAveragePrice = historyMap.get("averagePrice");
+//        String historyAverageTotalPrice = historyMap.get("averageTotalPrice");
+        
+        /*
+		 * 本周数据
+		 */
+//		List<SecondhandhouseNew> snListThisWeek = secondhandhouseNewService.getByDate();
+//		Map<String, String> thisWeekMap = new HashMap<String, String>();
+//		thisWeekMap = calculateDataNewByDate(snListThisWeek);
+//		String thisWeekAveragePrice = thisWeekMap.get("averagePrice");
+//		String thisWeekAverageTotalPrice = thisWeekMap.get("averageTotalPrice");
 		
-		SecondhandhouseNew sn = new SecondhandhouseNew();
-		sn.setTitle(so.getTitle() == null ? null : so.getTitle());
-		sn.setCommunityName(so.getCommunityName() == null ? null : so.getCommunityName());
-		sn.setRoomType(so.getRoomType() == null ? null : so.getRoomType());
-		sn.setArea(so.getArea() == null ? 
-				0.00 : Double.valueOf(so.getArea().substring(0, so.getArea().length()-3)));
-		sn.setRegionName(so.getRegionName() == null ? null : so.getRegionName());
-		sn.setComprehensiveInformation(so.getComprehensiveInformation() == null ? 
-				null : so.getComprehensiveInformation());
-		if(so.getComprehensiveInformation() != null){
-			String ci = so.getComprehensiveInformation();
-			String ciNew = ci.replaceAll("\r|\n|\t| ", "");
-			/*
-			 * 综合信息可能存在的情形：
-			 * 杨浦|低区/6层
-			 * 杨浦|低区/6层|朝南
-			 * 杨浦|低区/6层|1993年建
-			 * 杨浦|低区/6层|朝南|1993年建
-			 */
-			String [] ciNewCon = ciNew.split("\\|");
-			if(ciNewCon.length == 2){
-				sn.setHighLowArea(ciNewCon[1]);
-			} else if (ciNewCon.length == 3){
-				sn.setHighLowArea(ciNewCon[1]);
-				if(ciNewCon[2].contains("朝")){
-					sn.setOrientation(ciNewCon[2]);
-				} else if(ciNewCon[2].contains("年")){
-					sn.setConstructionYear(Integer.parseInt(ciNewCon[2].substring(0, 4)));
-				}
-			}else if (ciNewCon.length == 4){
-				sn.setHighLowArea(ciNewCon[1]);
-				sn.setOrientation(ciNewCon[2]);
-				sn.setConstructionYear(Integer.parseInt(ciNewCon[3].substring(0, 4)));
-			}
+		DecimalFormat df = new DecimalFormat("0.00");
+		//历史对比增长率
+//		double averagePriceRateMath = ((Double.valueOf(thisWeekAveragePrice) /
+//				Double.valueOf(historyAveragePrice)) - 1) * 100 ;
+//		String averagePriceRate = df.format(averagePriceRateMath);
+//		double totalPriceRateMath = ((Double.valueOf(thisWeekAverageTotalPrice) /
+//				Double.valueOf(historyAverageTotalPrice)) - 1) * 100;
+//		String totalPriceRate = df.format(totalPriceRateMath);
+		//本周单价均价（元）（每平方 本周）
+//		view.addObject("thisWeekAveragePrice",thisWeekAveragePrice);
+//		view.addObject("averagePriceRate",averagePriceRate);
+		//本周总价均价（万元）
+//		view.addObject("thisWeekAverageTotalPrice",thisWeekAverageTotalPrice);
+//		view.addObject(totalPriceRate,totalPriceRate);
+		//历史数据量
+//		view.addObject("historyCount",snListHistory.size());
+		//本周数据
+//		view.addObject("thisWeekCount",snListThisWeek.size());
+		view.setViewName("index");
+		return view;
+	}
+
+	/**
+	 * 批量分批插入处理后的房产信息
+	 * @throws ParseException
+	 */
+	@RequestMapping("/insertSecondhandhouseNew")
+	@Transactional
+	public void insertSecondhandhouseNew(HttpServletRequest request) throws ParseException{
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		Date beginDate = df.parse("2017-03-05");
+		Date endDate = df.parse("2017-03-07");
+		Long beginTime = System.currentTimeMillis();
+		List<SecondhandhouseOriginal> soList = secondhandhouseOriginalService.findByCaptureTime(beginDate, endDate);
+		SecondhandhouseNew sn = null;
+		for(SecondhandhouseOriginal so : soList){
+			sn = ConvertUtils.dealWithSecondhandhouseOriginal(so);
+			secondhandhouseNewService.insert(sn);
 		}
-		if(so.getTrafficLocation() != null && so.getTrafficLocation().contains("距离")){
-			sn.setTrafficLocation(so.getTrafficLocation());
+		Long endTime = System.currentTimeMillis();
+		System.out.println("————————————————————————————————————————这是分割线————————————————————————————————————————");
+		System.out.println("共处理"+soList.size()+"条数据，使用时间为"+(beginTime-endTime));
+	}
+	/* 
+	 * 通过时间查询数据并计算
+	 */
+	public Map<String, String> calculateDataNewByDate(List<SecondhandhouseNew> snList){
+		Map<String ,String> map =new HashMap<String , String>();
+		String averagePrice = "";
+		long averagePriceTotal = 0L;
+		double totalPriceTotal = 0.0;
+		String averageTotalPrice = "";
+		int size = snList.size();
+		for(SecondhandhouseNew sn : snList){
+			averagePriceTotal += sn.getAveragePrice();
+			totalPriceTotal += sn.getTotalPrice();
 		}
-		sn.setTotalPrice(Double.parseDouble(so.getTotalPrice()));
-		sn.setAveragePrice(Double.parseDouble(so.getAveragePrice().substring(0, so.getAveragePrice().length()-3)));
-		sn.setAttentionNumber(Integer.parseInt(so.getAttentionNumber()));
-		sn.setCaptureTime(so.getCaptureTime());
-		sn.setOriginalId(so.getId());
-		return sn;
+//		数据格式化
+		DecimalFormat df = new DecimalFormat("0.0");
+		averagePrice = df.format(averagePriceTotal / size) ;
+		averageTotalPrice = df.format(totalPriceTotal / size);
+//		单价均价
+		map.put("averagePrice", averagePrice);
+//		总价均价
+		map.put("averageTotalPrice", averageTotalPrice);
+		return map;
 	}
 }
 

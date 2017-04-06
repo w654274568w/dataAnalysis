@@ -1,7 +1,10 @@
 package cn.dataAnalysis.model;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "secondhandhouse_original")
 public class SecondhandhouseOriginal extends BaseEntity{
 
 	/**
@@ -66,6 +69,9 @@ public class SecondhandhouseOriginal extends BaseEntity{
 	 */
 	private Date captureTime;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	public Integer getId() {
 		return id;
 	}
@@ -74,6 +80,7 @@ public class SecondhandhouseOriginal extends BaseEntity{
 		this.id = id;
 	}
 
+	@Column(name = "title",length = 225)
 	public String getTitle() {
 		return title;
 	}
@@ -82,6 +89,7 @@ public class SecondhandhouseOriginal extends BaseEntity{
 		this.title = title;
 	}
 
+	@Column(name = "community_name",length = 225)
 	public String getCommunityName() {
 		return communityName;
 	}
@@ -90,6 +98,7 @@ public class SecondhandhouseOriginal extends BaseEntity{
 		this.communityName = communityName;
 	}
 
+	@Column(name = "room_type",length = 225)
 	public String getRoomType() {
 		return roomType;
 	}
@@ -98,6 +107,7 @@ public class SecondhandhouseOriginal extends BaseEntity{
 		this.roomType = roomType;
 	}
 
+	@Column(name = "area", length = 10, precision = 2)
 	public String getArea() {
 		return area;
 	}
@@ -106,6 +116,7 @@ public class SecondhandhouseOriginal extends BaseEntity{
 		this.area = area;
 	}
 
+	@Column(name = "region_name", length = 225)
 	public String getRegionName() {
 		return regionName;
 	}
@@ -114,6 +125,7 @@ public class SecondhandhouseOriginal extends BaseEntity{
 		this.regionName = regionName;
 	}
 
+	@Column(name = "comprehensive_information",length = 225)
 	public String getComprehensiveInformation() {
 		return comprehensiveInformation;
 	}
@@ -122,6 +134,7 @@ public class SecondhandhouseOriginal extends BaseEntity{
 		this.comprehensiveInformation = comprehensiveInformation;
 	}
 
+	@Column(name = "traffic_location",length = 225)
 	public String getTrafficLocation() {
 		return trafficLocation;
 	}
@@ -130,6 +143,7 @@ public class SecondhandhouseOriginal extends BaseEntity{
 		this.trafficLocation = trafficLocation;
 	}
 
+	@Column(name = "total_price",length = 225)
 	public String getTotalPrice() {
 		return totalPrice;
 	}
@@ -138,6 +152,7 @@ public class SecondhandhouseOriginal extends BaseEntity{
 		this.totalPrice = totalPrice;
 	}
 
+	@Column(name = "average_price",length = 225)
 	public String getAveragePrice() {
 		return averagePrice;
 	}
@@ -146,6 +161,7 @@ public class SecondhandhouseOriginal extends BaseEntity{
 		this.averagePrice = averagePrice;
 	}
 
+	@Column(name = "attention_number",length = 225)
 	public String getAttentionNumber() {
 		return attentionNumber;
 	}
@@ -154,6 +170,8 @@ public class SecondhandhouseOriginal extends BaseEntity{
 		this.attentionNumber = attentionNumber;
 	}
 
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "capture_time",length = 225)
 	public Date getCaptureTime() {
 		return captureTime;
 	}
