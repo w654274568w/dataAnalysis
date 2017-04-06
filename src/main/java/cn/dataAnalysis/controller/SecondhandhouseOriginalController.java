@@ -5,16 +5,15 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+import cn.dataAnalysis.model.DataCountByDate;
+import cn.dataAnalysis.service.DataCountByDateService;
 import cn.dataAnalysis.utils.ConvertUtils;
 import cn.dataAnalysis.utils.DateUtils;
+import cn.dataAnalysis.utils.MathUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +38,8 @@ public class SecondhandhouseOriginalController {
 	@Autowired
 	private SecondhandhouseNewService secondhandhouseNewService;
 
+	@Autowired
+	private DataCountByDateService dataCountByDateService;
 
     @RequestMapping("/index.html")
     public ModelAndView getIndex(ModelAndView view){
@@ -121,10 +122,26 @@ public class SecondhandhouseOriginalController {
 		Long beginTime = System.currentTimeMillis();
 		List<SecondhandhouseOriginal> soList = secondhandhouseOriginalService.findByCaptureTime(beginDate, endDate);
 		SecondhandhouseNew sn = null;
+		//批量插入新的数据
+		List<SecondhandhouseNew> snList = new ArrayList<SecondhandhouseNew>();
+		Double averageTotalPrice = 0.0;
+		Double averagePerPrice = 0.0;
 		for(SecondhandhouseOriginal so : soList){
 			sn = ConvertUtils.dealWithSecondhandhouseOriginal(so);
+			snList.add(sn);
+			averageTotalPrice = MathUtil.add(sn.getTotalPrice(),averageTotalPrice);
+			averagePerPrice = MathUtil.add(sn.getAveragePrice(),averagePerPrice);
 			secondhandhouseNewService.insert(sn);
 		}
+		//将本期数据处理后更新表  data_count_by_date
+		//时间
+		DataCountByDate dataCountByDate = new DataCountByDate();
+		Date captureTime = DateUtils.addDay(beginDate, 1);
+		dataCountByDate.setCaptureTime(captureTime);
+		dataCountByDate.setNumber(Long.valueOf(snList.size()));
+		dataCountByDate.setAverageTotalPrice(averageTotalPrice / snList.size());
+		dataCountByDate.setAveragePerPrice(averagePerPrice / snList.size());
+		dataCountByDateService.save(dataCountByDate);
 		Long endTime = System.currentTimeMillis();
 		System.out.println("————————————————————————————————————————这是分割线————————————————————————————————————————");
 		System.out.println("共处理"+soList.size()+"条数据，使用时间为"+(beginTime-endTime));
