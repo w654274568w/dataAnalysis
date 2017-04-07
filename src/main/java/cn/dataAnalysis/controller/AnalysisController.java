@@ -1,6 +1,7 @@
 package cn.dataAnalysis.controller;
 
 import cn.dataAnalysis.model.SecondhandhouseOriginal;
+import cn.dataAnalysis.service.DataCountByRegionService;
 import cn.dataAnalysis.service.SecondhandhouseNewService;
 import cn.dataAnalysis.service.SecondhandhouseOriginalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class AnalysisController {
 
     @Autowired
     private SecondhandhouseNewService secondhandhouseNewService;
+
+    @Autowired
+    private DataCountByRegionService dataCountByRegionService;
 
 
 
@@ -72,9 +76,11 @@ public class AnalysisController {
 
 
     @RequestMapping("/analysisShanghaiDataByRegion")
-    public ModelAndView analysisShanghaiDataByRegion(ModelAndView view){
-
-
+    public ModelAndView analysisShanghaiDataByRegion(ModelAndView view) throws ParseException {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date beginDate = df.parse("2017-04-04");
+        Date endDate = df.parse("2017-04-06");
+        Long beginTime = System.currentTimeMillis();
         view.setViewName("index");
         return view;
     }
