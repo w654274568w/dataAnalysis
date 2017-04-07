@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import cn.dataAnalysis.model.DataCountByDate;
 import cn.dataAnalysis.service.DataCountByDateService;
 import cn.dataAnalysis.utils.ConvertUtils;
-import cn.dataAnalysis.utils.DateUtils;
 import cn.dataAnalysis.utils.MathUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

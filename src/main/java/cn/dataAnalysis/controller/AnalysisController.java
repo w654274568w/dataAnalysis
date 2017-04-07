@@ -1,11 +1,8 @@
 package cn.dataAnalysis.controller;
 
-import cn.dataAnalysis.model.SecondhandhouseNew;
 import cn.dataAnalysis.model.SecondhandhouseOriginal;
 import cn.dataAnalysis.service.SecondhandhouseNewService;
 import cn.dataAnalysis.service.SecondhandhouseOriginalService;
-import cn.dataAnalysis.utils.ConvertUtils;
-import cn.dataAnalysis.utils.NewDataInsertThread;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

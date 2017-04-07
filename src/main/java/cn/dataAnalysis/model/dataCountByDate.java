@@ -8,7 +8,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "data_count_by_date")
-public class DataCountByDate {
+public class DataCountByDate extends BaseEntity{
 
     /**
      * 每周数据汇总
