@@ -6,6 +6,7 @@ import cn.dataAnalysis.service.SecondhandhouseOriginalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
@@ -68,6 +69,17 @@ public class AnalysisController {
         System.out.println("————————————————————————————————————————这是分割线————————————————————————————————————————");
         System.out.println("共处理"+soList.size()+"条数据，使用时间为"+(beginTime-endTime));
     }
+
+
+    @RequestMapping("/analysisShanghaiDataByRegion")
+    public ModelAndView analysisShanghaiDataByRegion(ModelAndView view){
+
+
+        view.setViewName("index");
+        return view;
+    }
+
+
 
 
 }
