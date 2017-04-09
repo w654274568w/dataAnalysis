@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -81,6 +80,7 @@ public class AnalysisController {
         Date beginDate = df.parse("2017-04-04");
         Date endDate = df.parse("2017-04-06");
         Long beginTime = System.currentTimeMillis();
+
         view.setViewName("index");
         return view;
     }
