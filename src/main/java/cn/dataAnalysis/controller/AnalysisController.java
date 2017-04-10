@@ -62,8 +62,8 @@ public class AnalysisController {
     @Transactional
     public ModelAndView analysisShanghaiDataByRegion(ModelAndView view) throws ParseException {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Date beginDate = df.parse("2017-02-19");
-        Date endDate = df.parse("2017-02-25");
+        Date beginDate = df.parse("2017-03-31");
+        Date endDate = df.parse("2017-04-03");
         Long beginTime = System.currentTimeMillis();
         Long countList = 0l;
         //遍历生成所有区域的空对象
