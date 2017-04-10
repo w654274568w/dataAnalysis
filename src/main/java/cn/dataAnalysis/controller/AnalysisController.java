@@ -1,11 +1,17 @@
 package cn.dataAnalysis.controller;
 
+import cn.dataAnalysis.enums.RegionShanghaiEnum;
+import cn.dataAnalysis.model.DataCountByRegion;
+import cn.dataAnalysis.model.SecondhandhouseNew;
 import cn.dataAnalysis.model.SecondhandhouseOriginal;
 import cn.dataAnalysis.service.DataCountByRegionService;
 import cn.dataAnalysis.service.SecondhandhouseNewService;
 import cn.dataAnalysis.service.SecondhandhouseOriginalService;
+import cn.dataAnalysis.utils.DateUtils;
+import cn.dataAnalysis.utils.MathUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -13,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -45,29 +52,6 @@ public class AnalysisController {
         Date endDate = df.parse("2017-02-17");
         Long beginTime = System.currentTimeMillis();
         List<SecondhandhouseOriginal> soList = secondhandhouseOriginalService.findByCaptureTime(beginDate, endDate);
-        //设置线程数
-//        int threadNum = 2;
-//        for(int i=0; i < threadNum;i++){
-//            List<SecondhandhouseOriginal> soListPerThread = new ArrayList<SecondhandhouseOriginal>();
-//            for(int k=0; k < soList.size(); k++){
-//                soListPerThread.add(soList.get(k));
-//                //设置每个线程处理的数据量
-//                if(k != 0 && k % 999 == 0){//若对象达到 500 个对象，则开启一个新线程，处理任务
-//                    //开启线程
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            SecondhandhouseNew sn = new SecondhandhouseNew();
-//                            for(SecondhandhouseOriginal so: soListPerThread){
-//                                sn = ConvertUtils.dealWithSecondhandhouseOriginal(so);
-//                                secondhandhouseNewService.insert(sn);
-//                            }
-//                        }
-//                    }).start();
-////                    soListPerThread = new ArrayList<SecondhandhouseOriginal>();
-//                }
-//            }
-//        }
         Long endTime = System.currentTimeMillis();
         System.out.println("————————————————————————————————————————这是分割线————————————————————————————————————————");
         System.out.println("共处理"+soList.size()+"条数据，使用时间为"+(beginTime-endTime));
@@ -75,12 +59,44 @@ public class AnalysisController {
 
 
     @RequestMapping("/analysisShanghaiDataByRegion")
+    @Transactional
     public ModelAndView analysisShanghaiDataByRegion(ModelAndView view) throws ParseException {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Date beginDate = df.parse("2017-04-04");
-        Date endDate = df.parse("2017-04-06");
+        Date beginDate = df.parse("2017-02-19");
+        Date endDate = df.parse("2017-02-25");
         Long beginTime = System.currentTimeMillis();
-
+        Long countList = 0l;
+        //遍历生成所有区域的空对象
+        List<SecondhandhouseNew> secondhandhouseNewList = new ArrayList<SecondhandhouseNew>();
+        for(RegionShanghaiEnum regionShanghaiEnum: RegionShanghaiEnum.values()){
+            DataCountByRegion dataCountByRegion = new DataCountByRegion();
+            dataCountByRegion.setRegionCode(regionShanghaiEnum.getCode());
+            dataCountByRegion.setRegionName(regionShanghaiEnum.getDesc());
+            //查询单一区域数据信息
+            secondhandhouseNewList = secondhandhouseNewService.findByRegionNameAndDate(beginDate,endDate,regionShanghaiEnum.getDesc());
+            Double totalPriceAmount = 0.0;
+            Double averagePriceAmount = 0.0;
+            Long attentionNumAmount = 0l;
+            Long number = 0l;
+            if(secondhandhouseNewList.size() > 0){
+                for(SecondhandhouseNew secondhandhouseNew: secondhandhouseNewList){
+                    totalPriceAmount = MathUtil.add(totalPriceAmount, secondhandhouseNew.getTotalPrice());
+                    averagePriceAmount = MathUtil.add(averagePriceAmount,secondhandhouseNew.getAveragePrice());
+                    attentionNumAmount = attentionNumAmount + secondhandhouseNew.getAttentionNumber();
+                    countList += 1;
+                    number += 1;
+                }
+                dataCountByRegion.setAverageTotalPrice(totalPriceAmount / secondhandhouseNewList.size());
+                dataCountByRegion.setAveragePerPrice(averagePriceAmount / secondhandhouseNewList.size());
+                dataCountByRegion.setAttentionNumber(attentionNumAmount / secondhandhouseNewList.size());
+                dataCountByRegion.setNumber(number);
+                dataCountByRegion.setCaptureTime(DateUtils.addDay(beginDate, 1));
+                dataCountByRegionService.save(dataCountByRegion);
+            }
+        }
+        Long endTime = System.currentTimeMillis();
+        System.out.println("————————————————————————————————————————这是分割线————————————————————————————————————————");
+        System.out.println("共处理"+countList+"条数据，使用时间为"+(beginTime-endTime));
         view.setViewName("index");
         return view;
     }

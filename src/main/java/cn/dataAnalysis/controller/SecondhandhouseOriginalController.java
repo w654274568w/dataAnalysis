@@ -110,15 +110,15 @@ public class SecondhandhouseOriginalController {
 	}
 
 	/**
-	 * 批量分批插入处理后的房产信息
+	 * 批量分批插入处理后的房产信息（时间插入）
 	 * @throws ParseException
 	 */
 	@RequestMapping("/insertSecondhandhouseNew")
 	@Transactional
 	public void insertSecondhandhouseNew(HttpServletRequest request) throws ParseException{
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		Date beginDate = df.parse("2017-04-04");
-		Date endDate = df.parse("2017-04-06");
+		Date beginDate = df.parse("2017-04-09");
+		Date endDate = df.parse("2017-04-11");
 		Long beginTime = System.currentTimeMillis();
 		List<SecondhandhouseOriginal> soList = secondhandhouseOriginalService.findByCaptureTime(beginDate, endDate);
 		SecondhandhouseNew sn = null;

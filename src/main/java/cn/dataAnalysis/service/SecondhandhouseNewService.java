@@ -21,7 +21,12 @@ public interface SecondhandhouseNewService {
 	public int countAllData();
 
 	/**
-	 *
-	 */
+	 * 通过时间及区域名查找
+	 * @param beginDate
+	 * @param endDate
+	 * @param regionName
+     * @return
+     */
+	public List<SecondhandhouseNew> findByRegionNameAndDate(Date beginDate, Date endDate, String regionName);
 
 }

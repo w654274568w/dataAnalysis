@@ -8,7 +8,7 @@ package cn.dataAnalysis.enums;
 public enum RegionShanghaiEnum {
 
 
-	HUANGPU("01", "黄埔"),
+	HUANGPU("01", "黄浦"),
 	JINGAN("02", "静安"),
     XUHUI("03", "徐汇"),
     CHANGNING("04", "长宁"),

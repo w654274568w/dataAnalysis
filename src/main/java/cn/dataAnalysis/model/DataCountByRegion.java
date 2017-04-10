@@ -25,6 +25,10 @@ public class DataCountByRegion extends BaseEntity{
 
     private Double averagePerPrice;
 
+    private String regionName;
+
+    private Long attentionNumber;
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -84,5 +88,23 @@ public class DataCountByRegion extends BaseEntity{
 
     public void setAveragePerPrice(Double averagePerPrice) {
         this.averagePerPrice = averagePerPrice;
+    }
+
+    @Column(name = "region_name",length = 11)
+    public String getRegionName() {
+        return regionName;
+    }
+
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
+    }
+
+    @Column(name = "attention_number",length = 10)
+    public Long getAttentionNumber() {
+        return attentionNumber;
+    }
+
+    public void setAttentionNumber(Long attentionNumber) {
+        this.attentionNumber = attentionNumber;
     }
 }
