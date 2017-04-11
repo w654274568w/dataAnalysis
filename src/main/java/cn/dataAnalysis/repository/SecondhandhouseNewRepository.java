@@ -23,4 +23,5 @@ public interface SecondhandhouseNewRepository extends JpaRepository<Secondhandho
     List<SecondhandhouseNew> findByRegionNameAndDate(Date beginDate, Date endDate, String regionName);
 
 
+
 }

@@ -58,6 +58,12 @@ public class AnalysisController {
     }
 
 
+    /**
+     * 根据区域处理数据信息
+     * @param view
+     * @return
+     * @throws ParseException
+     */
     @RequestMapping("/analysisShanghaiDataByRegion")
     @Transactional
     public ModelAndView analysisShanghaiDataByRegion(ModelAndView view) throws ParseException {
@@ -101,7 +107,35 @@ public class AnalysisController {
         return view;
     }
 
+    @RequestMapping("/dealStation")
+    public void dealStation() throws ParseException{
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date beginDate = df.parse("2017-03-31");
+        Date endDate = df.parse("2017-04-03");
+        Long beginTime = System.currentTimeMillis();
+        Long countList = 0l;
+        List<SecondhandhouseNew> secondhandhouseNewList = secondhandhouseNewService.getByDate(beginDate, endDate);
+        //获取所有数据的 交通信息坐标
+        List<String> trafficLocationList = new ArrayList<String>();
+        String trafficLocation = null;
+        for(SecondhandhouseNew secondhandhouseNew : secondhandhouseNewList){
+            //获取每条数据的交通信息
+            //判断信息的有无
+            if( null != secondhandhouseNew.getTrafficLocation()){
+                trafficLocation = secondhandhouseNew.getTrafficLocation();
 
+            }
+        }
+    }
 
+    /**
+     * 拆解交通信息方法
+     * @param trafficLocation
+     * @return
+     */
+    public String splitTrafficLocation(String trafficLocation){
+
+        return null;
+    }
 
 }
