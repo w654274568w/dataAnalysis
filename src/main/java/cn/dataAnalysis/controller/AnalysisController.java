@@ -4,6 +4,7 @@ import cn.dataAnalysis.enums.RegionShanghaiEnum;
 import cn.dataAnalysis.model.DataCountByRegion;
 import cn.dataAnalysis.model.SecondhandhouseNew;
 import cn.dataAnalysis.model.SecondhandhouseOriginal;
+import cn.dataAnalysis.model.ShanghaiMetroStationDetails;
 import cn.dataAnalysis.service.DataCountByRegionService;
 import cn.dataAnalysis.service.SecondhandhouseNewService;
 import cn.dataAnalysis.service.SecondhandhouseOriginalService;
@@ -19,9 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by admin on 2017/4/6.
@@ -108,6 +107,7 @@ public class AnalysisController {
     }
 
     @RequestMapping("/dealStation")
+    @Transactional
     public void dealStation() throws ParseException{
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date beginDate = df.parse("2017-03-31");
@@ -115,27 +115,41 @@ public class AnalysisController {
         Long beginTime = System.currentTimeMillis();
         Long countList = 0l;
         List<SecondhandhouseNew> secondhandhouseNewList = secondhandhouseNewService.getByDate(beginDate, endDate);
+        //地铁站点集合
+        //List<ShanghaiMetroStationDetails> shanghaiMetroStationDetailses = new ArrayList<ShanghaiMetroStationDetails>();
+        String stationName = null;
         //获取所有数据的 交通信息坐标
         List<String> trafficLocationList = new ArrayList<String>();
         String trafficLocation = null;
+        Map<String,String> stationMapInsert = new HashMap<>();
+        String[] stationNames = new String[]{};
         for(SecondhandhouseNew secondhandhouseNew : secondhandhouseNewList){
             //获取每条数据的交通信息
             //判断信息的有无
             if( null != secondhandhouseNew.getTrafficLocation()){
                 trafficLocation = secondhandhouseNew.getTrafficLocation();
-
+                //遍历地铁站点集合，并且去重
+                stationName = this.splitTrafficLocation(trafficLocation);
+                //将该stationMap，与stationMapList 中的元素对比，并且生成新的stationMap，存入与stationMapList中
+                if(!stationMapInsert.containsKey(stationName)){
+//                    stationMapInsert.put(stationName)
+                }
             }
         }
     }
 
     /**
-     * 拆解交通信息方法
+     * 拆解交通信息
      * @param trafficLocation
      * @return
      */
     public String splitTrafficLocation(String trafficLocation){
-
-        return null;
+        List<String> stationInfo = new ArrayList<>();
+        //距离8号线成山路站531米
+        String stationName = trafficLocation.substring(
+                trafficLocation.indexOf("线"),trafficLocation.indexOf("站")
+        );
+        return stationName;
     }
 
 }
