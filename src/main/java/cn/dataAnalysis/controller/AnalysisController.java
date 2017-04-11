@@ -39,7 +39,6 @@ public class AnalysisController {
 
 
 
-
     /**
      * 批量分批插入处理后的房产信息(多线程)
      *
@@ -117,25 +116,62 @@ public class AnalysisController {
         List<SecondhandhouseNew> secondhandhouseNewList = secondhandhouseNewService.getByDate(beginDate, endDate);
         //地铁站点集合
         //List<ShanghaiMetroStationDetails> shanghaiMetroStationDetailses = new ArrayList<ShanghaiMetroStationDetails>();
-        String stationName = null;
         //获取所有数据的 交通信息坐标
         List<String> trafficLocationList = new ArrayList<String>();
         String trafficLocation = null;
-        Map<String,String> stationMapInsert = new HashMap<>();
+        Map<String,String> stationMapInsert = new HashMap<String,String>();
+//        for(SecondhandhouseNew secondhandhouseNew : secondhandhouseNewList){
+//            //获取每条数据的交通信息
+//            //判断信息的有无
+//            if( null != secondhandhouseNew.getTrafficLocation()){
+//                trafficLocation = secondhandhouseNew.getTrafficLocation();
+//                //遍历地铁站点集合，并且去重
+//                stationName = this.splitTrafficLocation(trafficLocation);
+//                //将该stationMap，与stationMapList 中的元素对比，并且生成新的stationMap，存入与stationMapList中
+//                if(!stationMapInsert.containsKey(stationName)){
+//                    stationMapInsert.put(stationName,"01");
+//                }
+//            }
+//        }
+        //遍历生成站点信息
         String[] stationNames = new String[]{};
+        stationNames[0] ="富景路";
+        String[] stationCodes = new String[]{};
+        stationCodes[0] = "0";
+        List<String> transferSubwayCodes = new ArrayList<>();
+        int i = 0 ;//初始code
+        Boolean flage = false;
         for(SecondhandhouseNew secondhandhouseNew : secondhandhouseNewList){
             //获取每条数据的交通信息
             //判断信息的有无
             if( null != secondhandhouseNew.getTrafficLocation()){
                 trafficLocation = secondhandhouseNew.getTrafficLocation();
                 //遍历地铁站点集合，并且去重
-                stationName = this.splitTrafficLocation(trafficLocation);
-                //将该stationMap，与stationMapList 中的元素对比，并且生成新的stationMap，存入与stationMapList中
-                if(!stationMapInsert.containsKey(stationName)){
-//                    stationMapInsert.put(stationName)
+                trafficLocationList = this.splitTrafficLocation(trafficLocation);
+                for(int j = 0 ; j <= stationNames.length; j++){
+                    if(!stationNames[j].equals(trafficLocationList.get(0))){
+                        flage =true;
+                    } else {
+                        flage =false;
+                    }
+                }
+                if(flage){
+                    int k = i++;
+                    stationNames[k] = trafficLocationList.get(0);
+                    stationCodes[k] = k + "";
                 }
             }
         }
+        //插入地铁站点表
+        for(int j = 0;j < stationNames.length;j++){
+            ShanghaiMetroStationDetails shanghaiMetroStationDetails = new ShanghaiMetroStationDetails();
+            shanghaiMetroStationDetails.setStationName(stationNames[j]);
+            shanghaiMetroStationDetails.setStationCode(stationCodes[j]);
+
+        }
+
+
+
     }
 
     /**
@@ -143,13 +179,18 @@ public class AnalysisController {
      * @param trafficLocation
      * @return
      */
-    public String splitTrafficLocation(String trafficLocation){
+    public List<String> splitTrafficLocation(String trafficLocation){
         List<String> stationInfo = new ArrayList<>();
         //距离8号线成山路站531米
         String stationName = trafficLocation.substring(
                 trafficLocation.indexOf("线"),trafficLocation.indexOf("站")
         );
-        return stationName;
+        String stationCode = trafficLocation.substring(
+                trafficLocation.indexOf("离"),trafficLocation.indexOf("号")
+        );
+        stationInfo.add(stationName);
+        stationInfo.add(stationCode);
+        return stationInfo;
     }
 
 }
