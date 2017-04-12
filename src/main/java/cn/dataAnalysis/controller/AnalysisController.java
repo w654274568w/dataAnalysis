@@ -8,6 +8,7 @@ import cn.dataAnalysis.model.ShanghaiMetroStationDetails;
 import cn.dataAnalysis.service.DataCountByRegionService;
 import cn.dataAnalysis.service.SecondhandhouseNewService;
 import cn.dataAnalysis.service.SecondhandhouseOriginalService;
+import cn.dataAnalysis.service.ShanghaiMetroStationDetailsService;
 import cn.dataAnalysis.utils.DateUtils;
 import cn.dataAnalysis.utils.MathUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,11 @@ public class AnalysisController {
 
     @Autowired
     private DataCountByRegionService dataCountByRegionService;
+
+    @Autowired
+    private ShanghaiMetroStationDetailsService shanghaiMetroStationDetailsService;
+
+
 
 
 
@@ -107,12 +113,11 @@ public class AnalysisController {
 
     @RequestMapping("/dealStation")
     @Transactional
-    public void dealStation() throws ParseException{
+    public ModelAndView dealStation(ModelAndView view) throws ParseException{
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date beginDate = df.parse("2017-03-31");
         Date endDate = df.parse("2017-04-03");
         Long beginTime = System.currentTimeMillis();
-        Long countList = 0l;
         List<SecondhandhouseNew> secondhandhouseNewList = secondhandhouseNewService.getByDate(beginDate, endDate);
         //地铁站点集合
         //List<ShanghaiMetroStationDetails> shanghaiMetroStationDetailses = new ArrayList<ShanghaiMetroStationDetails>();
@@ -163,15 +168,19 @@ public class AnalysisController {
             }
         }
         //插入地铁站点表
+        int insertCountList = 0;
         for(int j = 0;j < stationNames.length;j++){
             ShanghaiMetroStationDetails shanghaiMetroStationDetails = new ShanghaiMetroStationDetails();
             shanghaiMetroStationDetails.setStationName(stationNames[j]);
             shanghaiMetroStationDetails.setStationCode(stationCodes[j]);
-
+            shanghaiMetroStationDetailsService.save(shanghaiMetroStationDetails);
+            insertCountList++;
         }
-
-
-
+        Long endTime = System.currentTimeMillis();
+        System.out.println("————————————————————————————————————————这是分割线————————————————————————————————————————");
+        System.out.println("共处理"+insertCountList+"条数据，使用时间为"+(beginTime-endTime));
+        view.setViewName("index");
+        return view;
     }
 
     /**

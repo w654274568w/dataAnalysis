@@ -8,6 +8,6 @@ import cn.dataAnalysis.model.ShanghaiMetroStationDetails;
  */
 public interface ShanghaiMetroStationDetailsService {
 
-//    ShanghaiMetroStationDetails
+    ShanghaiMetroStationDetails save(ShanghaiMetroStationDetails shanghaiMetroStationDetails);
 
 }
