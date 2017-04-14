@@ -11,6 +11,7 @@ import cn.dataAnalysis.service.SecondhandhouseOriginalService;
 import cn.dataAnalysis.service.ShanghaiMetroStationDetailsService;
 import cn.dataAnalysis.utils.DateUtils;
 import cn.dataAnalysis.utils.MathUtil;
+import cn.dataAnalysis.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -200,6 +201,43 @@ public class AnalysisController {
         stationInfo.add(stationName);
         stationInfo.add(stationCode);
         return stationInfo;
+    }
+
+    /**
+     * 批量更新数据中的地铁站点信息
+     *
+     */
+    @RequestMapping("/updatetTrafficLocationForNewData.do")
+    public ModelAndView updatetTrafficLocationForNewData(ModelAndView view, String beginDateStr, String endDateStr) throws ParseException {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date beginDate = df.parse(beginDateStr);
+        Date endDate = df.parse(endDateStr);
+        List<SecondhandhouseNew> secondhandhouseNews = new ArrayList<SecondhandhouseNew>();
+        secondhandhouseNews = secondhandhouseNewService.getByDate(beginDate, endDate);
+        String trafficLocation = null;
+        String stationName = null;
+        int stationDistance = 0;
+        String stationDistanceStr = null;
+        for(SecondhandhouseNew secondhandhouseNew: secondhandhouseNews){
+            //距离8号线成山路站531米
+            trafficLocation = secondhandhouseNew.getTrafficLocation();
+            if(!StringUtil.isEmpty(trafficLocation)){
+                stationName = trafficLocation.substring(
+                        trafficLocation.indexOf("线")+1,trafficLocation.lastIndexOf("站")+1
+                );
+                stationDistanceStr = trafficLocation.substring(
+                        trafficLocation.lastIndexOf("站")+1,trafficLocation.indexOf("米")
+                );
+                stationDistance = Integer.valueOf(stationDistanceStr);
+                secondhandhouseNew.setStationName(stationName);
+                secondhandhouseNew.setStationDistance(stationDistance);
+                secondhandhouseNewService.insert(secondhandhouseNew);
+            } else {
+                continue;
+            }
+        }
+        view.setViewName("index");
+        return view;
     }
 
 }

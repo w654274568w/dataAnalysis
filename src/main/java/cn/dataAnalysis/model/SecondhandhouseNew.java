@@ -89,6 +89,18 @@ public class SecondhandhouseNew extends BaseEntity{
 	 */
 	private Integer originalId;
 
+	/*
+	 * 地铁站点名称
+	 */
+	private String stationName;
+
+	/*
+	 * 地铁站点距离
+	 */
+	private Integer stationDistance;
+
+
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
@@ -204,6 +216,7 @@ public class SecondhandhouseNew extends BaseEntity{
 	public void setAttentionNumber(Integer attentionNumber) {
 		this.attentionNumber = attentionNumber;
 	}
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "capture_time")
 	public Date getCaptureTime() {
@@ -213,6 +226,7 @@ public class SecondhandhouseNew extends BaseEntity{
 	public void setCaptureTime(Date captureTime) {
 		this.captureTime = captureTime;
 	}
+
 	@Column(name = "original_id",length = 11)
 	public Integer getOriginalId() {
 		return originalId;
@@ -220,6 +234,24 @@ public class SecondhandhouseNew extends BaseEntity{
 
 	public void setOriginalId(Integer originalId) {
 		this.originalId = originalId;
+	}
+
+	@Column(name = "station_name",length = 50)
+	public String getStationName() {
+		return stationName;
+	}
+
+	public void setStationName(String stationName) {
+		this.stationName = stationName;
+	}
+
+	@Column(name = "station_distance",length = 10)
+	public Integer getStationDistance() {
+		return stationDistance;
+	}
+
+	public void setStationDistance(Integer stationDistance) {
+		this.stationDistance = stationDistance;
 	}
 
 	public static long getSerialversionuid() {
