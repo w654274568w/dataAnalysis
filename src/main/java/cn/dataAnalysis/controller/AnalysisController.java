@@ -71,10 +71,10 @@ public class AnalysisController {
      */
     @RequestMapping("/analysisShanghaiDataByRegion")
     @Transactional
-    public ModelAndView analysisShanghaiDataByRegion(ModelAndView view) throws ParseException {
+    public ModelAndView analysisShanghaiDataByRegion(ModelAndView view, String beginDateStr, String endDateStr) throws ParseException {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Date beginDate = df.parse("2017-03-31");
-        Date endDate = df.parse("2017-04-03");
+        Date beginDate = df.parse(beginDateStr);
+        Date endDate = df.parse(endDateStr);
         Long beginTime = System.currentTimeMillis();
         Long countList = 0l;
         //遍历生成所有区域的空对象
@@ -93,13 +93,13 @@ public class AnalysisController {
                 for(SecondhandhouseNew secondhandhouseNew: secondhandhouseNewList){
                     totalPriceAmount = MathUtil.add(totalPriceAmount, secondhandhouseNew.getTotalPrice());
                     averagePriceAmount = MathUtil.add(averagePriceAmount,secondhandhouseNew.getAveragePrice());
-                    attentionNumAmount = attentionNumAmount + secondhandhouseNew.getAttentionNumber();
+//                    attentionNumAmount = attentionNumAmount + secondhandhouseNew.getAttentionNumber();
                     countList += 1;
                     number += 1;
                 }
                 dataCountByRegion.setAverageTotalPrice(totalPriceAmount / secondhandhouseNewList.size());
                 dataCountByRegion.setAveragePerPrice(averagePriceAmount / secondhandhouseNewList.size());
-                dataCountByRegion.setAttentionNumber(attentionNumAmount / secondhandhouseNewList.size());
+//                dataCountByRegion.setAttentionNumber(attentionNumAmount / secondhandhouseNewList.size());
                 dataCountByRegion.setNumber(number);
                 dataCountByRegion.setCaptureTime(DateUtils.addDay(beginDate, 1));
                 dataCountByRegionService.save(dataCountByRegion);

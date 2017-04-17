@@ -38,6 +38,11 @@ public class SecondhandhouseNew extends BaseEntity{
 	 * 城区名
 	 */
 	private String regionName ;
+
+	/*
+	 * 城区名(次级区域)
+	 */
+	private String regionNameSecondary ;
 	
 	/*
 	 * 综合信息
@@ -152,6 +157,16 @@ public class SecondhandhouseNew extends BaseEntity{
 	public void setRegionName(String regionName) {
 		this.regionName = regionName;
 	}
+
+	@Column(name = "region_name_secondary", length = 225)
+	public String getRegionNameSecondary() {
+		return regionNameSecondary;
+	}
+
+	public void setRegionNameSecondary(String regionNameSecondary) {
+		this.regionNameSecondary = regionNameSecondary;
+	}
+
 	@Column(name = "comprehensive_information",length = 225)
 	public String getComprehensiveInformation() {
 		return comprehensiveInformation;

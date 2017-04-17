@@ -42,7 +42,12 @@ public class SecondhandhouseOriginal extends BaseEntity{
 	/*
 	 * 综合信息
 	 */
-	private String comprehensiveInformation ;
+	private String comprehensiveInformation1 ;
+
+	/*
+	 * 综合信息
+	 */
+	private String comprehensiveInformation2 ;
 	
 	/*
 	 * 交通位置
@@ -125,13 +130,22 @@ public class SecondhandhouseOriginal extends BaseEntity{
 		this.regionName = regionName;
 	}
 
-	@Column(name = "comprehensive_information",length = 225)
-	public String getComprehensiveInformation() {
-		return comprehensiveInformation;
+	@Column(name = "comprehensive_information_1",length = 225)
+	public String getComprehensiveInformation1() {
+		return comprehensiveInformation1;
 	}
 
-	public void setComprehensiveInformation(String comprehensiveInformation) {
-		this.comprehensiveInformation = comprehensiveInformation;
+	public void setComprehensiveInformation1(String comprehensiveInformation1) {
+		this.comprehensiveInformation1 = comprehensiveInformation1;
+	}
+
+	@Column(name = "comprehensive_information_2",length = 225)
+	public String getComprehensiveInformation2() {
+		return comprehensiveInformation2;
+	}
+
+	public void setComprehensiveInformation2(String comprehensiveInformation2) {
+		this.comprehensiveInformation2 = comprehensiveInformation2;
 	}
 
 	@Column(name = "traffic_location",length = 225)
@@ -188,7 +202,7 @@ public class SecondhandhouseOriginal extends BaseEntity{
 	public String toString() {
 		return "SecondhandhouseOriginal [id=" + id + ", title=" + title + ", communityName=" + communityName
 				+ ", roomType=" + roomType + ", area=" + area + ", regionName=" + regionName
-				+ ", comprehensiveInformation=" + comprehensiveInformation + ", trafficLocation=" + trafficLocation
+				+ ", comprehensiveInformation=" + comprehensiveInformation1 + ", trafficLocation=" + trafficLocation
 				+ ", totalPrice=" + totalPrice + ", averagePrice=" + averagePrice + ", attentionNumber="
 				+ attentionNumber + ", captureTime=" + captureTime + "]";
 	}

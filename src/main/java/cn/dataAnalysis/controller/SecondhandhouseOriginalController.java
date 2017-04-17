@@ -117,8 +117,8 @@ public class SecondhandhouseOriginalController {
 	@Transactional
 	public void insertSecondhandhouseNew(HttpServletRequest request) throws ParseException{
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		Date beginDate = df.parse("2017-04-09");
-		Date endDate = df.parse("2017-04-11");
+		Date beginDate = df.parse("2017-04-16");
+		Date endDate = df.parse("2017-04-22");
 		Long beginTime = System.currentTimeMillis();
 		List<SecondhandhouseOriginal> soList = secondhandhouseOriginalService.findByCaptureTime(beginDate, endDate);
 		SecondhandhouseNew sn = null;
