@@ -112,12 +112,12 @@ public class AnalysisController {
         return view;
     }
 
-    @RequestMapping("/dealStation")
+    @RequestMapping("/dealStation.do")
     @Transactional
-    public ModelAndView dealStation(ModelAndView view) throws ParseException{
+    public ModelAndView dealStation(ModelAndView view, String beginDateStr, String endDateStr) throws ParseException{
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Date beginDate = df.parse("2017-03-31");
-        Date endDate = df.parse("2017-04-03");
+        Date beginDate = df.parse(beginDateStr);
+        Date endDate = df.parse(endDateStr);
         Long beginTime = System.currentTimeMillis();
         List<SecondhandhouseNew> secondhandhouseNewList = secondhandhouseNewService.getByDate(beginDate, endDate);
         //地铁站点集合
@@ -126,26 +126,10 @@ public class AnalysisController {
         List<String> trafficLocationList = new ArrayList<String>();
         String trafficLocation = null;
         Map<String,String> stationMapInsert = new HashMap<String,String>();
-//        for(SecondhandhouseNew secondhandhouseNew : secondhandhouseNewList){
-//            //获取每条数据的交通信息
-//            //判断信息的有无
-//            if( null != secondhandhouseNew.getTrafficLocation()){
-//                trafficLocation = secondhandhouseNew.getTrafficLocation();
-//                //遍历地铁站点集合，并且去重
-//                stationName = this.splitTrafficLocation(trafficLocation);
-//                //将该stationMap，与stationMapList 中的元素对比，并且生成新的stationMap，存入与stationMapList中
-//                if(!stationMapInsert.containsKey(stationName)){
-//                    stationMapInsert.put(stationName,"01");
-//                }
-//            }
-//        }
         //遍历生成站点信息
-        String[] stationNames = new String[]{};
-        stationNames[0] ="富景路";
-        String[] stationCodes = new String[]{};
-        stationCodes[0] = "0";
+        List<String> stationNames = new ArrayList<>();
         List<String> transferSubwayCodes = new ArrayList<>();
-        int i = 0 ;//初始code
+//        int i = 0 ;//初始code
         Boolean flage = false;
         for(SecondhandhouseNew secondhandhouseNew : secondhandhouseNewList){
             //获取每条数据的交通信息
@@ -154,26 +138,23 @@ public class AnalysisController {
                 trafficLocation = secondhandhouseNew.getTrafficLocation();
                 //遍历地铁站点集合，并且去重
                 trafficLocationList = this.splitTrafficLocation(trafficLocation);
-                for(int j = 0 ; j <= stationNames.length; j++){
-                    if(!stationNames[j].equals(trafficLocationList.get(0))){
-                        flage =true;
-                    } else {
-                        flage =false;
-                    }
-                }
-                if(flage){
-                    int k = i++;
-                    stationNames[k] = trafficLocationList.get(0);
-                    stationCodes[k] = k + "";
-                }
+                stationNames.add(trafficLocationList.get(0));
             }
         }
         //插入地铁站点表
         int insertCountList = 0;
-        for(int j = 0;j < stationNames.length;j++){
+        for(int i = 0 ;i < stationNames.size(); i++){
+
+            for(int j = stationNames.size() - 1 ; j > i; j--){
+
+                if(stationNames.get(i).equals(stationNames.get(j))){
+                    stationNames.remove(j);
+                }
+            }
+        }
+        for(int j = 0;j < stationNames.size();j++){
             ShanghaiMetroStationDetails shanghaiMetroStationDetails = new ShanghaiMetroStationDetails();
-            shanghaiMetroStationDetails.setStationName(stationNames[j]);
-            shanghaiMetroStationDetails.setStationCode(stationCodes[j]);
+            shanghaiMetroStationDetails.setStationName(stationNames.get(j));
             shanghaiMetroStationDetailsService.save(shanghaiMetroStationDetails);
             insertCountList++;
         }
@@ -193,7 +174,7 @@ public class AnalysisController {
         List<String> stationInfo = new ArrayList<>();
         //距离8号线成山路站531米
         String stationName = trafficLocation.substring(
-                trafficLocation.indexOf("线"),trafficLocation.indexOf("站")
+                trafficLocation.indexOf("线")+1,trafficLocation.indexOf("站")+1
         );
         String stationCode = trafficLocation.substring(
                 trafficLocation.indexOf("离"),trafficLocation.indexOf("号")
