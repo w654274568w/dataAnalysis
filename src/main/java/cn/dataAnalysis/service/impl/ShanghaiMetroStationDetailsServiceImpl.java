@@ -22,4 +22,9 @@ public class ShanghaiMetroStationDetailsServiceImpl implements ShanghaiMetroStat
 	public ShanghaiMetroStationDetails save(ShanghaiMetroStationDetails shanghaiMetroStationDetails) {
 		return shanghaiMetroStationDetailsRepository.save(shanghaiMetroStationDetails);
 	}
+
+	@Override
+	public List<ShanghaiMetroStationDetails> findAll() {
+		return shanghaiMetroStationDetailsRepository.findAll();
+	}
 }
