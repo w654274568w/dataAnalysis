@@ -55,6 +55,9 @@ public class DataCountByMetroStationController {
 		for (ShanghaiMetroStationDetails shanghaiMetroStationDetails: shanghaiMetroStationDetailsList){
 			DataCountByMetroStation dataCountByMetroStation = new DataCountByMetroStation();
 			dataCountByMetroStation.setStationName(shanghaiMetroStationDetails.getStationName());
+			dataCountByMetroStation.setNumber(0l);
+			dataCountByMetroStation.setAverageTotalPrice(0.00);
+			dataCountByMetroStation.setAveragePerPrice(0.00);
 			dataCountByMetroStations.add(dataCountByMetroStation);
 		}
 		//计算总额
@@ -74,10 +77,12 @@ public class DataCountByMetroStationController {
 		}
 		//计算平均值
 		for (DataCountByMetroStation dataCountByMetroStation: dataCountByMetroStations){
-			dataCountByMetroStation.setAverageTotalPrice(
-					dataCountByMetroStation.getAverageTotalPrice() / dataCountByMetroStation.getNumber());
-			dataCountByMetroStation.setAveragePerPrice(
-					dataCountByMetroStation.getAveragePerPrice() / dataCountByMetroStation.getNumber());
+			if(dataCountByMetroStation.getNumber() != 0l){
+				dataCountByMetroStation.setAverageTotalPrice(
+						dataCountByMetroStation.getAverageTotalPrice() / dataCountByMetroStation.getNumber());
+				dataCountByMetroStation.setAveragePerPrice(
+						dataCountByMetroStation.getAveragePerPrice() / dataCountByMetroStation.getNumber());
+			}
 			dataCountByMetroStation.setCaptureTime(DateUtils.addDay(beginDate, 1));
 			dataCountByMetroStationService.save(dataCountByMetroStation);
 		}
