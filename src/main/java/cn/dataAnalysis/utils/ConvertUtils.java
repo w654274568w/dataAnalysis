@@ -30,7 +30,7 @@ public class ConvertUtils {
             String [] ciNewCon = ciNew.split("\\|");
             if (ciNewCon.length == 3){
                 sn.setRoomType(ciNewCon[0]);
-                sn.setArea(Double.valueOf(ciNewCon[1].substring(0, ciNewCon[1].length()-3)));
+                sn.setArea(Double.valueOf(ciNewCon[1].substring(0, ciNewCon[1].length()-1)));
                 sn.setHighLowArea(ciNewCon[2]);
             }else if (ciNewCon.length == 4){
                 sn.setRoomType(ciNewCon[0]);

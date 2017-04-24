@@ -193,8 +193,8 @@ public class AnalysisController {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date beginDate = df.parse(beginDateStr);
         Date endDate = df.parse(endDateStr);
-        List<SecondhandhouseNew> secondhandhouseNews = new ArrayList<SecondhandhouseNew>();
-        secondhandhouseNews = secondhandhouseNewService.getByDate(beginDate, endDate);
+        List<SecondhandhouseNew> secondhandhouseNews =
+                secondhandhouseNewService.getByDate(beginDate, endDate);
         String trafficLocation = null;
         String stationName = null;
         int stationDistance = 0;
@@ -220,5 +220,7 @@ public class AnalysisController {
         view.setViewName("index");
         return view;
     }
+
+
 
 }
