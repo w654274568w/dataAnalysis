@@ -12,6 +12,8 @@ import cn.dataAnalysis.service.ShanghaiMetroStationDetailsService;
 import cn.dataAnalysis.utils.DateUtils;
 import cn.dataAnalysis.utils.MathUtil;
 import cn.dataAnalysis.utils.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,8 @@ import java.util.*;
  */
 @Controller
 public class AnalysisController {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private SecondhandhouseOriginalService secondhandhouseOriginalService;
@@ -199,10 +203,11 @@ public class AnalysisController {
         String stationName = null;
         int stationDistance = 0;
         String stationDistanceStr = null;
+        int n =0;
         for(SecondhandhouseNew secondhandhouseNew: secondhandhouseNews){
             //距离8号线成山路站531米
             trafficLocation = secondhandhouseNew.getTrafficLocation();
-            if(!StringUtil.isEmpty(trafficLocation)){
+            if(trafficLocation != null && !"".equals(trafficLocation)){
                 stationName = trafficLocation.substring(
                         trafficLocation.indexOf("线")+1,trafficLocation.lastIndexOf("站")+1
                 );
@@ -213,8 +218,7 @@ public class AnalysisController {
                 secondhandhouseNew.setStationName(stationName);
                 secondhandhouseNew.setStationDistance(stationDistance);
                 secondhandhouseNewService.insert(secondhandhouseNew);
-            } else {
-                continue;
+                logger.info("！！！！！！！！现在处理第" + n++ + "条信息！！！！！！！！！！！！！！！！！！！");
             }
         }
         view.setViewName("index");
