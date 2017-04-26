@@ -47,12 +47,8 @@ public class AnalysisController {
     private ShanghaiMetroStationDetailsService shanghaiMetroStationDetailsService;
 
 
-
-
-
     /**
      * 批量分批插入处理后的房产信息(多线程)
-     *
      */
     @RequestMapping("/insertSecondhandhouseNewMultithread")
     public void insertSecondhandhouseNew(HttpServletRequest request) throws ParseException {
@@ -63,12 +59,13 @@ public class AnalysisController {
         List<SecondhandhouseOriginal> soList = secondhandhouseOriginalService.findByCaptureTime(beginDate, endDate);
         Long endTime = System.currentTimeMillis();
         System.out.println("————————————————————————————————————————这是分割线————————————————————————————————————————");
-        System.out.println("共处理"+soList.size()+"条数据，使用时间为"+(beginTime-endTime));
+        System.out.println("共处理" + soList.size() + "条数据，使用时间为" + (beginTime - endTime));
     }
 
 
     /**
      * 根据区域处理数据信息
+     *
      * @param view
      * @return
      * @throws ParseException
@@ -83,20 +80,20 @@ public class AnalysisController {
         Long countList = 0l;
         //遍历生成所有区域的空对象
         List<SecondhandhouseNew> secondhandhouseNewList = new ArrayList<SecondhandhouseNew>();
-        for(RegionShanghaiEnum regionShanghaiEnum: RegionShanghaiEnum.values()){
+        for (RegionShanghaiEnum regionShanghaiEnum : RegionShanghaiEnum.values()) {
             DataCountByRegion dataCountByRegion = new DataCountByRegion();
             dataCountByRegion.setRegionCode(regionShanghaiEnum.getCode());
             dataCountByRegion.setRegionName(regionShanghaiEnum.getDesc());
             //查询单一区域数据信息
-            secondhandhouseNewList = secondhandhouseNewService.findByRegionNameAndDate(beginDate,endDate,regionShanghaiEnum.getDesc());
+            secondhandhouseNewList = secondhandhouseNewService.findByRegionNameAndDate(beginDate, endDate, regionShanghaiEnum.getDesc());
             Double totalPriceAmount = 0.0;
             Double averagePriceAmount = 0.0;
             Long attentionNumAmount = 0l;
             Long number = 0l;
-            if(secondhandhouseNewList.size() > 0){
-                for(SecondhandhouseNew secondhandhouseNew: secondhandhouseNewList){
+            if (secondhandhouseNewList.size() > 0) {
+                for (SecondhandhouseNew secondhandhouseNew : secondhandhouseNewList) {
                     totalPriceAmount = MathUtil.add(totalPriceAmount, secondhandhouseNew.getTotalPrice());
-                    averagePriceAmount = MathUtil.add(averagePriceAmount,secondhandhouseNew.getAveragePrice());
+                    averagePriceAmount = MathUtil.add(averagePriceAmount, secondhandhouseNew.getAveragePrice());
 //                    attentionNumAmount = attentionNumAmount + secondhandhouseNew.getAttentionNumber();
                     countList += 1;
                     number += 1;
@@ -111,14 +108,14 @@ public class AnalysisController {
         }
         Long endTime = System.currentTimeMillis();
         System.out.println("————————————————————————————————————————这是分割线————————————————————————————————————————");
-        System.out.println("共处理"+countList+"条数据，使用时间为"+(beginTime-endTime));
+        System.out.println("共处理" + countList + "条数据，使用时间为" + (beginTime - endTime));
         view.setViewName("index");
         return view;
     }
 
     @RequestMapping("/dealStation.do")
     @Transactional
-    public ModelAndView dealStation(ModelAndView view, String beginDateStr, String endDateStr) throws ParseException{
+    public ModelAndView dealStation(ModelAndView view, String beginDateStr, String endDateStr) throws ParseException {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date beginDate = df.parse(beginDateStr);
         Date endDate = df.parse(endDateStr);
@@ -129,16 +126,16 @@ public class AnalysisController {
         //获取所有数据的 交通信息坐标
         List<String> trafficLocationList = new ArrayList<String>();
         String trafficLocation = null;
-        Map<String,String> stationMapInsert = new HashMap<String,String>();
+        Map<String, String> stationMapInsert = new HashMap<String, String>();
         //遍历生成站点信息
         List<String> stationNames = new ArrayList<>();
         List<String> transferSubwayCodes = new ArrayList<>();
 //        int i = 0 ;//初始code
         Boolean flage = false;
-        for(SecondhandhouseNew secondhandhouseNew : secondhandhouseNewList){
+        for (SecondhandhouseNew secondhandhouseNew : secondhandhouseNewList) {
             //获取每条数据的交通信息
             //判断信息的有无
-            if( null != secondhandhouseNew.getTrafficLocation()){
+            if (null != secondhandhouseNew.getTrafficLocation()) {
                 trafficLocation = secondhandhouseNew.getTrafficLocation();
                 //遍历地铁站点集合，并且去重
                 trafficLocationList = this.splitTrafficLocation(trafficLocation);
@@ -147,16 +144,14 @@ public class AnalysisController {
         }
         //插入地铁站点表
         int insertCountList = 0;
-        for(int i = 0 ;i < stationNames.size(); i++){
-
-            for(int j = stationNames.size() - 1 ; j > i; j--){
-
-                if(stationNames.get(i).equals(stationNames.get(j))){
+        for (int i = 0; i < stationNames.size(); i++) {
+            for (int j = stationNames.size() - 1; j > i; j--) {
+                if (stationNames.get(i).equals(stationNames.get(j))) {
                     stationNames.remove(j);
                 }
             }
         }
-        for(int j = 0;j < stationNames.size();j++){
+        for (int j = 0; j < stationNames.size(); j++) {
             ShanghaiMetroStationDetails shanghaiMetroStationDetails = new ShanghaiMetroStationDetails();
             shanghaiMetroStationDetails.setStationName(stationNames.get(j));
             shanghaiMetroStationDetailsService.save(shanghaiMetroStationDetails);
@@ -164,24 +159,25 @@ public class AnalysisController {
         }
         Long endTime = System.currentTimeMillis();
         System.out.println("————————————————————————————————————————这是分割线————————————————————————————————————————");
-        System.out.println("共处理"+insertCountList+"条数据，使用时间为"+(beginTime-endTime));
+        System.out.println("共处理" + insertCountList + "条数据，使用时间为" + (beginTime - endTime));
         view.setViewName("index");
         return view;
     }
 
     /**
      * 拆解交通信息
+     *
      * @param trafficLocation
      * @return
      */
-    public List<String> splitTrafficLocation(String trafficLocation){
+    public List<String> splitTrafficLocation(String trafficLocation) {
         List<String> stationInfo = new ArrayList<>();
         //距离8号线成山路站531米
         String stationName = trafficLocation.substring(
-                trafficLocation.indexOf("线")+1,trafficLocation.indexOf("站")+1
+                trafficLocation.indexOf("线") + 1, trafficLocation.indexOf("站") + 1
         );
         String stationCode = trafficLocation.substring(
-                trafficLocation.indexOf("离"),trafficLocation.indexOf("号")
+                trafficLocation.indexOf("离"), trafficLocation.indexOf("号")
         );
         stationInfo.add(stationName);
         stationInfo.add(stationCode);
@@ -190,7 +186,6 @@ public class AnalysisController {
 
     /**
      * 批量更新数据中的地铁站点信息
-     *
      */
     @RequestMapping("/updatetTrafficLocationForNewData.do")
     public ModelAndView updatetTrafficLocationForNewData(ModelAndView view, String beginDateStr, String endDateStr) throws ParseException {
@@ -203,16 +198,16 @@ public class AnalysisController {
         String stationName = null;
         int stationDistance = 0;
         String stationDistanceStr = null;
-        int n =0;
-        for(SecondhandhouseNew secondhandhouseNew: secondhandhouseNews){
+        int n = 0;
+        for (SecondhandhouseNew secondhandhouseNew : secondhandhouseNews) {
             //距离8号线成山路站531米
             trafficLocation = secondhandhouseNew.getTrafficLocation();
-            if(trafficLocation != null && !"".equals(trafficLocation)){
+            if (trafficLocation != null && !"".equals(trafficLocation)) {
                 stationName = trafficLocation.substring(
-                        trafficLocation.indexOf("线")+1,trafficLocation.lastIndexOf("站")+1
+                        trafficLocation.indexOf("线") + 1, trafficLocation.lastIndexOf("站") + 1
                 );
                 stationDistanceStr = trafficLocation.substring(
-                        trafficLocation.lastIndexOf("站")+1,trafficLocation.indexOf("米")
+                        trafficLocation.lastIndexOf("站") + 1, trafficLocation.indexOf("米")
                 );
                 stationDistance = Integer.valueOf(stationDistanceStr);
                 secondhandhouseNew.setStationName(stationName);
@@ -224,7 +219,6 @@ public class AnalysisController {
         view.setViewName("index");
         return view;
     }
-
 
 
 }
