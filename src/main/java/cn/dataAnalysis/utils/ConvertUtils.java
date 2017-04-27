@@ -72,7 +72,6 @@ public class ConvertUtils {
         //距离8号线成山路站531米
         if (so.getTrafficLocation() != null && so.getTrafficLocation().contains("距离") &&
                 !"".equals(so.getTrafficLocation())) {
-            sn.setTrafficLocation(so.getTrafficLocation());
             String stationName = trafficLocation.substring(
                     trafficLocation.indexOf("线") + 1, trafficLocation.lastIndexOf("站") + 1
             );
@@ -91,10 +90,9 @@ public class ConvertUtils {
     }
 
     public static  void main(String[] args){
-        String dataLinkStr = "http://sh.lianjia.com/ershoufang/sh4572051.html";
-        int dataId = Integer.valueOf(dataLinkStr.substring(
-                dataLinkStr.lastIndexOf("sh")+2,dataLinkStr.length()-5));
-        System.out.print(dataId);
+        String dataLinkStr = "5室2厅|157.62平|高区/6层|朝南北";
+        String[] ciNewCon = dataLinkStr.split("\\|");
+        System.out.print(Double.valueOf(ciNewCon[1].substring(0, ciNewCon[1].length() - 1)));
     }
 
 }

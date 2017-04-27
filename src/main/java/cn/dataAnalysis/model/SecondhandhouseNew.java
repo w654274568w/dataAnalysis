@@ -45,11 +45,6 @@ public class SecondhandhouseNew extends BaseEntity {
     private String regionNameSecondary;
 
     /*
-     * 综合信息
-     */
-    private String comprehensiveInformation;
-
-    /*
      *朝向
      */
     private String orientation;
@@ -63,11 +58,6 @@ public class SecondhandhouseNew extends BaseEntity {
      * 建筑年限
      */
     private Integer constructionYear;
-
-    /*
-     * 交通位置
-     */
-    private String trafficLocation;
 
     /*
      * 房屋总价（挂牌价）
@@ -175,14 +165,6 @@ public class SecondhandhouseNew extends BaseEntity {
         this.regionNameSecondary = regionNameSecondary;
     }
 
-    @Column(name = "comprehensive_information", length = 225)
-    public String getComprehensiveInformation() {
-        return comprehensiveInformation;
-    }
-
-    public void setComprehensiveInformation(String comprehensiveInformation) {
-        this.comprehensiveInformation = comprehensiveInformation;
-    }
 
     @Column(name = "orientation", length = 225)
     public String getOrientation() {
@@ -209,15 +191,6 @@ public class SecondhandhouseNew extends BaseEntity {
 
     public void setConstructionYear(Integer constructionYear) {
         this.constructionYear = constructionYear;
-    }
-
-    @Column(name = "traffic_location", length = 225)
-    public String getTrafficLocation() {
-        return trafficLocation;
-    }
-
-    public void setTrafficLocation(String trafficLocation) {
-        this.trafficLocation = trafficLocation;
     }
 
     @Column(name = "total_price", length = 225)
@@ -300,9 +273,8 @@ public class SecondhandhouseNew extends BaseEntity {
     @Override
     public String toString() {
         return "SecondhandhouseNew [id=" + id + ", title=" + title + ", communityName=" + communityName + ", roomType="
-                + roomType + ", area=" + area + ", regionName=" + regionName + ", comprehensiveInformation="
-                + comprehensiveInformation + ", orientation=" + orientation + ", highLowArea=" + highLowArea
-                + ", constructionYear=" + constructionYear + ", trafficLocation=" + trafficLocation + ", totalPrice="
+                + roomType + ", area=" + area + ", regionName=" + regionName  + ", orientation=" + orientation + ", highLowArea=" + highLowArea
+                + ", constructionYear=" + constructionYear + ", totalPrice="
                 + totalPrice + ", averagePrice=" + averagePrice + ", attentionNumber=" + attentionNumber
                 + ", captureTime=" + captureTime + ", originalId=" + originalId + "]";
     }
