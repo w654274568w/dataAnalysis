@@ -115,10 +115,10 @@ public class SecondhandhouseOriginalController {
 	 */
 	@RequestMapping("/insertSecondhandhouseNew")
 	@Transactional
-	public void insertSecondhandhouseNew(HttpServletRequest request) throws ParseException{
+	public ModelAndView insertSecondhandhouseNew(ModelAndView view, String beginDateStr, String endDateStr) throws ParseException{
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		Date beginDate = df.parse("2017-04-23");
-		Date endDate = df.parse("2017-04-29");
+		Date beginDate = df.parse(beginDateStr);
+		Date endDate = df.parse(endDateStr);
 		Long beginTime = System.currentTimeMillis();
 		List<SecondhandhouseOriginal> soList = secondhandhouseOriginalService.findByCaptureTime(beginDate, endDate);
 		SecondhandhouseNew sn = null;
@@ -145,6 +145,8 @@ public class SecondhandhouseOriginalController {
 		Long endTime = System.currentTimeMillis();
 		System.out.println("————————————————————————————————————————这是分割线————————————————————————————————————————");
 		System.out.println("共处理"+soList.size()+"条数据，使用时间为"+(beginTime-endTime));
+		view.setViewName("index");
+		return view;
 	}
 	/* 
 	 * 通过时间查询数据并计算

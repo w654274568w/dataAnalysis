@@ -51,15 +51,18 @@ public class AnalysisController {
      * 批量分批插入处理后的房产信息(多线程)
      */
     @RequestMapping("/insertSecondhandhouseNewMultithread")
-    public void insertSecondhandhouseNew(HttpServletRequest request) throws ParseException {
+    public ModelAndView insertSecondhandhouseNew(ModelAndView view, String beginDateStr, String endDateStr) throws ParseException {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Date beginDate = df.parse("2017-02-16");
-        Date endDate = df.parse("2017-02-17");
+        Date beginDate = df.parse(beginDateStr);
+        Date endDate = df.parse(endDateStr);
         Long beginTime = System.currentTimeMillis();
         List<SecondhandhouseOriginal> soList = secondhandhouseOriginalService.findByCaptureTime(beginDate, endDate);
+
         Long endTime = System.currentTimeMillis();
         System.out.println("————————————————————————————————————————这是分割线————————————————————————————————————————");
         System.out.println("共处理" + soList.size() + "条数据，使用时间为" + (beginTime - endTime));
+        view.setViewName("index");
+        return view;
     }
 
 
@@ -135,12 +138,12 @@ public class AnalysisController {
         for (SecondhandhouseNew secondhandhouseNew : secondhandhouseNewList) {
             //获取每条数据的交通信息
             //判断信息的有无
-            if (null != secondhandhouseNew.getTrafficLocation()) {
-                trafficLocation = secondhandhouseNew.getTrafficLocation();
-                //遍历地铁站点集合，并且去重
-                trafficLocationList = this.splitTrafficLocation(trafficLocation);
-                stationNames.add(trafficLocationList.get(0));
-            }
+//            if (null != secondhandhouseNew.getTrafficLocation()) {
+//                trafficLocation = secondhandhouseNew.getTrafficLocation();
+//                //遍历地铁站点集合，并且去重
+//                trafficLocationList = this.splitTrafficLocation(trafficLocation);
+//                stationNames.add(trafficLocationList.get(0));
+//            }
         }
         //插入地铁站点表
         int insertCountList = 0;
@@ -201,7 +204,7 @@ public class AnalysisController {
         int n = 0;
         for (SecondhandhouseNew secondhandhouseNew : secondhandhouseNews) {
             //距离8号线成山路站531米
-            trafficLocation = secondhandhouseNew.getTrafficLocation();
+//            trafficLocation = secondhandhouseNew.getTrafficLocation();
             if (trafficLocation != null && !"".equals(trafficLocation)) {
                 stationName = trafficLocation.substring(
                         trafficLocation.indexOf("线") + 1, trafficLocation.lastIndexOf("站") + 1
