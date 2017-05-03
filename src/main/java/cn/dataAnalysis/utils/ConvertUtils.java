@@ -64,7 +64,7 @@ public class ConvertUtils {
         //http://sh.lianjia.com/ershoufang/sh4572051.html
         if (so.getDataLink() != null && !"".equals(so.getDataLink())) {
             String dataLinkStr = so.getDataLink().trim();
-            int dataId = Integer.valueOf(dataLinkStr.substring(
+            Long dataId = Long.valueOf(dataLinkStr.substring(
                     dataLinkStr.lastIndexOf("sh")+2,dataLinkStr.length()-5));
             sn.setDataId(dataId);
         }
@@ -90,9 +90,11 @@ public class ConvertUtils {
     }
 
     public static  void main(String[] args){
-        String dataLinkStr = "5室2厅|157.62平|高区/6层|朝南北";
-        String[] ciNewCon = dataLinkStr.split("\\|");
-        System.out.print(Double.valueOf(ciNewCon[1].substring(0, ciNewCon[1].length() - 1)));
+        String dataLinkStr = "http://sh.lianjia.com/ershoufang/sh4393259095.html";
+        String a = dataLinkStr.substring(
+                dataLinkStr.lastIndexOf("sh")+2,dataLinkStr.length()-5);
+        Long dataId = Long.valueOf(a.trim());
+        System.out.print(dataId);
     }
 
 }

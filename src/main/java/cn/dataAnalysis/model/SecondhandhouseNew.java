@@ -87,7 +87,7 @@ public class SecondhandhouseNew extends BaseEntity {
     /*
      *链家ID
      */
-    private Integer dataId;
+    private Long dataId;
 
     /*
      * 地铁站点名称
@@ -240,11 +240,11 @@ public class SecondhandhouseNew extends BaseEntity {
     }
 
     @Column(name = "data_id", length = 11)
-    public Integer getDataId() {
+    public Long getDataId() {
         return dataId;
     }
 
-    public void setDataId(Integer dataId) {
+    public void setDataId(Long dataId) {
         this.dataId = dataId;
     }
 
