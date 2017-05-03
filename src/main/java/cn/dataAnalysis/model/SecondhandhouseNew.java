@@ -239,7 +239,7 @@ public class SecondhandhouseNew extends BaseEntity {
         this.originalId = originalId;
     }
 
-    @Column(name = "data_id", length = 11)
+    @Column(name = "data_id", length = 20)
     public Long getDataId() {
         return dataId;
     }
