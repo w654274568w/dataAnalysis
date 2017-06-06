@@ -34,7 +34,7 @@ public class ConvertUtils {
                 sn.setHighLowArea(ciNewCon[2]);
             } else if (ciNewCon.length == 4) {
                 sn.setRoomType(ciNewCon[0]);
-                sn.setArea(Double.valueOf(ciNewCon[1].substring(0, ciNewCon[1].length() - 3)));
+                sn.setArea(Double.valueOf(ciNewCon[1].substring(0, ciNewCon[1].length() - 1)));
                 sn.setHighLowArea(ciNewCon[2]);
                 sn.setOrientation(ciNewCon[3]);
             }
@@ -90,11 +90,24 @@ public class ConvertUtils {
     }
 
     public static  void main(String[] args){
-        String dataLinkStr = "http://sh.lianjia.com/ershoufang/sh4393259095.html";
+        /*String dataLinkStr = "http://sh.lianjia.com/ershoufang/sh4393259095.html";
         String a = dataLinkStr.substring(
                 dataLinkStr.lastIndexOf("sh")+2,dataLinkStr.length()-5);
         Long dataId = Long.valueOf(a.trim());
-        System.out.print(dataId);
+        System.out.print(dataId);*/
+        String a = "5室2厅|157.62平|高区/6层|朝南北";
+        if (a != null) {
+            String ciNew = a.replaceAll("\r|\n|\t| ", "");
+            /*
+             * 综合信息1可能存在的情形：
+			 * 5室2厅|157.62平|高区/6层|朝南北
+			 * 1室1厅|33.32平|低区/6层
+			 */
+            String[] ciNewCon = ciNew.split("\\|");
+            String a1= ciNewCon[1].substring(0, ciNewCon[1].length() - 1);
+            String a2= ciNewCon[1].substring(0, ciNewCon[1].length() - 3);
+            System.out.print(a1+" "+a2);
+        }
     }
 
 }
