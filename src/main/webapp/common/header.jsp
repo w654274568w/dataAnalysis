@@ -46,7 +46,6 @@
 <script src="${ctx }/assets/js/respond.min.js"></script>
 <![endif]-->
 
-<script src="${ctx }/js/dim.js"></script>
 <script type="text/javascript">
     var ctx = "${ctx}";
     /**

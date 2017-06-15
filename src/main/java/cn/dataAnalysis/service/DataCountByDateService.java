@@ -12,4 +12,9 @@ public interface DataCountByDateService {
      * @param dataCountByDate
      */
     DataCountByDate save(DataCountByDate dataCountByDate);
+
+    /**
+     *
+     */
+
 }
