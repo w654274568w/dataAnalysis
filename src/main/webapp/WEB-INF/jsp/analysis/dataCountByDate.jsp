@@ -39,9 +39,13 @@
                         </td>
                     </tr>
                 </table>
+                <br>
+                <!-- 表格 -->
+                <table id="grid-table"></table>
+                <!-- 分页 -->
+                <div id="grid-pager"></div>
                 <div class="row">
                     <div class="col-xs-12" style="padding-left:5px;">
-
                     </div>
                 </div>
             </div>
@@ -54,52 +58,6 @@
     </div><!-- /.main-container-inner -->
 
 </div><!-- /.main-container -->
-<%--<div class="breadcrumbs" id="breadcrumbs" style="display: none;">
-    <script type="text/javascript">
-        try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
-    </script>
-
-    <ul class="breadcrumb">
-        <li>
-            <i class="icon-home home-icon"></i>
-            <a href="${ctx}/index.html">借款申请管理</a>
-        </li>
-        <li class="active">借款申请列表</li>
-    </ul><!-- .breadcrumb -->
-
-    <!-- nav-search -->
-    <%@ include file="/common/search.jsp"%>
-</div>
-
-<div class="page-content">
-    <table style="padding-bottom: 20px">
-        <tr >
-            <td> 借款人名称:</td>
-            <td><input type="text" id="loanName" name="loanName" width="400px"/></td>
-            <td> 申请状态:</td>
-            <td><ak:select key="PLAPPINFO_STATUS" id="status" tips="请选择" /></td>
-            <td>
-                <span class="input-group-btn">
-                    <button onclick="gridReload()" type="button" class="btn btn-purple btn-sm">
-                      查询
-                      <i class="icon-search icon-on-right bigger-110"></i>
-                    </button>
-                </span>
-            </td>
-        </tr>
-    </table>
-    <br>
-    <!-- 表格 -->
-    <table id="grid-table"></table>
-    <!-- 分页 -->
-    <div id="grid-pager"></div>
-
-    <script type="text/javascript">
-        var $path_base = "/";//this will be used in gritter alerts containing images
-    </script>
-</div><!-- /.page-content -->--%>
-
-
 <!-- basic scripts -->
 <%@ include file="/common/basic-script.jsp" %>
 <!-- form scripts -->
@@ -112,7 +70,7 @@
         var loanName = jQuery("#loanName").val() || null;
         var status = jQuery("#status").val() || null;
         jQuery("#grid-table").jqGrid('setGridParam', {
-            url: "${ctx}/plAppInfoList.json",
+            url: "",
             mtype: "post",
             page: 1,
             postData: {loanName: loanName, status: status}
@@ -128,17 +86,14 @@
                 else title.text($title);
             }
         }));
-
-
         var grid_selector = "#grid-table";
         var pager_selector = "#grid-pager";
         jQuery(grid_selector).jqGrid({
-            url: '${ctx}/plAppInfoList.json',
+            url: '${ctx}/analysis/dataCountByDate.json',
             datatype: "json",
             mtype: "post",
             height: 330,
-            colNames: ['ID', '借款人姓名', '借款人手机号', '产品类型', '合同编号', '合同金额（元）', '申请金额（元）', '服务费率（%）', '借款期限（月）',
-                '创建时间', '状态', '操作'],
+            colNames: ['ID', '数据量', '每平米均价(元)', '单套内总价均价(万元)', '时间'],
             colModel: [
                 {
                     name: 'id',
@@ -147,105 +102,36 @@
                     editable: false
                 },
                 {
-                    name: 'loanName',
-                    index: 'loanName',
-                    width: 120,
+                    name: 'number',
+                    index: 'number',
+                    width: 50,
                     editable: false
                 },
                 {
-                    name: 'mobile',
-                    index: 'mobile',
-                    width: 120,
+                    name: 'averagePerPrice',
+                    index: 'averagePerPrice',
+                    width: 50,
                     editable: false
                 },
                 {
-                    name: 'productType',
-                    index: 'productType',
-                    width: 100,
-                    editable: false,
-                    formatter: function (cellvalue, options, rowObject) {
-                        if (cellvalue != null) {
-                            return formatDim("PL_PRODUCT_TYPE", cellvalue);
-                        }
-                        return cellvalue;
-                    }
-                },
-                {
-                    name: 'loanContractNo',
-                    index: 'loanContractNo',
-                    width: 200,
+                    name: 'averageTotalPrice',
+                    index: 'averageTotalPrice',
+                    width: 50,
                     editable: false
                 },
                 {
-                    name: 'loanAmount',
-                    index: 'loanAmount',
-                    width: 100,
-                    editable: false
-                },
-                {
-                    name: 'appAmount',
-                    index: 'appAmount',
-                    width: 100,
-                    editable: false
-                },
-                {
-                    name: 'serverMonthRate',
-                    index: 'serverMonthRate',
-                    width: 100,
-                    editable: false
-                },
-                {
-                    name: 'appTerm',
-                    index: 'appTerm',
-                    width: 100,
-                    editable: false
-                },
-                {
-                    name: 'createTime',
-                    index: 'createTime',
-                    width: 180,
-                    editable: false,
-                    edittype: "Date",
-                    formatter: function (value, options, rowObject) {
+                    name:'captureTime',
+                    index:'captureTime',
+                    width:80,
+                    editable:false,
+                    edittype:"Date",
+                    formatter: function(value, options, rowObject){
                         var date = new Date();
                         date.setTime(value);
-                        return date.Format("yyyy-MM-dd hh:mm:ss");
-                    }
-                },
-                {
-                    name: 'status',
-                    index: 'status',
-                    width: 100,
-                    editable: false,
-                    formatter: function (cellvalue, options, rowObject) {
-                        if (cellvalue != null) {
-                            return formatDim("PLAPPINFO_STATUS", cellvalue);
-                        }
-                        return cellvalue;
-                    }
-                },
-                {
-                    name: '',
-                    index: '',
-                    width: 150,
-                    fixed: true,
-                    sortable: false,
-                    formatter: function (value, options, rowObject) {
-                        if (rowObject["status"] == '1' || rowObject["status"] == '6') {
-                            return "<a href=\"javascript: plApp(" + rowObject['id'] + ")\">修改</a>&nbsp;&nbsp;&nbsp;&nbsp;" +
-                                "<a href=\"javascript: deletefun(" + rowObject['id'] + ")\">删除</a>";
-                        } else if (rowObject["status"] == '4') {
-                            return "<a href=\"javascript: addMoreFile(" + rowObject['id'] + ")\">补充资料</a>";
-                            +
-                                "<a href=\"javascript: queryPlAppInfo(" + rowObject['id'] + ")\">查看</a>";
-                        } else if (rowObject["status"] == '6') {
-                            return "<a href=\"javascript: plApp(" + rowObject['id'] + ")\">重新编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;" +
-                                "<a href=\"javascript: deletefun(" + rowObject['id'] + ")\">删除</a>";
-                        } else {
-                            return "<a href=\"javascript: queryPlAppInfo(" + rowObject['id'] + ")\">查看</a>";
-                        }
+                        return date.Format("yyyy-MM-dd");
                     }
                 }
+
             ],
 
             viewrecords: true,
@@ -266,11 +152,9 @@
                 }, 0);
             },
 
-            caption: "借款申请列表"
-//            autowidth: true
-
+            caption: "分期数据列表",
+            autowidth: true
         });
-
         //enable datepicker
         function pickDate(cellvalue, options, cell) {
             setTimeout(function () {
@@ -278,7 +162,6 @@
                     .datepicker({format: 'yyyy-mm-dd', autoclose: true});
             }, 0);
         }
-
         // 修改默认按钮功能
         $(grid_selector).jqGrid("navGrid", pager_selector, {
             edit: false,
@@ -301,14 +184,12 @@
         }, {// 修改查询相关的参数
         }, {// 修改查看相关的参数
         });
-
         /// 对表格式样式进行修改
         //it causes some flicker when reloading or navigating grid
         //it may be possible to have some custom formatter to do this as the grid is being created to prevent this
         //or go back to default browser checkbox styles for the grid
         function styleCheckbox(table) {
         }
-
 
         //unlike navButtons icons, action icons in rows seem to be hard-coded
         //you can change them like this in here if you want
@@ -336,49 +217,7 @@
             $('.navtable .ui-pg-button').tooltip({container: 'body'});
             $(table).find('.ui-pg-div').tooltip({container: 'body'});
         }
-
-        //var selr = jQuery(grid_selector).jqGrid('getGridParam','selrow');
-
     });
-
-    function plApp(id) {
-        window.location = "${ctx }/addPlAppInfo.html?appId=" + id;
-    }
-
-    function addMoreFile(id) {
-        window.location = "${ctx }/addMorePlAppFile.html?appId=" + id;
-    }
-
-    <%--function query(id){--%>
-    <%--window.location = "${ctx }/plDealer/plDealerDetailInfo.html?id="+id;--%>
-    <%--}--%>
-
-    function edit(id) {
-        window.location = "${ctx }/plDealer/plDealerCompanyInfo.html?id=" + id;
-    }
-
-    function deletefun(id) {
-        if (confirm("确认删除此条信息吗？")) {
-            $.ajax({
-                type: "post",
-                url: "${ctx}/delPlAppInfo.json",
-                data: {
-                    id: id,
-                },
-                async: false,
-                success: function (msg) {
-                    bootbox.alert("操作成功！");
-                    gridReload();
-                }
-            });
-        }
-    }
-    //查看申请详情
-    function queryPlAppInfo(id) {
-        window.location = "${ctx }/showPlAppInfo.html?id=" + id;
-    }
-
-
 </script>
 </body>
 </html>

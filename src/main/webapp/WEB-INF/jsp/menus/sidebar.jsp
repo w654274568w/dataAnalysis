@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ include file="/common/config.jsp" %>
+<script src="${ctx}/assets/js/jquery-2.0.3.min.js"></script>
 <a class="menu-toggler" id="menu-toggler" href="#">
     <span class="menu-text"></span>
 </a>

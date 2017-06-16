@@ -1,20 +1,17 @@
 package cn.dataAnalysis.controller;
 
 import cn.dataAnalysis.common.page.JqGridPage;
+import cn.dataAnalysis.common.page.PageUtils;
 import cn.dataAnalysis.enums.RegionShanghaiEnum;
-import cn.dataAnalysis.model.DataCountByRegion;
-import cn.dataAnalysis.model.SecondhandhouseNew;
-import cn.dataAnalysis.model.SecondhandhouseOriginal;
-import cn.dataAnalysis.model.ShanghaiMetroStationDetails;
-import cn.dataAnalysis.service.DataCountByRegionService;
-import cn.dataAnalysis.service.SecondhandhouseNewService;
-import cn.dataAnalysis.service.SecondhandhouseOriginalService;
-import cn.dataAnalysis.service.ShanghaiMetroStationDetailsService;
+import cn.dataAnalysis.model.*;
+import cn.dataAnalysis.service.*;
 import cn.dataAnalysis.utils.DateUtils;
 import cn.dataAnalysis.utils.MathUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,6 +44,9 @@ public class AnalysisController {
 
     @Autowired
     private ShanghaiMetroStationDetailsService shanghaiMetroStationDetailsService;
+
+    @Autowired
+    private DataCountByDateService dataCountByDateService;
 
 
     /**
@@ -226,7 +226,7 @@ public class AnalysisController {
     }
 
     /**
-     * 进入日期处理数据页面
+     * 进入日期处理数据初始
      * @return
      */
     @RequestMapping("/dataCountByDate.html")
@@ -234,10 +234,16 @@ public class AnalysisController {
         return "/analysis/dataCountByDate";
     }
 
+    /**
+     * 进入分期处理数据表单数据
+     * @return
+     */
     @RequestMapping("/dataCountByDate.json")
     @ResponseBody
-    public JqGridPage dataCountByDateJson(HttpServletRequest request){
-        return null;
+    public JqGridPage dataCountByDateJson(HttpServletRequest request, DataCountByDate dataCountByDate){
+        Pageable pageable = PageUtils.getPageable(request);
+        Page<DataCountByDate> pages = dataCountByDateService.findForPage(dataCountByDate,pageable);
+        return PageUtils.toJqGridPage(pages);
     }
 
 
