@@ -41,12 +41,6 @@ public class SecondhandhouseOriginalController {
 	@Autowired
 	private DataCountByDateService dataCountByDateService;
 
-    @RequestMapping("/index.html")
-    public ModelAndView getIndex(ModelAndView view){
-        view.setViewName("index");
-        return view;
-    }
-
 	/**
 	 * 获取数据库中已处理的数据量
 	 * @return

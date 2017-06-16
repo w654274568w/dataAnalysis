@@ -1,5 +1,6 @@
 package cn.dataAnalysis.controller;
 
+import cn.dataAnalysis.common.page.JqGridPage;
 import cn.dataAnalysis.enums.RegionShanghaiEnum;
 import cn.dataAnalysis.model.DataCountByRegion;
 import cn.dataAnalysis.model.SecondhandhouseNew;
@@ -17,8 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,6 +31,7 @@ import java.util.*;
  * Created by admin on 2017/4/6.
  */
 @Controller
+@RequestMapping(value = "/analysis")
 public class AnalysisController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -219,6 +223,21 @@ public class AnalysisController {
         }
         view.setViewName("index");
         return view;
+    }
+
+    /**
+     * 进入日期处理数据页面
+     * @return
+     */
+    @RequestMapping("/dataCountByDate.html")
+    public String dataCountByDateHtml(HttpServletRequest request){
+        return "/analysis/dataCountByDate";
+    }
+
+    @RequestMapping("/dataCountByDate.json")
+    @ResponseBody
+    public JqGridPage dataCountByDateJson(HttpServletRequest request){
+        return null;
     }
 
 

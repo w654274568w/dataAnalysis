@@ -20,8 +20,8 @@
         </div>
     </div><!-- #sidebar-shortcuts -->
     <ul class="nav nav-list">
-        <li class="active">
-            <a href="index.html">
+        <li>
+            <a href="${ctx}/index.html">
                 <i class="icon-dashboard"></i>
                 <span class="menu-text"> 首页 </span>
             </a>
@@ -29,7 +29,52 @@
         <li>
             <a href="#" class="dropdown-toggle">
                 <i class="icon-desktop"></i>
-                <span class="menu-text"> 数据分析案例 </span>
+                <span class="menu-text"> 手动数据分析 </span>
+                <b class="arrow icon-angle-down"></b>
+            </a>
+            <ul class="submenu">
+                <li>
+                    <a href="${ctx}/analysis/dataCountByDate.html">
+                        <i class="icon-double-angle-right"></i>
+                        原始数据解析
+                    </a>
+                </li>
+                <li>
+                    <a href="buttons.html">
+                        <i class="icon-double-angle-right"></i>
+                        按区域解析
+                    </a>
+                </li>
+                <li>
+                    <a href="treeview.html">
+                        <i class="icon-double-angle-right"></i>
+                        树菜单
+                    </a>
+                </li>
+                <li>
+                    <a href="jquery-ui.html">
+                        <i class="icon-double-angle-right"></i>
+                        jQuery UI
+                    </a>
+                </li>
+                <li>
+                    <a href="nestable-list.html">
+                        <i class="icon-double-angle-right"></i>
+                        可拖拽列表
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-double-angle-right"></i>
+                        三级菜单
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="#" class="dropdown-toggle">
+                <i class="icon-desktop"></i>
+                <span class="menu-text"> 手动数据分析 </span>
                 <b class="arrow icon-angle-down"></b>
             </a>
             <ul class="submenu">
