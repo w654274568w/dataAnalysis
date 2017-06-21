@@ -243,6 +243,7 @@ public class AnalysisController {
     public JqGridPage dataCountByDateJson(HttpServletRequest request, DataCountByDate dataCountByDate){
         Pageable pageable = PageUtils.getPageable(request);
         Page<DataCountByDate> pages = dataCountByDateService.findForPage(dataCountByDate,pageable);
+
         return PageUtils.toJqGridPage(pages);
     }
 
