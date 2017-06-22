@@ -30,7 +30,6 @@ public class JdbcQueryUtils {
         System.out.print("链接建立成功！");
         return con;
     }
-
     /*public static void main(String rags[]) throws Exception {
         Connection con = JdbcQueryUtils.getConnection();
 

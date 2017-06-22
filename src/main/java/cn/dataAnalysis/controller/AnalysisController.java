@@ -240,12 +240,25 @@ public class AnalysisController {
      */
     @RequestMapping("/dataCountByDate.json")
     @ResponseBody
-    public JqGridPage dataCountByDateJson(HttpServletRequest request, DataCountByDate dataCountByDate){
+    public JqGridPage dataCountByDateJson(HttpServletRequest request, DataCountByDate dataCountByDate) throws ParseException {
         Pageable pageable = PageUtils.getPageable(request);
         Page<DataCountByDate> pages = dataCountByDateService.findForPage(dataCountByDate,pageable);
+        /*DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date beginDate = df.parse("2017-06-01");
+        Date endDate = df.parse("2017-07-01");
+        long beginTime = System.currentTimeMillis();
+        List<SecondhandhouseNew> secondhandhouseNewList = secondhandhouseNewService.findByJdbc(beginDate,endDate);
+        long endTime = System.currentTimeMillis();
+        System.out.print("本JDBC原生查询消耗时间为"+ (endTime-beginTime)+"；查询数据量为："+secondhandhouseNewList.size());
 
+        long beginTime1 = System.currentTimeMillis();
+        List<SecondhandhouseNew> secondhandhouseNewList1 = secondhandhouseNewService.getByDate(beginDate,endDate);
+        long endTime2 = System.currentTimeMillis();
+        System.out.print("Hibernate查询的消耗时间为"+(endTime2-beginTime1)+"；查询数据量为："+secondhandhouseNewList1.size());*/
         return PageUtils.toJqGridPage(pages);
     }
+
+
 
 
 }

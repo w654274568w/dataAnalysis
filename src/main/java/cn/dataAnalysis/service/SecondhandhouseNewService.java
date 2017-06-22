@@ -29,4 +29,12 @@ public interface SecondhandhouseNewService {
      */
 	public List<SecondhandhouseNew> findByRegionNameAndDate(Date beginDate, Date endDate, String regionName);
 
+	/**
+	 * JDBC方式原生查询对象信息
+	 * @param begainDate
+	 * @param endDate
+	 * @return
+	 */
+	public List<SecondhandhouseNew> findByJdbc(Date begainDate, Date endDate);
+
 }
