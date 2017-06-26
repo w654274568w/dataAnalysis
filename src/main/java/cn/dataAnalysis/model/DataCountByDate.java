@@ -6,8 +6,6 @@ import java.util.Date;
 /**
  * Created by feng on 2017/4/6.
  */
-@Entity
-@Table(name = "data_count_by_date")
 public class DataCountByDate extends BaseEntity{
 
     /**
@@ -29,9 +27,6 @@ public class DataCountByDate extends BaseEntity{
         return serialVersionUID;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
     public Integer getId() {
         return id;
     }
@@ -40,8 +35,6 @@ public class DataCountByDate extends BaseEntity{
         this.id = id;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "capture_time")
     public Date getCaptureTime() {
         return captureTime;
     }
@@ -50,7 +43,6 @@ public class DataCountByDate extends BaseEntity{
         this.captureTime = captureTime;
     }
 
-    @Column(name = "number",length = 11)
     public Long getNumber() {
         return number;
     }
@@ -59,7 +51,6 @@ public class DataCountByDate extends BaseEntity{
         this.number = number;
     }
 
-    @Column(name = "average_total_price",length = 10, precision = 2)
     public Double getAverageTotalPrice() {
         return averageTotalPrice;
     }
@@ -68,7 +59,6 @@ public class DataCountByDate extends BaseEntity{
         this.averageTotalPrice = averageTotalPrice;
     }
 
-    @Column(name = "average_per_price",length = 10, precision = 2)
     public Double getAveragePerPrice() {
         return averagePerPrice;
     }

@@ -21,7 +21,6 @@
         <result property="captureTime" column="capture_time" />
         <result property="originalId" column="original_id" />
     </resultMap>
-
     <insert id="insert" parameterType="cn.dataAnalysis.model.SecondhandhouseNew" useGeneratedKeys="true" keyProperty="id">
         insert into secondhandhouse_new
         <trim prefix="(" suffix=")" suffixOverrides=",">

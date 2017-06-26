@@ -1,10 +1,7 @@
 package cn.dataAnalysis.model;
 
-import javax.persistence.*;
 import java.util.Date;
 
-@Entity
-@Table(name = "secondhandhouse_new")
 public class SecondhandhouseNew extends BaseEntity {
 
     /**
@@ -100,9 +97,6 @@ public class SecondhandhouseNew extends BaseEntity {
     private Integer stationDistance;
 
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
     public Integer getId() {
         return id;
     }
@@ -111,7 +105,6 @@ public class SecondhandhouseNew extends BaseEntity {
         this.id = id;
     }
 
-    @Column(name = "title", length = 225)
     public String getTitle() {
         return title;
     }
@@ -120,7 +113,6 @@ public class SecondhandhouseNew extends BaseEntity {
         this.title = title;
     }
 
-    @Column(name = "community_name", length = 225)
     public String getCommunityName() {
         return communityName;
     }
@@ -129,7 +121,6 @@ public class SecondhandhouseNew extends BaseEntity {
         this.communityName = communityName;
     }
 
-    @Column(name = "room_type", length = 225)
     public String getRoomType() {
         return roomType;
     }
@@ -138,7 +129,6 @@ public class SecondhandhouseNew extends BaseEntity {
         this.roomType = roomType;
     }
 
-    @Column(name = "area", length = 10, precision = 2)
     public Double getArea() {
         return area;
     }
@@ -147,7 +137,6 @@ public class SecondhandhouseNew extends BaseEntity {
         this.area = area;
     }
 
-    @Column(name = "region_name", length = 225)
     public String getRegionName() {
         return regionName;
     }
@@ -156,7 +145,6 @@ public class SecondhandhouseNew extends BaseEntity {
         this.regionName = regionName;
     }
 
-    @Column(name = "region_name_secondary", length = 225)
     public String getRegionNameSecondary() {
         return regionNameSecondary;
     }
@@ -165,8 +153,6 @@ public class SecondhandhouseNew extends BaseEntity {
         this.regionNameSecondary = regionNameSecondary;
     }
 
-
-    @Column(name = "orientation", length = 225)
     public String getOrientation() {
         return orientation;
     }
@@ -175,7 +161,6 @@ public class SecondhandhouseNew extends BaseEntity {
         this.orientation = orientation;
     }
 
-    @Column(name = "high_low_area", length = 225)
     public String getHighLowArea() {
         return highLowArea;
     }
@@ -184,7 +169,6 @@ public class SecondhandhouseNew extends BaseEntity {
         this.highLowArea = highLowArea;
     }
 
-    @Column(name = "construction_year", length = 225)
     public Integer getConstructionYear() {
         return constructionYear;
     }
@@ -193,7 +177,6 @@ public class SecondhandhouseNew extends BaseEntity {
         this.constructionYear = constructionYear;
     }
 
-    @Column(name = "total_price", length = 225)
     public Double getTotalPrice() {
         return totalPrice;
     }
@@ -202,7 +185,6 @@ public class SecondhandhouseNew extends BaseEntity {
         this.totalPrice = totalPrice;
     }
 
-    @Column(name = "average_price", length = 225)
     public Double getAveragePrice() {
         return averagePrice;
     }
@@ -211,7 +193,6 @@ public class SecondhandhouseNew extends BaseEntity {
         this.averagePrice = averagePrice;
     }
 
-    @Column(name = "attention_number", length = 11)
     public Integer getAttentionNumber() {
         return attentionNumber;
     }
@@ -220,8 +201,6 @@ public class SecondhandhouseNew extends BaseEntity {
         this.attentionNumber = attentionNumber;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "capture_time")
     public Date getCaptureTime() {
         return captureTime;
     }
@@ -230,7 +209,6 @@ public class SecondhandhouseNew extends BaseEntity {
         this.captureTime = captureTime;
     }
 
-    @Column(name = "original_id", length = 11)
     public Integer getOriginalId() {
         return originalId;
     }
@@ -239,7 +217,6 @@ public class SecondhandhouseNew extends BaseEntity {
         this.originalId = originalId;
     }
 
-    @Column(name = "data_id", length = 20)
     public Long getDataId() {
         return dataId;
     }
@@ -248,7 +225,6 @@ public class SecondhandhouseNew extends BaseEntity {
         this.dataId = dataId;
     }
 
-    @Column(name = "station_name", length = 50)
     public String getStationName() {
         return stationName;
     }
@@ -257,7 +233,6 @@ public class SecondhandhouseNew extends BaseEntity {
         this.stationName = stationName;
     }
 
-    @Column(name = "station_distance", length = 10)
     public Integer getStationDistance() {
         return stationDistance;
     }

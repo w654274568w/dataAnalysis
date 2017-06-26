@@ -6,8 +6,6 @@ import java.util.Date;
 /**
  * Created by feng on 2017/4/11.
  */
-@Entity
-@Table(name = "shanghai_metro_station_details")
 public class ShanghaiMetroStationDetails extends BaseEntity{
 
 
@@ -28,9 +26,6 @@ public class ShanghaiMetroStationDetails extends BaseEntity{
     }
 
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
     public Integer getId() {
         return id;
     }
@@ -39,7 +34,6 @@ public class ShanghaiMetroStationDetails extends BaseEntity{
         this.id = id;
     }
 
-    @Column(name = "station_name",length = 225)
     public String getStationName() {
         return stationName;
     }
@@ -48,7 +42,6 @@ public class ShanghaiMetroStationDetails extends BaseEntity{
         this.stationName = stationName;
     }
 
-    @Column(name = "station_code",length = 10)
     public String getStationCode() {
         return stationCode;
     }
@@ -57,7 +50,6 @@ public class ShanghaiMetroStationDetails extends BaseEntity{
         this.stationCode = stationCode;
     }
 
-    @Column(name = "transfer_subway",length = 20)
     public String getTransferSubway() {
         return transferSubway;
     }
@@ -66,7 +58,6 @@ public class ShanghaiMetroStationDetails extends BaseEntity{
         this.transferSubway = transferSubway;
     }
 
-    @Column(name = "station_coordinate",length = 100)
     public String getStationCoordinate() {
         return stationCoordinate;
     }

@@ -6,8 +6,6 @@ import java.util.Date;
 /**
  * Created by feng on 2017/4/6.
  */
-@Entity
-@Table(name = "data_count_by_region")
 public class DataCountByRegion extends BaseEntity{
 
 
@@ -33,9 +31,6 @@ public class DataCountByRegion extends BaseEntity{
         return serialVersionUID;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
     public Integer getId() {
         return id;
     }
@@ -44,7 +39,6 @@ public class DataCountByRegion extends BaseEntity{
         this.id = id;
     }
 
-    @Column(name = "region_code",length = 2)
     public String getRegionCode() {
         return regionCode;
     }
@@ -53,8 +47,6 @@ public class DataCountByRegion extends BaseEntity{
         this.regionCode = regionCode;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "capture_time")
     public Date getCaptureTime() {
         return captureTime;
     }
@@ -63,7 +55,6 @@ public class DataCountByRegion extends BaseEntity{
         this.captureTime = captureTime;
     }
 
-    @Column(name = "number",length = 11)
     public Long getNumber() {
         return number;
     }
@@ -72,7 +63,6 @@ public class DataCountByRegion extends BaseEntity{
         this.number = number;
     }
 
-    @Column(name = "average_total_price",length = 10, precision = 2)
     public Double getAverageTotalPrice() {
         return averageTotalPrice;
     }
@@ -81,7 +71,6 @@ public class DataCountByRegion extends BaseEntity{
         this.averageTotalPrice = averageTotalPrice;
     }
 
-    @Column(name = "average_per_price",length = 10, precision = 2)
     public Double getAveragePerPrice() {
         return averagePerPrice;
     }
@@ -90,7 +79,6 @@ public class DataCountByRegion extends BaseEntity{
         this.averagePerPrice = averagePerPrice;
     }
 
-    @Column(name = "region_name",length = 11)
     public String getRegionName() {
         return regionName;
     }
@@ -99,7 +87,6 @@ public class DataCountByRegion extends BaseEntity{
         this.regionName = regionName;
     }
 
-    @Column(name = "attention_number",length = 10)
     public Long getAttentionNumber() {
         return attentionNumber;
     }

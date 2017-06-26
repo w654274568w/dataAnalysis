@@ -6,8 +6,7 @@ import java.util.Date;
 /**
  * Created by feng on 2017/4/6.
  */
-@Entity
-@Table(name = "data_count_by_metor_station")
+
 public class DataCountByMetroStation extends BaseEntity{
 
 
@@ -30,9 +29,6 @@ public class DataCountByMetroStation extends BaseEntity{
         return serialVersionUID;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
     public Integer getId() {
         return id;
     }
@@ -41,7 +37,6 @@ public class DataCountByMetroStation extends BaseEntity{
         this.id = id;
     }
 
-    @Column(name = "station_name",length = 5)
     public String getStationName() {
         return stationName;
     }
@@ -50,8 +45,6 @@ public class DataCountByMetroStation extends BaseEntity{
         this.stationName = stationName;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "capture_time")
     public Date getCaptureTime() {
         return captureTime;
     }
@@ -60,7 +53,6 @@ public class DataCountByMetroStation extends BaseEntity{
         this.captureTime = captureTime;
     }
 
-    @Column(name = "number",length = 11)
     public Long getNumber() {
         return number;
     }
@@ -69,7 +61,6 @@ public class DataCountByMetroStation extends BaseEntity{
         this.number = number;
     }
 
-    @Column(name = "average_total_price",length = 10, precision = 2)
     public Double getAverageTotalPrice() {
         return averageTotalPrice;
     }
@@ -78,7 +69,6 @@ public class DataCountByMetroStation extends BaseEntity{
         this.averageTotalPrice = averageTotalPrice;
     }
 
-    @Column(name = "average_per_price",length = 10, precision = 2)
     public Double getAveragePerPrice() {
         return averagePerPrice;
     }
