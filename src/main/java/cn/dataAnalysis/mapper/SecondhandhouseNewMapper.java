@@ -1,9 +1,7 @@
 package cn.dataAnalysis.mapper;
 
-
-import org.apache.ibatis.annotations.Mapper;
-
 import cn.dataAnalysis.model.SecondhandhouseNew;
+import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface SecondhandhouseNewMapper {

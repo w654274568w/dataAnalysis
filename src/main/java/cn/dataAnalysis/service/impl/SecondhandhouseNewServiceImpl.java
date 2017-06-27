@@ -29,10 +29,9 @@ public class SecondhandhouseNewServiceImpl implements SecondhandhouseNewService{
 	}
 
 	@Override
-	public int countAllData() {
-		return secondhandhouseNewDao.countAllData();
+	public int countAllData(Map<String,Object> params) {
+		return secondhandhouseNewDao.getTotalCount();
 	}
-
 	/**
 	 * 通过时间及区域名查找
 	 *

@@ -1,5 +1,6 @@
 package cn.dataAnalysis.service.impl;
 
+import cn.dataAnalysis.dao.DataCountByDateDao;
 import cn.dataAnalysis.model.DataCountByDate;
 import cn.dataAnalysis.service.DataCountByDateService;
 import org.apache.commons.lang3.StringUtils;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by admin on 2017/4/6.
@@ -17,6 +19,8 @@ import java.util.List;
 @Service
 public class DataCountByDateServiceImpl implements DataCountByDateService{
 
+    @Autowired
+    private DataCountByDateDao dataCountByDateDao;
 
     /**
      * 保存
@@ -29,29 +33,20 @@ public class DataCountByDateServiceImpl implements DataCountByDateService{
     }
 
     /**
-     * 后台分页查询数据
+     * 后台分页查询
      *
-     * @param example
-     * @param pageable
+     * @param map
      * @return
      */
     @Override
-    public Page<DataCountByDate> findForPage(DataCountByDate example, Pageable pageable) {
-        /*return dataCountByDateRepository.findAll(new Specification<DataCountByDate>() {
-            @Override
-            public Predicate toPredicate(Root<DataCountByDate> root, CriteriaQuery<?> criteriaQuery,
-                                         CriteriaBuilder criteriaBuilder) {
-                List<Predicate> params = new ArrayList<Predicate>();
-                *//*if (null != example.getLoanDealerId()) {
-                    Path<String> loanDealerIdPath = root.get("loanDealerId");
-                    params.add(criteriaBuilder.equal(loanDealerIdPath, example.getLoanDealerId()));
-                }*//*
-                criteriaQuery.orderBy(criteriaBuilder.desc(root.get("id")));
-                Predicate[] predicates = new Predicate[params.size()];
-                criteriaQuery.where(params.toArray(predicates));
-                return null;
-            }
-        }, pageable);*/
-        return null;
+    public List<DataCountByDate> findForPage(Map<String, Object> map) {
+        return dataCountByDateDao.getForPage(map);
     }
+
+    @Override
+    public int findForPageCountAll(Map<String, Object> map) {
+        return dataCountByDateDao.getForPageCountAll(map);
+    }
+
+
 }

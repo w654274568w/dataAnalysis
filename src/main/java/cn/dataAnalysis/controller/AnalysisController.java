@@ -7,11 +7,11 @@ import cn.dataAnalysis.model.*;
 import cn.dataAnalysis.service.*;
 import cn.dataAnalysis.utils.DateUtils;
 import cn.dataAnalysis.utils.MathUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -227,23 +227,32 @@ public class AnalysisController {
 
     /**
      * 进入日期处理数据初始
+     *
      * @return
      */
     @RequestMapping("/dataCountByDate.html")
-    public String dataCountByDateHtml(HttpServletRequest request){
+    public String dataCountByDateHtml(HttpServletRequest request) {
         return "/analysis/dataCountByDate";
     }
 
     /**
      * 进入分期处理数据表单数据
+     *
      * @return
      */
     @RequestMapping("/dataCountByDate.json")
     @ResponseBody
-    public JqGridPage dataCountByDateJson(HttpServletRequest request, DataCountByDate dataCountByDate){
-        Pageable pageable = PageUtils.getPageable(request);
-        Page<DataCountByDate> pages = dataCountByDateService.findForPage(dataCountByDate,pageable);
-        return PageUtils.toJqGridPage(pages);
+    public JqGridPage dataCountByDateJson(HttpServletRequest request) {
+        //分页码
+        int page = Integer.parseInt(request.getParameter("page")) - 1;
+        int rows = Integer.parseInt(request.getParameter("rows"));
+        //分页参数
+        Map<String, Object> map = new HashMap<>();
+        map.put("begin", page* rows);
+        map.put("rows",rows);
+        List<DataCountByDate> list = dataCountByDateService.findForPage(map);
+        int countAll = dataCountByDateService.findForPageCountAll(map);
+        return PageUtils.setListToJqGridPage(list,page+1,countAll,rows);
     }
 
 

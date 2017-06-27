@@ -4,10 +4,10 @@
 <mapper namespace="cn.dataAnalysis.mapper.DataCountByDateMapper">
     <resultMap id="BaseResultMap" type="cn.dataAnalysis.model.DataCountByDate">
         <id property="id" column="id"/>
-        <id property="capture_time" column="captureTime"/>
+        <id property="captureTime" column="capture_time"/>
         <id property="number" column="number"/>
-        <id property="averageTotalPrice" column="averageTotalPrice"/>
-        <id property="averagePerPrice" column="averagePerPrice"/>
+        <id property="averageTotalPrice" column="average_total_price"/>
+        <id property="averagePerPrice" column="average_per_price"/>
     </resultMap>
     <!--插入新数据-->
     <insert id="insert" parameterType="cn.dataAnalysis.model.DataCountByDate" useGeneratedKeys="true" keyProperty="id">
@@ -49,7 +49,15 @@
     </insert>
 
     <!--查找分页-->
-    <select id="findForPage" parameterType="map" resultMap="BaseResultMap">
-        SELECT * FROM data_count_by_date;
+    <select id="getForPage" parameterType="map" resultMap="BaseResultMap">
+        SELECT * FROM data_count_by_date
+        ORDER BY id DESC
+        <if test="begin != null and rows != null" >
+            limit #{begin},#{rows};
+        </if>
     </select>
+    <select id="getForPageCountAll" parameterType="map" resultType="int">
+        SELECT count(*) FROM data_count_by_date;
+    </select>
+
 </mapper>

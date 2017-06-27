@@ -3,11 +3,14 @@ package cn.dataAnalysis.dao;
 import cn.dataAnalysis.model.DataCountByDate;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by feng on 2017/6/26.
  */
 public interface DataCountByDateDao{
 
-    public List<DataCountByDate> findForPage();
+    List<DataCountByDate> getForPage(Map<String,Object> map);
+
+    int getForPageCountAll(Map<String,Object> map);
 }

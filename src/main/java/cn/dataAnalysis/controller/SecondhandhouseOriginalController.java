@@ -66,7 +66,7 @@ public class SecondhandhouseOriginalController {
 		Date beginDate = fmt.parse("2017-01-01");
 		Date endDate = new Date();
 //		List<SecondhandhouseNew> snListHistory = secondhandhouseNewService.getByDate(beginDate, endDate);
-		int a = secondhandhouseNewService.countAllData();
+//		int a = secondhandhouseNewService.countAllData();
 //        Map<String, String> historyMap = new HashMap<String, String>();
 //        historyMap =calculateDataNewByDate(snListHistory);
 //        String historyAveragePrice = historyMap.get("averagePrice");

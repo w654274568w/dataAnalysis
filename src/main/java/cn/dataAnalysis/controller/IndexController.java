@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by feng on 2017/6/16.
@@ -28,8 +30,9 @@ public class IndexController {
      */
     @RequestMapping("/index.html")
     public String index(HttpServletRequest request){
+        Map<String,Object> params = new HashMap<String,Object>();
         //已采集（有效）数据量表单！！
-        int totalDataNum = secondhandhouseNewService.countAllData();
+        int totalDataNum = secondhandhouseNewService.countAllData(params);
         request.setAttribute("totalDataNum",totalDataNum);
         return "index";
     }

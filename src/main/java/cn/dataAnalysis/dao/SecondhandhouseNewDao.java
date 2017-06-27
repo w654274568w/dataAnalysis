@@ -5,9 +5,8 @@ import cn.dataAnalysis.model.SecondhandhouseNew;
 /**
  * Created by feng on 2017/6/26.
  */
-public interface SecondhandhouseNewDao {
+public interface SecondhandhouseNewDao{
 
-    void insert(SecondhandhouseNew sn);
+    int getTotalCount();
 
-    int countAllData();
 }

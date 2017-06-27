@@ -156,10 +156,5 @@
             <artifactId>commons-utils</artifactId>
             <version>1.2-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>com.github.miemiedev</groupId>
-            <artifactId>mybatis-paginator</artifactId>
-            <version>1.2.7</version>
-        </dependency>
     </dependencies>
 </project>

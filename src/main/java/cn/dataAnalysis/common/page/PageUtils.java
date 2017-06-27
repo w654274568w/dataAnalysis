@@ -1,5 +1,6 @@
 package cn.dataAnalysis.common.page;
 
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.common.utils.bean.PageBean;
 import org.common.utils.bean.PageParameters;
@@ -49,6 +50,20 @@ public class PageUtils {
         jqGridPage.setRows(pagess.getContent());
         return jqGridPage;
     }
+
+    public static JqGridPage toJqGridPage(PageInfo<? extends Serializable> pageInfo){
+        JqGridPage jqGridPage = new JqGridPage();
+        // 注意spring data pagess是第一页是从0开始的，所以此处+1了
+        /*jqGridPage.setPage(pagess.getNumber() + 1);
+        jqGridPage.setTotal(pagess.getTotalPages());
+        jqGridPage.setRecords(pagess.getTotalElements());
+        jqGridPage.setRows(pagess.getContent());*/
+        jqGridPage.setPage(pageInfo.getPageNum());
+        jqGridPage.setTotal((int)pageInfo.getTotal());
+        jqGridPage.setRecords(pageInfo.getTotal());
+        jqGridPage.setRows(pageInfo.getList());
+        return jqGridPage;
+    }
     
     public static JqGridPage toJqGridPage(PageBean<? extends Serializable> pageBean){
     	JqGridPage jqGridPage = new JqGridPage();
@@ -59,17 +74,17 @@ public class PageUtils {
         return jqGridPage;
     }
     
-    public static JqGridPage setListToJqGridPage(List<? extends Serializable> pageBean, int page, int total){
+    public static JqGridPage setListToJqGridPage(List<? extends Serializable> pageBean, int page, int total,int rows){
         JqGridPage jqGridPage = new JqGridPage();
         
-        jqGridPage.setPage(page);
+        /*jqGridPage.setPage(page);
     	jqGridPage.setRecords(total);
     	jqGridPage.setTotal(total % page == 0 ? total / page : total / page+ 1);
-    	jqGridPage.setRows(pageBean);
+    	jqGridPage.setRows(pageBean);*/
     	
         jqGridPage.setPage(page);
-        jqGridPage.setTotal(total);
-        jqGridPage.setRecords(pageBean.size());
+        jqGridPage.setTotal(total % rows == 0 ? 1 : total / rows+ 1);
+        jqGridPage.setRecords(total);
         jqGridPage.setRows(pageBean);
         return jqGridPage;
     }

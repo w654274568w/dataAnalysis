@@ -2,7 +2,6 @@ package cn.dataAnalysis.dao.impl;
 
 import cn.dataAnalysis.dao.SecondhandhouseNewDao;
 import cn.dataAnalysis.mapper.SecondhandhouseNewMapper;
-import cn.dataAnalysis.model.SecondhandhouseNew;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -17,12 +16,7 @@ public class SecondhandhouseNewDaoImpl implements SecondhandhouseNewDao{
     private SecondhandhouseNewMapper secondhandhouseNewMapper;
 
     @Override
-    public void insert(SecondhandhouseNew sn) {
-
-    }
-
-    @Override
-    public int countAllData() {
+    public int getTotalCount() {
         return secondhandhouseNewMapper.countAllData();
     }
 }

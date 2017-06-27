@@ -4,6 +4,7 @@ import cn.dataAnalysis.model.DataCountByDate;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by feng on 2017/6/26.
@@ -11,6 +12,8 @@ import java.util.List;
 @Mapper
 public interface DataCountByDateMapper {
 
-    public List<DataCountByDate> findForPage();
+    List<DataCountByDate> getForPage(Map<String,Object> map);
+
+    int getForPageCountAll(Map<String,Object> map);
 
 }

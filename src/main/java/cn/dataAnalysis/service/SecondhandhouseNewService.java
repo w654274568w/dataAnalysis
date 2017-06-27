@@ -8,7 +8,7 @@ import cn.dataAnalysis.model.SecondhandhouseNew;
 
 public interface SecondhandhouseNewService {
 	
-	public void insert(SecondhandhouseNew sn);
+	void insert(SecondhandhouseNew sn);
 
 	/**
 	 * 根据时间查询数据量
@@ -16,9 +16,9 @@ public interface SecondhandhouseNewService {
 	 * @param endDate
 	 * @return
      */
-	public List<SecondhandhouseNew> getByDate(Date begainDate, Date endDate);
+	List<SecondhandhouseNew> getByDate(Date begainDate, Date endDate);
 	
-	public int countAllData();
+	int countAllData(Map<String,Object> params);
 
 	/**
 	 * 通过时间及区域名查找
@@ -27,6 +27,6 @@ public interface SecondhandhouseNewService {
 	 * @param regionName
      * @return
      */
-	public List<SecondhandhouseNew> findByRegionNameAndDate(Date beginDate, Date endDate, String regionName);
+	List<SecondhandhouseNew> findByRegionNameAndDate(Date beginDate, Date endDate, String regionName);
 
 }

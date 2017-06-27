@@ -4,7 +4,7 @@ package cn.dataAnalysis.common;
 /**
  * 系统全局常量类
  * 
- * @author Administrator
+ * @author feng
  * 
  */
 public class Constants
