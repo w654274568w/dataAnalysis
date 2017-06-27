@@ -7,5 +7,7 @@ import cn.dataAnalysis.model.SecondhandhouseNew;
  */
 public interface SecondhandhouseNewDao {
 
-    public void insert(SecondhandhouseNew sn);
+    void insert(SecondhandhouseNew sn);
+
+    int countAllData();
 }

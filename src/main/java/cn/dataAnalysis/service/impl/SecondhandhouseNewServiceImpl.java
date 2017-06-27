@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import cn.dataAnalysis.dao.SecondhandhouseNewDao;
 import cn.dataAnalysis.model.SecondhandhouseNew;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,9 @@ import cn.dataAnalysis.service.SecondhandhouseNewService;
 @Service
 @Transactional
 public class SecondhandhouseNewServiceImpl implements SecondhandhouseNewService{
+
+	@Autowired
+	private SecondhandhouseNewDao secondhandhouseNewDao;
 
 	@Override
 	public void insert(SecondhandhouseNew sn) {
@@ -26,7 +30,7 @@ public class SecondhandhouseNewServiceImpl implements SecondhandhouseNewService{
 
 	@Override
 	public int countAllData() {
-		return 0;
+		return secondhandhouseNewDao.countAllData();
 	}
 
 	/**

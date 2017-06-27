@@ -1,16 +1,13 @@
-package cn.dataAnalysis.mapper;
+package cn.dataAnalysis.dao;
 
 import cn.dataAnalysis.model.DataCountByDate;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 /**
  * Created by feng on 2017/6/26.
  */
-@Mapper
-public interface DataCountByDateMapper {
+public interface DataCountByDateDao{
 
     public List<DataCountByDate> findForPage();
-
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dataAnalysis.mapper.SecondhandhouseOriginalMapper">
+
+    <resultMap id="SecondhandhouseOriginalMap" type="SecondhandhouseOriginal">
+        <id property="id" column="id" />
+        <result property="title" column="title" />
+        <result property="communityName" column="community_name" />
+        <result property="roomType" column="room_type" />
+        <result property="area" column="area" />
+        <result property="regionName" column="region_name" />
+        <result property="comprehensiveInformation" column="comprehensive_information" />
+        <result property="trafficLocation" column="traffic_location" />
+        <result property="totalPrice" column="total_price" />
+        <result property="averagePrice" column="average_price" />
+        <result property="attentionNumber" column="attention_number" />
+        <result property="captureTime" column="capture_time" />
+    </resultMap>
+
+    <!--根据ID查找对象-->
+    <select id="getById" resultMap="SecondhandhouseOriginalMap" resultType="SecondhandhouseOriginal">
+        SELECT *
+        FROM secondhandhouse_original
+        WHERE id = #{id}
+    </select>
+
+
+    <select id ="getByDate" parameterType="map" resultType="map">
+        select * from secondhandhouse_original where 1=1
+        <if test="date != null">
+            and DATE_FORMAT(capture_time,'%Y-%m-%d') >= #{date}
+        </if>
+    </select>
+</mapper>

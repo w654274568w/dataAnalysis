@@ -124,4 +124,9 @@
             </if>
         </trim>
     </insert>
+
+    <!--计算数据总数-->
+    <select id="countAllData" parameterType="map" resultType="int">
+        SELECT count(*) FROM secondhandhouse_new;
+    </select>
 </mapper>

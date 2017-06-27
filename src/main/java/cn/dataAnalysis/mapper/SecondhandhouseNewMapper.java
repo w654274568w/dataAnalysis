@@ -8,8 +8,10 @@ import cn.dataAnalysis.model.SecondhandhouseNew;
 @Mapper
 public interface SecondhandhouseNewMapper {
 
-    public SecondhandhouseNew findById();
+    SecondhandhouseNew findById();
 
-    public int insert(SecondhandhouseNew sn);
+    int insert(SecondhandhouseNew sn);
+
+    int countAllData();
 
 }
