@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface SecondhandhouseNewMapper {
 
-    SecondhandhouseNew findById();
+    /*SecondhandhouseNew findById();*/
 
     int insert(SecondhandhouseNew sn);
 

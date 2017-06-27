@@ -9,4 +9,6 @@ public interface SecondhandhouseNewDao{
 
     int getTotalCount();
 
+    void insert(SecondhandhouseNew sn);
+
 }

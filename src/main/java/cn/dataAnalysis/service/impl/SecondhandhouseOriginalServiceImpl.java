@@ -21,8 +21,8 @@ public class SecondhandhouseOriginalServiceImpl implements SecondhandhouseOrigin
 	}
 
 	@Override
-	public List<SecondhandhouseOriginal> findByCaptureTime(Date beginDate, Date endDate) {
-		
+	public List<SecondhandhouseOriginal> findByCaptureTime(Map<String,Object> map) {
+
 		return null;
 	}
 	

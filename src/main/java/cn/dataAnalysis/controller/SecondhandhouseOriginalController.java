@@ -107,14 +107,17 @@ public class SecondhandhouseOriginalController {
 	 * 批量分批插入处理后的房产信息（时间插入）
 	 * @throws ParseException
 	 */
-	@RequestMapping("/insertSecondhandhouseNew")
+	@RequestMapping("/insertSecondhandhouseNew.do")
 	@Transactional
 	public ModelAndView insertSecondhandhouseNew(ModelAndView view, String beginDateStr, String endDateStr) throws ParseException{
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		Date beginDate = df.parse(beginDateStr);
 		Date endDate = df.parse(endDateStr);
 		Long beginTime = System.currentTimeMillis();
-		List<SecondhandhouseOriginal> soList = secondhandhouseOriginalService.findByCaptureTime(beginDate, endDate);
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("beginDate",beginDate);
+		map.put("endDate",endDate);
+		List<SecondhandhouseOriginal> soList = secondhandhouseOriginalService.findByCaptureTime(map);
 		SecondhandhouseNew sn = null;
 		//批量插入新的数据
 		List<SecondhandhouseNew> snList = new ArrayList<SecondhandhouseNew>();
@@ -135,7 +138,7 @@ public class SecondhandhouseOriginalController {
 		dataCountByDate.setNumber(Long.valueOf(snList.size()));
 		dataCountByDate.setAverageTotalPrice(averageTotalPrice / snList.size());
 		dataCountByDate.setAveragePerPrice(averagePerPrice / snList.size());
-		dataCountByDateService.save(dataCountByDate);
+//		dataCountByDateService.save(dataCountByDate);
 		Long endTime = System.currentTimeMillis();
 		System.out.println("————————————————————————————————————————这是分割线————————————————————————————————————————");
 		System.out.println("共处理"+soList.size()+"条数据，使用时间为"+(beginTime-endTime));

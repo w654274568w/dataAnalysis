@@ -13,5 +13,5 @@ public interface SecondhandhouseOriginalService {
 	
 	public SecondhandhouseOriginal getById(Integer id);
 	
-	public List<SecondhandhouseOriginal> findByCaptureTime(Date beginDate, Date endDate);
+	public List<SecondhandhouseOriginal> findByCaptureTime(Map<String,Object> map);
 }

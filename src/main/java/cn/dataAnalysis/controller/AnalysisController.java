@@ -58,7 +58,10 @@ public class AnalysisController {
         Date beginDate = df.parse(beginDateStr);
         Date endDate = df.parse(endDateStr);
         Long beginTime = System.currentTimeMillis();
-        List<SecondhandhouseOriginal> soList = secondhandhouseOriginalService.findByCaptureTime(beginDate, endDate);
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("beginDate",beginDate);
+        map.put("endDate",endDate);
+        List<SecondhandhouseOriginal> soList = secondhandhouseOriginalService.findByCaptureTime(map);
 
         Long endTime = System.currentTimeMillis();
         System.out.println("————————————————————————————————————————这是分割线————————————————————————————————————————");

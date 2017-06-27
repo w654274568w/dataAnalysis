@@ -20,7 +20,7 @@ public class SecondhandhouseNewServiceImpl implements SecondhandhouseNewService{
 
 	@Override
 	public void insert(SecondhandhouseNew sn) {
-
+		secondhandhouseNewDao.insert(sn);
 	}
 
 	@Override

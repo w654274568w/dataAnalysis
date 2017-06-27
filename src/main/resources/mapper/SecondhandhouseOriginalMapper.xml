@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.dataAnalysis.mapper.SecondhandhouseOriginalMapper">
 
-    <resultMap id="SecondhandhouseOriginalMap" type="SecondhandhouseOriginal">
+    <resultMap id="BaseResultMap" type="cn.dataAnalysis.model.SecondhandhouseOriginal">
         <id property="id" column="id" />
         <result property="title" column="title" />
         <result property="communityName" column="community_name" />
@@ -19,7 +19,7 @@
     </resultMap>
 
     <!--根据ID查找对象-->
-    <select id="getById" resultMap="SecondhandhouseOriginalMap" resultType="SecondhandhouseOriginal">
+    <select id="getById" resultMap="BaseResultMap" parameterType="map">
         SELECT *
         FROM secondhandhouse_original
         WHERE id = #{id}
@@ -31,5 +31,14 @@
         <if test="date != null">
             and DATE_FORMAT(capture_time,'%Y-%m-%d') >= #{date}
         </if>
+    </select>
+
+    <select id="findByCaptureTime" parameterType="map" resultMap="BaseResultMap">
+        SELECT * FROM secondhandhouse_original
+        <where>
+            <if test="beginDate != null and endDate != null">
+                AND capture_time BETWEEN #{beginDate} and #{endDate}
+            </if>
+        </where>
     </select>
 </mapper>

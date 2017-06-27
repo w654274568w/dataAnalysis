@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.dataAnalysis.mapper.SecondhandhouseNewMapper">
 
-    <resultMap id="SecondhandhouseNewMap" type="SecondhandhouseNew">
+    <resultMap id="BaseResultMap" type="cn.dataAnalysis.model.SecondhandhouseNew">
         <id property="id" column="id" />
         <result property="title" column="title" />
         <result property="communityName" column="community_name" />
