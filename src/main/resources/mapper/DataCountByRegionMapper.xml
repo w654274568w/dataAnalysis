@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dataAnalysis.mapper.DataCountByRegionMapper">
+    <resultMap id="BaseResultMap" type="cn.dataAnalysis.model.DataCountByRegion">
+        <id property="id" column="id"/>
+        <id property="regionCode" column="region_code"/>
+        <id property="regionName" column="region_name"/>
+        <id property="number" column="number"/>
+        <id property="averageTotalPrice" column="average_total_price"/>
+        <id property="averagePerPrice" column="average_per_price"/>
+        <id property="captureTime" column="capture_time"/>
+        <id property="attentionNumber" column="attention_number"/>
+    </resultMap>
+    <!--插入新数据-->
+    <insert id="insert" parameterType="cn.dataAnalysis.model.DataCountByDate" useGeneratedKeys="true" keyProperty="id">
+        INSERT  INTO  data_count_by_region
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="regionCode != null">
+                region_code,
+            </if>
+            <if test="regionName != null">
+                region_name
+            </if>
+            <if test="number != null">
+                number,
+            </if>
+            <if test="averageTotalPrice != null">
+                average_total_price,
+            </if>
+            <if test="averagePerPrice != null">
+                average_per_price,
+            </if>
+            <if test="captureTime != null">
+                capture_time,
+            </if>
+            <if test="attentionNumber != null">
+                attention_number
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="regionCode != null">
+                #{regionCode},
+            </if>
+            <if test="regionName != null">
+                #{regionName},
+            </if>
+            <if test="number != null">
+                #{number},
+            </if>
+            <if test="averageTotalPrice != null">
+                #{average_total_price},
+            </if>
+            <if test="averagePerPrice != null">
+                #{average_per_price},
+            </if>
+            <if test="captureTime != null">
+                #{capture_time},
+            </if>
+            <if test="attentionNumber != null">
+                #{attention_number}
+            </if>
+        </trim>
+    </insert>
+</mapper>

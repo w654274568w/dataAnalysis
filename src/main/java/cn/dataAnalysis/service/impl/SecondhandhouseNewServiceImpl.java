@@ -35,14 +35,11 @@ public class SecondhandhouseNewServiceImpl implements SecondhandhouseNewService{
 	/**
 	 * 通过时间及区域名查找
 	 *
-	 * @param beginDate
-	 * @param endDate
-	 * @param regionName
 	 * @return
 	 */
 	@Override
-	public List<SecondhandhouseNew> findByRegionNameAndDate(Date beginDate, Date endDate, String regionName) {
-		return null;
+	public List<SecondhandhouseNew> findByRegionNameAndDate(Map<String,Object> params) {
+		return secondhandhouseNewDao.findByRegionNameAndDate(params);
 	}
 
 }

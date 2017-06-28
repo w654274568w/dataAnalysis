@@ -22,11 +22,9 @@ public interface SecondhandhouseNewService {
 
 	/**
 	 * 通过时间及区域名查找
-	 * @param beginDate
-	 * @param endDate
-	 * @param regionName
+	 *
      * @return
      */
-	List<SecondhandhouseNew> findByRegionNameAndDate(Date beginDate, Date endDate, String regionName);
+	List<SecondhandhouseNew> findByRegionNameAndDate(Map<String,Object> params);
 
 }

@@ -6,6 +6,9 @@ import cn.dataAnalysis.model.SecondhandhouseNew;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by feng on 2017/6/26.
  */
@@ -24,5 +27,10 @@ public class SecondhandhouseNewDaoImpl implements SecondhandhouseNewDao{
     @Override
     public void insert(SecondhandhouseNew sn) {
         secondhandhouseNewMapper.insert(sn);
+    }
+
+    @Override
+    public List<SecondhandhouseNew> findByRegionNameAndDate(Map<String, Object> params) {
+        return secondhandhouseNewMapper.findByRegionNameAndDate(params);
     }
 }

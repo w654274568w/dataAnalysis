@@ -1,5 +1,6 @@
 package cn.dataAnalysis.service.impl;
 
+import cn.dataAnalysis.dao.DataCountByRegionDao;
 import cn.dataAnalysis.model.DataCountByRegion;
 import cn.dataAnalysis.service.DataCountByRegionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +12,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class DataCountByRegionServiceImpl implements DataCountByRegionService{
 
+    @Autowired
+    private DataCountByRegionDao dataCountByRegionDao;
+
     /**
      * 保存
      *
      * @param dataCountByRegion
      */
     @Override
-    public DataCountByRegion save(DataCountByRegion dataCountByRegion) {
-        return null;
+    public int save(DataCountByRegion dataCountByRegion) {
+        return dataCountByRegionDao.insert(dataCountByRegion);
     }
 }

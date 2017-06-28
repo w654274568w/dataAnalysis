@@ -58,9 +58,9 @@ public class AnalysisController {
         Date beginDate = df.parse(beginDateStr);
         Date endDate = df.parse(endDateStr);
         Long beginTime = System.currentTimeMillis();
-        Map<String,Object> map = new HashMap<String,Object>();
-        map.put("beginDate",beginDate);
-        map.put("endDate",endDate);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("beginDate", beginDate);
+        map.put("endDate", endDate);
         List<SecondhandhouseOriginal> soList = secondhandhouseOriginalService.findByCaptureTime(map);
 
         Long endTime = System.currentTimeMillis();
@@ -78,12 +78,15 @@ public class AnalysisController {
      * @return
      * @throws ParseException
      */
-    @RequestMapping("/analysisShanghaiDataByRegion")
+    @RequestMapping("/analysisShanghaiDataByRegion.do")
     @Transactional
     public ModelAndView analysisShanghaiDataByRegion(ModelAndView view, String beginDateStr, String endDateStr) throws ParseException {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date beginDate = df.parse(beginDateStr);
         Date endDate = df.parse(endDateStr);
+        Map<String, Object> params = new HashMap<>();
+        params.put("beginDate", beginDate);
+        params.put("endDate", endDate);
         Long beginTime = System.currentTimeMillis();
         Long countList = 0l;
         //遍历生成所有区域的空对象
@@ -93,22 +96,23 @@ public class AnalysisController {
             dataCountByRegion.setRegionCode(regionShanghaiEnum.getCode());
             dataCountByRegion.setRegionName(regionShanghaiEnum.getDesc());
             //查询单一区域数据信息
-            secondhandhouseNewList = secondhandhouseNewService.findByRegionNameAndDate(beginDate, endDate, regionShanghaiEnum.getDesc());
+            params.put("regionName", regionShanghaiEnum.getDesc());
+            secondhandhouseNewList = secondhandhouseNewService.findByRegionNameAndDate(params);
             Double totalPriceAmount = 0.0;
             Double averagePriceAmount = 0.0;
-            Long attentionNumAmount = 0l;
+            //Long attentionNumAmount = 0l;
             Long number = 0l;
-            if (secondhandhouseNewList.size() > 0) {
+            if (null != secondhandhouseNewList && secondhandhouseNewList.size() > 0) {
                 for (SecondhandhouseNew secondhandhouseNew : secondhandhouseNewList) {
                     totalPriceAmount = MathUtil.add(totalPriceAmount, secondhandhouseNew.getTotalPrice());
                     averagePriceAmount = MathUtil.add(averagePriceAmount, secondhandhouseNew.getAveragePrice());
-//                    attentionNumAmount = attentionNumAmount + secondhandhouseNew.getAttentionNumber();
+                    //attentionNumAmount = attentionNumAmount + secondhandhouseNew.getAttentionNumber();
                     countList += 1;
                     number += 1;
                 }
                 dataCountByRegion.setAverageTotalPrice(totalPriceAmount / secondhandhouseNewList.size());
                 dataCountByRegion.setAveragePerPrice(averagePriceAmount / secondhandhouseNewList.size());
-//                dataCountByRegion.setAttentionNumber(attentionNumAmount / secondhandhouseNewList.size());
+                //dataCountByRegion.setAttentionNumber(attentionNumAmount / secondhandhouseNewList.size());
                 dataCountByRegion.setNumber(number);
                 dataCountByRegion.setCaptureTime(DateUtils.addDay(beginDate, 1));
                 dataCountByRegionService.save(dataCountByRegion);
@@ -251,11 +255,11 @@ public class AnalysisController {
         int rows = Integer.parseInt(request.getParameter("rows"));
         //分页参数
         Map<String, Object> map = new HashMap<>();
-        map.put("begin", page* rows);
-        map.put("rows",rows);
+        map.put("begin", page * rows);
+        map.put("rows", rows);
         List<DataCountByDate> list = dataCountByDateService.findForPage(map);
         int countAll = dataCountByDateService.findForPageCountAll(map);
-        return PageUtils.setListToJqGridPage(list,page+1,countAll,rows);
+        return PageUtils.setListToJqGridPage(list, page + 1, countAll, rows);
     }
 
 

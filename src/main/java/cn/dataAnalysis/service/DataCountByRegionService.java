@@ -12,5 +12,5 @@ public interface DataCountByRegionService {
      * 保存
      * @param dataCountByRegion
      */
-    DataCountByRegion save(DataCountByRegion dataCountByRegion);
+    int save(DataCountByRegion dataCountByRegion);
 }

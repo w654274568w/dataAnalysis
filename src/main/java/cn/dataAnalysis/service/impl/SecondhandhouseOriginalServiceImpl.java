@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import cn.dataAnalysis.dao.SecondhandhouseOriginalDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,9 @@ import cn.dataAnalysis.service.SecondhandhouseOriginalService;
 @Transactional
 public class SecondhandhouseOriginalServiceImpl implements SecondhandhouseOriginalService{
 
+	@Autowired
+	private SecondhandhouseOriginalDao secondhandhouseOriginalDao;
+
 	
 	public SecondhandhouseOriginal getById(Integer id) {
 		
@@ -23,7 +27,7 @@ public class SecondhandhouseOriginalServiceImpl implements SecondhandhouseOrigin
 	@Override
 	public List<SecondhandhouseOriginal> findByCaptureTime(Map<String,Object> map) {
 
-		return null;
+		return secondhandhouseOriginalDao.findByCaptureTime(map);
 	}
 	
 //	处理先关的重复参数

@@ -13,7 +13,7 @@ import java.util.Map;
  * Created by feng on 2017/6/26.
  */
 @Repository
-public class DataCountByDateImple implements DataCountByDateDao{
+public class DataCountByDateDaoImple implements DataCountByDateDao{
 
     @Autowired
     private DataCountByDateMapper dataCountByDateMapper;

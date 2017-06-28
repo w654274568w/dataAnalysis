@@ -10,16 +10,18 @@
         <result property="roomType" column="room_type" />
         <result property="area" column="area" />
         <result property="regionName" column="region_name" />
-        <result property="comprehensiveInformation" column="comprehensive_information" />
+        <result property="regionNameSecondary" column="region_name_secondary" />
         <result property="orientation" column="orientation" />
         <result property="highLowArea" column="high_low_area" />
         <result property="constructionYear" column="construction_year" />
-        <result property="trafficLocation" column="traffic_location" />
         <result property="totalPrice" column="total_price" />
         <result property="averagePrice" column="average_price" />
         <result property="attentionNumber" column="attention_number" />
         <result property="captureTime" column="capture_time" />
         <result property="originalId" column="original_id" />
+        <result property="dataId" column="data_id" />
+        <result property="stationName" column="station_name" />
+        <result property="stationDistance" column="station_distance" />
     </resultMap>
     <insert id="insert" parameterType="cn.dataAnalysis.model.SecondhandhouseNew" useGeneratedKeys="true" keyProperty="id">
         insert into secondhandhouse_new
@@ -42,8 +44,8 @@
             <if test="regionName != null">
                 region_name,
             </if>
-            <if test="comprehensiveInformation != null">
-                comprehensive_information,
+            <if test="regionNameSecondary != null">
+                region_name_secondary,
             </if>
             <if test="orientation != null">
                 orientation,
@@ -53,9 +55,6 @@
             </if>
             <if test="constructionYear != null">
                 construction_year,
-            </if>
-            <if test="trafficLocation != null">
-                traffic_location,
             </if>
             <if test="totalPrice != null">
                 total_price,
@@ -70,7 +69,16 @@
                 capture_time,
             </if>
             <if test="originalId != null">
-                original_id
+                original_id,
+            </if>
+            <if test="dataId != null">
+                data_id,
+            </if>
+            <if test="stationName != null">
+                station_name,
+            </if>
+            <if test="stationDistance != null">
+                station_distance
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -92,8 +100,8 @@
             <if test="regionName != null">
                 #{regionName},
             </if>
-            <if test="comprehensiveInformation != null">
-                #{comprehensiveInformation},
+            <if test="regionNameSecondary != null">
+                #{regionNameSecondary},
             </if>
             <if test="orientation != null">
                 #{orientation},
@@ -103,9 +111,6 @@
             </if>
             <if test="constructionYear != null">
                 #{constructionYear},
-            </if>
-            <if test="trafficLocation != null">
-                #{trafficLocation},
             </if>
             <if test="totalPrice != null">
                 #{totalPrice},
@@ -120,13 +125,34 @@
                 #{captureTime},
             </if>
             <if test="originalId != null">
-                #{originalId}
+                #{originalId},
+            </if>
+            <if test="dataId != null">
+                #{dataId},
+            </if>
+            <if test="stationName != null">
+                #{stationName},
+            </if>
+            <if test="stationDistance != null">
+                #{stationDistance}
             </if>
         </trim>
     </insert>
-
     <!--计算数据总数-->
     <select id="countAllData" parameterType="map" resultType="int">
         SELECT count(*) FROM secondhandhouse_new;
+    </select>
+
+    <!--通过时间区间及区域查询-->
+    <select id="findByRegionNameAndDate" parameterType="map" resultMap="BaseResultMap">
+        SELECT id,total_price,average_price FROM secondhandhouse_new
+        <where>
+            <if test="beginDate != null and endDate != null">
+                AND capture_time BETWEEN #{beginDate} and #{endDate}
+            </if>
+            <if test="regionName != null">
+                AND region_name = #{regionName}
+            </if>
+        </where>
     </select>
 </mapper>
