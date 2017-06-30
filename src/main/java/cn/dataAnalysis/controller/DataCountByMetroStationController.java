@@ -89,6 +89,11 @@ public class DataCountByMetroStationController {
 		view.setViewName("index");
 		return view;
 	}
+
+	@RequestMapping("/getMetroStationCoordinate.do")
+	public void getMetroStationCoordinate(){
+		
+	}
 }
 
 

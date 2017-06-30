@@ -19,7 +19,12 @@ public class ShanghaiMetroStationDetails extends BaseEntity{
 
     private String transferSubway;
 
-    private String stationCoordinate;
+    /*经度*/
+    private String coordinateLng;
+
+    /*纬度*/
+    private String coordinateLat;
+
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -58,11 +63,19 @@ public class ShanghaiMetroStationDetails extends BaseEntity{
         this.transferSubway = transferSubway;
     }
 
-    public String getStationCoordinate() {
-        return stationCoordinate;
+    public String getCoordinateLng() {
+        return coordinateLng;
     }
 
-    public void setStationCoordinate(String stationCoordinate) {
-        this.stationCoordinate = stationCoordinate;
+    public void setCoordinateLng(String coordinateLng) {
+        this.coordinateLng = coordinateLng;
+    }
+
+    public String getCoordinateLat() {
+        return coordinateLat;
+    }
+
+    public void setCoordinateLat(String coordinateLat) {
+        this.coordinateLat = coordinateLat;
     }
 }

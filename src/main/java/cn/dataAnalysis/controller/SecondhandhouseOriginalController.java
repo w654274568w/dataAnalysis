@@ -52,53 +52,53 @@ public class SecondhandhouseOriginalController {
 		 */
 		//int totalCount = secondhandhouseNewService.countAllData();
 		//获取本周的周一及周日
-//		Calendar c = Calendar.getInstance();
-//        // 默认时，每周第一天为星期日，需要更改一下
-//        c.setFirstDayOfWeek(Calendar.MONDAY);
-//        c.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-//        Date beginDate = c.getTime();
-//        c.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
-//        Date endDate = c.getTime();
+		/*Calendar c = Calendar.getInstance();
+        // 默认时，每周第一天为星期日，需要更改一下
+        c.setFirstDayOfWeek(Calendar.MONDAY);
+        c.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        Date beginDate = c.getTime();
+        c.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+        Date endDate = c.getTime();*/
 		DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
         /*
 		 *获取历史总数据
 		 */
 		Date beginDate = fmt.parse("2017-01-01");
 		Date endDate = new Date();
-//		List<SecondhandhouseNew> snListHistory = secondhandhouseNewService.getByDate(beginDate, endDate);
-//		int a = secondhandhouseNewService.countAllData();
-//        Map<String, String> historyMap = new HashMap<String, String>();
-//        historyMap =calculateDataNewByDate(snListHistory);
-//        String historyAveragePrice = historyMap.get("averagePrice");
-//        String historyAverageTotalPrice = historyMap.get("averageTotalPrice");
+		/*List<SecondhandhouseNew> snListHistory = secondhandhouseNewService.getByDate(beginDate, endDate);
+		int a = secondhandhouseNewService.countAllData();
+        Map<String, String> historyMap = new HashMap<String, String>();
+        historyMap =calculateDataNewByDate(snListHistory);
+        String historyAveragePrice = historyMap.get("averagePrice");
+        String historyAverageTotalPrice = historyMap.get("averageTotalPrice");*/
         
         /*
 		 * 本周数据
 		 */
-//		List<SecondhandhouseNew> snListThisWeek = secondhandhouseNewService.getByDate();
-//		Map<String, String> thisWeekMap = new HashMap<String, String>();
-//		thisWeekMap = calculateDataNewByDate(snListThisWeek);
-//		String thisWeekAveragePrice = thisWeekMap.get("averagePrice");
-//		String thisWeekAverageTotalPrice = thisWeekMap.get("averageTotalPrice");
+		/*List<SecondhandhouseNew> snListThisWeek = secondhandhouseNewService.getByDate();
+		Map<String, String> thisWeekMap = new HashMap<String, String>();
+		thisWeekMap = calculateDataNewByDate(snListThisWeek);
+		String thisWeekAveragePrice = thisWeekMap.get("averagePrice");
+		String thisWeekAverageTotalPrice = thisWeekMap.get("averageTotalPrice");*/
 		
 		DecimalFormat df = new DecimalFormat("0.00");
 		//历史对比增长率
-//		double averagePriceRateMath = ((Double.valueOf(thisWeekAveragePrice) /
-//				Double.valueOf(historyAveragePrice)) - 1) * 100 ;
-//		String averagePriceRate = df.format(averagePriceRateMath);
-//		double totalPriceRateMath = ((Double.valueOf(thisWeekAverageTotalPrice) /
-//				Double.valueOf(historyAverageTotalPrice)) - 1) * 100;
-//		String totalPriceRate = df.format(totalPriceRateMath);
-		//本周单价均价（元）（每平方 本周）
-//		view.addObject("thisWeekAveragePrice",thisWeekAveragePrice);
-//		view.addObject("averagePriceRate",averagePriceRate);
-		//本周总价均价（万元）
-//		view.addObject("thisWeekAverageTotalPrice",thisWeekAverageTotalPrice);
-//		view.addObject(totalPriceRate,totalPriceRate);
-		//历史数据量
-//		view.addObject("historyCount",snListHistory.size());
-		//本周数据
-//		view.addObject("thisWeekCount",snListThisWeek.size());
+		/*double averagePriceRateMath = ((Double.valueOf(thisWeekAveragePrice) /
+				Double.valueOf(historyAveragePrice)) - 1) * 100 ;
+		String averagePriceRate = df.format(averagePriceRateMath);
+		double totalPriceRateMath = ((Double.valueOf(thisWeekAverageTotalPrice) /
+				Double.valueOf(historyAverageTotalPrice)) - 1) * 100;
+		String totalPriceRate = df.format(totalPriceRateMath);
+		本周单价均价（元）（每平方 本周）
+		view.addObject("thisWeekAveragePrice",thisWeekAveragePrice);
+		view.addObject("averagePriceRate",averagePriceRate);
+		本周总价均价（万元）
+		view.addObject("thisWeekAverageTotalPrice",thisWeekAverageTotalPrice);
+		view.addObject(totalPriceRate,totalPriceRate);
+		历史数据量
+		view.addObject("historyCount",snListHistory.size());
+		本周数据
+		view.addObject("thisWeekCount",snListThisWeek.size());*/
 		view.setViewName("index");
 		return view;
 	}

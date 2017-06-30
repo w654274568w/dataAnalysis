@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dataAnalysis.mapper.ShanghaiMetroStationDetailsMapper">
+    <resultMap id="BaseResultMap" type="cn.dataAnalysis.model.ShanghaiMetroStationDetails">
+        <id property="id" column="id"/>
+        <id property="stationName" column="station_name"/>
+        <id property="stationCode" column="station_code"/>
+        <id property="transferSubway" column="transfer_subway"/>
+        <id property="coordinateLng" column="coordinate_lng"/>
+        <id property="coordinateLat" column="coordinate_lat"/>
+    </resultMap>
+    <!--插入新数据-->
+    <insert id="insert" parameterType="cn.dataAnalysis.model.ShanghaiMetroStationDetails" useGeneratedKeys="true" keyProperty="id">
+        insert into shanghai_metro_station_details
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="stationName != null">
+                station_name,
+            </if>
+            <if test="stationCode != null">
+                station_code,
+            </if>
+            <if test="transferSubway != null">
+                transfer_subway,
+            </if>
+            <if test="coordinateLng != null">
+                coordinate_lng,
+            </if>
+            <if test="coordinateLat != null">
+                coordinate_lat
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="stationName != null">
+                #{stationName},
+
+            </if>
+            <if test="stationCode != null">
+                station_code,
+            </if>
+            <if test="transferSubway != null">
+                transfer_subway,
+            </if>
+            <if test="coordinateLng != null">
+                coordinate_lng,
+            </if>
+            <if test="coordinateLat != null">
+                coordinate_lat
+            </if>
+        </trim>
+    </insert>
+    <!--查找分页-->
+
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT * FROM shanghai_metro_station_details
+    </select>
+</mapper>

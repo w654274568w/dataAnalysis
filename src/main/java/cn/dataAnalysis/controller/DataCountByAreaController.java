@@ -40,7 +40,6 @@ public class DataCountByAreaController {
 
 
 	@RequestMapping("/dataCountByArea.do")
-	@Transactional
 	public ModelAndView dataCountByArea(ModelAndView view, String beginDateStr, String endDateStr) throws ParseException {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		Date beginDate = df.parse(beginDateStr);
