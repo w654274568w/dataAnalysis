@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dataAnalysis.mapper.DataCountByDateMapper">
+    <resultMap id="BaseResultMap" type="cn.dataAnalysis.model.DataCountByDate">
+        <id property="id" column="id"/>
+        <id property="captureTime" column="capture_time"/>
+        <id property="number" column="number"/>
+        <id property="averageTotalPrice" column="average_total_price"/>
+        <id property="averagePerPrice" column="average_per_price"/>
+    </resultMap>
+    <!--插入新数据-->
+    <insert id="insert" parameterType="cn.dataAnalysis.model.DataCountByDate" useGeneratedKeys="true" keyProperty="id">
+        insert into data_count_by_date
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="captureTime != null">
+                capture_time,
+            </if>
+            <if test="number != null">
+                number,
+            </if>
+            <if test="average_total_price != null">
+                averageTotalPrice,
+            </if>
+            <if test="average_per_price != null">
+                averagePerPrice,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="captureTime != null">
+                #{captureTime},
+            </if>
+            <if test="number != null">
+                #{number},
+            </if>
+            <if test="averageTotalPrice != null">
+                #{averageTotalPrice},
+            </if>
+            <if test="averagePerPrice != null">
+                #{averagePerPrice}
+            </if>
+        </trim>
+    </insert>
+
+</mapper>

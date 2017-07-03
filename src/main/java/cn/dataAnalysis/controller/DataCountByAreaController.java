@@ -44,7 +44,10 @@ public class DataCountByAreaController {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		Date beginDate = df.parse(beginDateStr);
 		Date endDate = df.parse(endDateStr);
-		List<SecondhandhouseNew> secondhandhouseNewList = secondhandhouseNewService.getByDate(beginDate, endDate);
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("beginDate",beginDate);
+		params.put("endDate",endDate);
+		List<SecondhandhouseNew> secondhandhouseNewList = secondhandhouseNewService.findByRegionNameAndDate(params);
 		//遍历生成面积范围参数
 //		int area = 30;
 		//数据中间储存量

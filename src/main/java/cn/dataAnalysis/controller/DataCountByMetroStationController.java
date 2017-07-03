@@ -1,11 +1,9 @@
 package cn.dataAnalysis.controller;
 
 
-import cn.dataAnalysis.model.DataCountByArea;
 import cn.dataAnalysis.model.DataCountByMetroStation;
 import cn.dataAnalysis.model.SecondhandhouseNew;
 import cn.dataAnalysis.model.ShanghaiMetroStationDetails;
-import cn.dataAnalysis.service.DataCountByAreaService;
 import cn.dataAnalysis.service.DataCountByMetroStationService;
 import cn.dataAnalysis.service.SecondhandhouseNewService;
 import cn.dataAnalysis.service.ShanghaiMetroStationDetailsService;
@@ -22,9 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class DataCountByMetroStationController {
@@ -47,7 +43,10 @@ public class DataCountByMetroStationController {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		Date beginDate = df.parse(beginDateStr);
 		Date endDate = df.parse(endDateStr);
-		List<SecondhandhouseNew> secondhandhouseNewList = secondhandhouseNewService.getByDate(beginDate, endDate);
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("beginDate",beginDate);
+		params.put("endDate",endDate);
+		List<SecondhandhouseNew> secondhandhouseNewList = secondhandhouseNewService.findByRegionNameAndDate(params);
 		//获取所有地铁站店名
 		List<ShanghaiMetroStationDetails> shanghaiMetroStationDetailsList =
 				shanghaiMetroStationDetailsService.findAll();

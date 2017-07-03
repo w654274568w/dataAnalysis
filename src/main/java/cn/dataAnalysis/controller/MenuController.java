@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 public class MenuController {
     @RequestMapping("/sidebar.html")
     public String sidbar(HttpServletRequest request){
-
         return "/menus/sidebar";
     }
 }
