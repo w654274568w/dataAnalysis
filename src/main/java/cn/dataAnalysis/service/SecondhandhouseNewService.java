@@ -27,4 +27,12 @@ public interface SecondhandhouseNewService {
      */
 	List<SecondhandhouseNew> findByRegionNameAndDate(Map<String,Object> params);
 
+	/**
+	 *
+	 * 获取所有小区名(去重)
+	 *
+	 * @return
+	 */
+	List<String> getAllCommunityName();
+
 }

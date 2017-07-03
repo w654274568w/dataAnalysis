@@ -42,4 +42,10 @@ public class SecondhandhouseNewServiceImpl implements SecondhandhouseNewService{
 		return secondhandhouseNewDao.findByRegionNameAndDate(params);
 	}
 
+	@Override
+	public List<String> getAllCommunityName() {
+		return secondhandhouseNewDao.getAllCommunityName();
+	}
+
+
 }

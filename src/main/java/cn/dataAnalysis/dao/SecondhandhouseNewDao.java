@@ -16,4 +16,6 @@ public interface SecondhandhouseNewDao{
 
     List<SecondhandhouseNew> findByRegionNameAndDate(Map<String,Object> params);
 
+    List<String> getAllCommunityName();
+
 }

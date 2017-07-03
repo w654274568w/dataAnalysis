@@ -33,4 +33,9 @@ public class SecondhandhouseNewDaoImpl implements SecondhandhouseNewDao{
     public List<SecondhandhouseNew> findByRegionNameAndDate(Map<String, Object> params) {
         return secondhandhouseNewMapper.findByRegionNameAndDate(params);
     }
+
+    @Override
+    public List<String> getAllCommunityName() {
+        return secondhandhouseNewMapper.getAllCommunityName();
+    }
 }

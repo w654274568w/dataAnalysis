@@ -1,5 +1,7 @@
 package cn.dataAnalysis.service.impl;
 
+import cn.dataAnalysis.dao.DataCountByAreaDao;
+import cn.dataAnalysis.mapper.DataCountByAreaMapper;
 import cn.dataAnalysis.model.DataCountByArea;
 import cn.dataAnalysis.model.DataCountByDate;
 import cn.dataAnalysis.service.DataCountByAreaService;
@@ -13,6 +15,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class DataCountByAreaServiceImpl implements DataCountByAreaService{
 
+    @Autowired
+    private DataCountByAreaDao dataCountByAreaDao;
+
     /**
      * 保存
      *
@@ -20,6 +25,6 @@ public class DataCountByAreaServiceImpl implements DataCountByAreaService{
      */
     @Override
     public DataCountByArea save(DataCountByArea dataCountByArea) {
-        return null;
+        return dataCountByAreaDao.insert(dataCountByArea);
     }
 }

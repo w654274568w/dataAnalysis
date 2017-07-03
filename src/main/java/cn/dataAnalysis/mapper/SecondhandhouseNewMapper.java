@@ -17,4 +17,6 @@ public interface SecondhandhouseNewMapper {
 
     List<SecondhandhouseNew> findByRegionNameAndDate(Map<String,Object> params);
 
+    List<String> getAllCommunityName();
+
 }

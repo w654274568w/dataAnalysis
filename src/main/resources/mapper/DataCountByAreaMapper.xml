@@ -1,40 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.dataAnalysis.mapper.DataCountByDateMapper">
-    <resultMap id="BaseResultMap" type="cn.dataAnalysis.model.DataCountByDate">
+<mapper namespace="cn.dataAnalysis.mapper.DataCountByAreaMapper">
+    <resultMap id="BaseResultMap" type="cn.dataAnalysis.model.DataCountByArea">
         <id property="id" column="id"/>
-        <id property="captureTime" column="capture_time"/>
+        <id property="area" column="area"/>
         <id property="number" column="number"/>
         <id property="averageTotalPrice" column="average_total_price"/>
         <id property="averagePerPrice" column="average_per_price"/>
+        <id property="captureTime" column="capture_time"/>
+        <id property="attentionNumber" column="attention_number"/>
     </resultMap>
     <!--插入新数据-->
-    <insert id="insert" parameterType="cn.dataAnalysis.model.DataCountByDate" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="cn.dataAnalysis.model.DataCountByArea" useGeneratedKeys="true" keyProperty="id">
         insert into data_count_by_date
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
             </if>
+            <if test="area != null">
+                area,
+            </if>
+            <if test="averageTotalPrice != null">
+                average_total_price,
+            </if>
+            <if test="averagePerPrice != null">
+                average_per_price,
+            </if>
             <if test="captureTime != null">
                 capture_time,
             </if>
-            <if test="number != null">
-                number,
-            </if>
-            <if test="average_total_price != null">
-                averageTotalPrice,
-            </if>
-            <if test="average_per_price != null">
-                averagePerPrice,
+            <if test="attentionNumber != null">
+                attention_number,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 #{id},
             </if>
-            <if test="captureTime != null">
-                #{captureTime},
+            <if test="area != null">
+                #{area},
             </if>
             <if test="number != null">
                 #{number},
@@ -43,7 +48,13 @@
                 #{averageTotalPrice},
             </if>
             <if test="averagePerPrice != null">
-                #{averagePerPrice}
+                #{averagePerPrice},
+            </if>
+            <if test="captureTime != null">
+                #{captureTime},
+            </if>
+            <if test="attentionNumber != null">
+                #{attentionNumber},
             </if>
         </trim>
     </insert>

@@ -155,4 +155,9 @@
             </if>
         </where>
     </select>
+
+    <!--获取所有小区名(去重)-->
+    <select id="getAllCommunityName" parameterType="map" resultType="String">
+        SELECT DISTINCT (community_name) FROM secondhandhouse_new ;
+    </select>
 </mapper>

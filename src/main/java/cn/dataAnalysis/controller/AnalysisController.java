@@ -262,5 +262,4 @@ public class AnalysisController {
         return PageUtils.setListToJqGridPage(list, page + 1, countAll, rows);
     }
 
-
 }
