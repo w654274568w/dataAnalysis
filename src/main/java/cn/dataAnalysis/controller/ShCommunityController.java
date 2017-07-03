@@ -1,5 +1,6 @@
 package cn.dataAnalysis.controller;
 
+import cn.dataAnalysis.common.Constants;
 import cn.dataAnalysis.model.SecondhandhouseNew;
 import cn.dataAnalysis.model.ShCommunityInfo;
 import cn.dataAnalysis.service.SecondhandhouseNewService;
@@ -39,7 +40,7 @@ public class ShCommunityController {
      * @return
      */
     @RequestMapping("/queryCommunityInfo.do")
-    public ModelAndView queryCommunityInfo(HttpServletRequest request,ModelAndView view) {
+    public ModelAndView queryCommunityInfo(HttpServletRequest request, ModelAndView view) {
         Long beginTime = System.currentTimeMillis();
         /*首先获取所有的小区名信息*/
         List<String> nameListAll = new ArrayList<String>();
@@ -63,12 +64,11 @@ public class ShCommunityController {
         }
         view.setViewName("index");
         Long endTime = System.currentTimeMillis();
-        System.out.print("共处理数据："+ nameListInsert.size()+"条,使用时间："+(endTime-beginTime));
+        System.out.print("共处理数据：" + nameListInsert.size() + "条,使用时间：" + (endTime - beginTime));
         return view;
     }
 
     /**
-     *
      * 获取小区的坐标信息（百度坐标系）
      *
      * @param request
@@ -76,14 +76,22 @@ public class ShCommunityController {
      * @return
      */
     @RequestMapping("/queryCommunityInfoCoordinate.do")
-    public ModelAndView queryCommunityInfoCoordinate(HttpServletRequest request,ModelAndView view){
+    public ModelAndView queryCommunityInfoCoordinate(HttpServletRequest request, ModelAndView view) {
 
         List<ShCommunityInfo> list = new ArrayList<ShCommunityInfo>();
-        Map<String,Object> params = new HashMap<String,Object>();
-        params.put("id",3);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("id", 3);
         list = shCommunityInfoService.getByParams(params);
         ShCommunityInfo shCommunityInfo = list.get(0);
-//        String resPhone = restTemplate.postForObject(url, param, String.class);
+        Map<String, Object> urlParams = new HashMap<String, Object>();
+        urlParams.put("address", "上海市" + shCommunityInfo.getName());
+        urlParams.put("ak", Constants.AK);
+        urlParams.put("output", "json");
+        urlParams.put("callback", "showLocation");
+        String url = Constants.BAIDU_COORDINATE_URL +
+                "?ak=" + Constants.AK + "&address=" + "上海市" + shCommunityInfo.getName()+"&output=json&callback=showLocation";
+        //String resPhone = restTemplate.postForObject(Constants.BAIDU_COORDINATE_URL, urlParams, String.class);
+        String res = restTemplate.getForObject(url, String.class);
         view.setViewName("");
         return view;
     }
