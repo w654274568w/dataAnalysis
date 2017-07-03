@@ -33,5 +33,4 @@ public class ShCommunityInfoDaoImpl extends BaseDaoImpl<ShCommunityInfo> impleme
         return shCommunityInfoMapper.update(shCommunityInfo);
     }
 
-
 }

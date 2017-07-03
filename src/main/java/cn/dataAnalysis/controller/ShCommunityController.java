@@ -8,6 +8,7 @@ import cn.dataAnalysis.utils.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,9 @@ public class ShCommunityController {
 
     @Autowired
     private ShCommunityInfoService shCommunityInfoService;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     /**
      * 初始化挂牌房产所有的小区信息
@@ -63,5 +67,25 @@ public class ShCommunityController {
         return view;
     }
 
+    /**
+     *
+     * 获取小区的坐标信息（百度坐标系）
+     *
+     * @param request
+     * @param view
+     * @return
+     */
+    @RequestMapping("/queryCommunityInfoCoordinate.do")
+    public ModelAndView queryCommunityInfoCoordinate(HttpServletRequest request,ModelAndView view){
+
+        List<ShCommunityInfo> list = new ArrayList<ShCommunityInfo>();
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("id",3);
+        list = shCommunityInfoService.getByParams(params);
+        ShCommunityInfo shCommunityInfo = list.get(0);
+//        String resPhone = restTemplate.postForObject(url, param, String.class);
+        view.setViewName("");
+        return view;
+    }
 
 }
