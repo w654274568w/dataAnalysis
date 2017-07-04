@@ -10,7 +10,8 @@
         <result property="roomType" column="room_type" />
         <result property="area" column="area" />
         <result property="regionName" column="region_name" />
-        <result property="comprehensiveInformation" column="comprehensive_information" />
+        <result property="comprehensiveInformation1" column="comprehensive_information_1" />
+        <result property="comprehensiveInformation2" column="comprehensive_information_1" />
         <result property="trafficLocation" column="traffic_location" />
         <result property="totalPrice" column="total_price" />
         <result property="averagePrice" column="average_price" />
