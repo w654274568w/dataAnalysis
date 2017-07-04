@@ -33,4 +33,9 @@ public class ShCommunityInfoDaoImpl extends BaseDaoImpl<ShCommunityInfo> impleme
         return shCommunityInfoMapper.updateByPrimaryKey(shCommunityInfo);
     }
 
+    @Override
+    public int getCountByParams(Map<String, Object> params) {
+        return shCommunityInfoMapper.getCountByParams(params);
+    }
+
 }

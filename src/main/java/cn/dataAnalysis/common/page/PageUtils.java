@@ -83,7 +83,7 @@ public class PageUtils {
     	jqGridPage.setRows(pageBean);*/
     	
         jqGridPage.setPage(page);
-        jqGridPage.setTotal(total % rows == 0 ? 1 : total / rows+ 1);
+        jqGridPage.setTotal(total / rows == 0 ? 1 : total / rows+ 1);
         jqGridPage.setRecords(total);
         jqGridPage.setRows(pageBean);
         return jqGridPage;

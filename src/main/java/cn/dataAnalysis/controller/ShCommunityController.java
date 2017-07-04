@@ -1,16 +1,20 @@
 package cn.dataAnalysis.controller;
 
 import cn.dataAnalysis.common.Constants;
+import cn.dataAnalysis.common.page.JqGridPage;
+import cn.dataAnalysis.common.page.PageUtils;
 import cn.dataAnalysis.model.ResponseDataBaidu;
 import cn.dataAnalysis.model.ShCommunityInfo;
 import cn.dataAnalysis.service.SecondhandhouseNewService;
 import cn.dataAnalysis.service.ShCommunityInfoService;
 import cn.dataAnalysis.utils.ListUtils;
+import cn.dataAnalysis.utils.StringUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,6 +28,7 @@ import java.util.Map;
  * Created by feng on 2017/7/3.
  */
 @Controller
+@RequestMapping("/community")
 public class ShCommunityController {
 
     @Autowired
@@ -34,6 +39,30 @@ public class ShCommunityController {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @RequestMapping("/community.html")
+    public String communityList(HttpServletRequest request){
+        return "/community/community";
+    }
+
+    @RequestMapping("/communityList.json")
+    @ResponseBody
+    public JqGridPage communityListJson(HttpServletRequest request){
+        //分页码
+        int page = Integer.parseInt(request.getParameter("page")) - 1;
+        int rows = Integer.parseInt(request.getParameter("rows"));
+        String name = request.getParameter("name");
+        //分页参数
+        Map<String, Object> map = new HashMap<>();
+        map.put("begin", page * rows);
+        map.put("rows", rows);
+        if(!StringUtil.isEmpty(name)){
+            map.put("name",name);
+        }
+        List<ShCommunityInfo> shCommunityInfos = shCommunityInfoService.getByParams(map);
+        int countAll = shCommunityInfoService.getCountByParams(map);
+        return PageUtils.setListToJqGridPage(shCommunityInfos, page + 1, countAll, rows);
+    }
 
     /**
      * 初始化挂牌房产所有的小区信息
@@ -109,7 +138,6 @@ public class ShCommunityController {
         view.setViewName("");
         return view;
     }
-
 
     /**
      *

@@ -15,4 +15,6 @@ public interface ShCommunityInfoService {
     List<ShCommunityInfo> getByParams(Map<String,Object> params);
 
     boolean update(ShCommunityInfo shCommunityInfo);
+
+    int getCountByParams(Map<String,Object> params);
 }

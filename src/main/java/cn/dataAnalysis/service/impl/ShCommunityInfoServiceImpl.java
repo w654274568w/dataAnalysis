@@ -33,4 +33,9 @@ public class ShCommunityInfoServiceImpl implements ShCommunityInfoService {
         return shCommunityInfoDao.update(shCommunityInfo);
     }
 
+    @Override
+    public int getCountByParams(Map<String, Object> params) {
+        return shCommunityInfoDao.getCountByParams(params);
+    }
+
 }

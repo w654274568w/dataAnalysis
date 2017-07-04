@@ -41,9 +41,9 @@
                     </a>
                 </li>
                 <li>
-                    <a href="buttons.html">
+                    <a href="${ctx}/community/community.html">
                         <i class="icon-double-angle-right"></i>
-                        按区域解析
+                        上海小区信息
                     </a>
                 </li>
                 <li>

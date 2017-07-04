@@ -67,13 +67,14 @@
 <script type="text/javascript">
     //查询
     function gridReload() {
-        var loanName = jQuery("#loanName").val() || null;
-        var status = jQuery("#status").val() || null;
+        /*var loanName = jQuery("#loanName").val() || null;
+        var status = jQuery("#status").val() || null;*/
         jQuery("#grid-table").jqGrid('setGridParam', {
-            url: "",
+            url: "${ctx}/community/communityList.json",
             mtype: "post",
             page: 1,
-            postData: {loanName: loanName, status: status}
+            /*postData: {loanName: loanName, status: status}*/
+            postData: {}
         }).trigger("reloadGrid");
     }
     jQuery(function ($) {
@@ -89,11 +90,11 @@
         var grid_selector = "#grid-table";
         var pager_selector = "#grid-pager";
         jQuery(grid_selector).jqGrid({
-            url: '${ctx}/analysis/dataCountByDate.json',
+            url: '${ctx}/community/communityList.json',
             datatype: "json",
             mtype: "post",
             height: 330,
-            colNames: ['ID', '数据量', '每平米均价(元)', '单套内总价均价(万元)', '时间'],
+            colNames: ['ID', '小区名', '经度', '纬度', '操作'],
             colModel: [
                 {
                     name: 'id',
@@ -102,33 +103,31 @@
                     editable: false
                 },
                 {
-                    name: 'number',
-                    index: 'number',
+                    name: 'name',
+                    index: 'name',
                     width: 50,
                     editable: false
                 },
                 {
-                    name: 'averagePerPrice',
-                    index: 'averagePerPrice',
+                    name: 'coordinateLng',
+                    index: 'coordinateLng',
                     width: 50,
                     editable: false
                 },
                 {
-                    name: 'averageTotalPrice',
-                    index: 'averageTotalPrice',
+                    name: 'coordinateLat',
+                    index: 'coordinateLat',
                     width: 50,
                     editable: false
                 },
                 {
-                    name:'captureTime',
-                    index:'captureTime',
-                    width:80,
-                    editable:false,
-                    edittype:"Date",
+                    name: '',
+                    index: '',
+                    width: 80,
+                    fixed:true,
+                    sortable:false,
                     formatter: function(value, options, rowObject){
-                        var date = new Date();
-                        date.setTime(value);
-                        return date.Format("yyyy-MM-dd");
+                        return "<a href=\"javascript: queryAppInfo("+rowObject['id']+")\">查看详情</a>";
                     }
                 }
 
@@ -152,7 +151,7 @@
                 }, 0);
             },
 
-            caption: "分期数据列表",
+            caption: "小区坐标信息(百度坐标系)",
             autowidth: true
         });
         //enable datepicker

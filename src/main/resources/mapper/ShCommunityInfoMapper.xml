@@ -62,8 +62,29 @@
                 AND coordinate_lat = #{coordinateLat}
             </if>
         </where>
+        <if test="begin != null and rows != null" >
+            limit #{begin},#{rows};
+        </if>
+    </select>
+    <select id="getCountByParams" parameterType="map" resultType="int">
+        SELECT count(1) FROM sh_community_info
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="name != null">
+                AND name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="coordinateLng != null">
+                AND coordinate_lng = #{coordinateLng}
+            </if>
+            <if test="coordinateLat !=null ">
+                AND coordinate_lat = #{coordinateLat}
+            </if>
+        </where>
     </select>
 
+    <!--根据id主键更新数据-->
     <update id="updateByPrimaryKey" parameterType="cn.dataAnalysis.model.ShCommunityInfo">
         UPDATE sh_community_info
         <set>
