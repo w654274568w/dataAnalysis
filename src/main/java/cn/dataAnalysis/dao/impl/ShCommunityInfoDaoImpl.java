@@ -30,7 +30,7 @@ public class ShCommunityInfoDaoImpl extends BaseDaoImpl<ShCommunityInfo> impleme
 
     @Override
     public boolean update(ShCommunityInfo shCommunityInfo) {
-        return shCommunityInfoMapper.update(shCommunityInfo);
+        return shCommunityInfoMapper.updateByPrimaryKey(shCommunityInfo);
     }
 
 }

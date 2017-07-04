@@ -1,11 +1,13 @@
 package cn.dataAnalysis.controller;
 
 import cn.dataAnalysis.common.Constants;
-import cn.dataAnalysis.model.SecondhandhouseNew;
+import cn.dataAnalysis.model.ResponseDataBaidu;
 import cn.dataAnalysis.model.ShCommunityInfo;
 import cn.dataAnalysis.service.SecondhandhouseNewService;
 import cn.dataAnalysis.service.ShCommunityInfoService;
 import cn.dataAnalysis.utils.ListUtils;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -80,20 +82,64 @@ public class ShCommunityController {
 
         List<ShCommunityInfo> list = new ArrayList<ShCommunityInfo>();
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("id", 3);
+        //params.put("id", 3);
         list = shCommunityInfoService.getByParams(params);
-        ShCommunityInfo shCommunityInfo = list.get(0);
-        Map<String, Object> urlParams = new HashMap<String, Object>();
-        urlParams.put("address", "上海市" + shCommunityInfo.getName());
-        urlParams.put("ak", Constants.AK);
-        urlParams.put("output", "json");
-        urlParams.put("callback", "showLocation");
-        String url = Constants.BAIDU_COORDINATE_URL +
-                "?ak=" + Constants.AK + "&address=" + "上海市" + shCommunityInfo.getName()+"&output=json&callback=showLocation";
-        //String resPhone = restTemplate.postForObject(Constants.BAIDU_COORDINATE_URL, urlParams, String.class);
-        String res = restTemplate.getForObject(url, String.class);
+        int countAll = list.size();
+        int countEfect = 0;
+        for(ShCommunityInfo shCommunityInfo: list){
+            //ShCommunityInfo shCommunityInfo = list.get(0);
+            String url = Constants.BAIDU_COORDINATE_URL +
+                    "?ak=" + Constants.AK + "&address=" + "上海市" + shCommunityInfo.getName()+"&output=json&callback=showLocation";
+            String res = restTemplate.getForObject(url, String.class);
+            if(null != res){
+                /*解析百度接口返回值*/
+                Map<String,String> map = this.queryCoordinate(res);
+                if(null != map){
+                    shCommunityInfo.setCoordinateLng(map.get("lng"));
+                    shCommunityInfo.setCoordinateLat(map.get("lat"));
+                    shCommunityInfoService.update(shCommunityInfo);
+                    countEfect++;
+                }
+            }
+        }
+        /*for(ShCommunityInfo shCommunityInfo:list){
+            shCommunityInfoService.update(shCommunityInfo);
+        }*/
+        System.out.print("分析总数为："+countAll+",有效分析数为："+countEfect);
         view.setViewName("");
         return view;
     }
+
+
+    /**
+     *
+     * 用于解析百度API的返回数据queryCoordinat
+     *
+     * @param res
+     * @return
+     */
+    public Map<String,String> queryCoordinate(String res){
+
+        /*showLocation&&showLocation({"status":0,"result":{"location":{"lng":121.35211001234807,"lat":31.42105725341699},"precise":1,"confidence":80,"level":"地产小区"}})*/
+        Map<String,String> map = new HashMap<String,String>();
+        int start = res.indexOf("\"status\":");
+        int end = res.indexOf(",\"",1);
+        String status = res.substring(start+9,end);
+        /*判断返回参数是否符合要求*/
+        if(status.equals("0")){
+            start = res.indexOf("\"lng\":");
+            end = res.indexOf(",\"lat\":");
+            String lng = res.substring(start+6,end);
+            start = res.indexOf(",\"lat\":");
+            end = res.indexOf("},\"");
+            String lat = res.substring(start+7,end);
+            map.put("lng",lng);
+            map.put("lat",lat);
+            return map;
+        }
+        return null;
+    }
+
+
 
 }

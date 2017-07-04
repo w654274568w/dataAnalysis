@@ -64,6 +64,23 @@
         </where>
     </select>
 
-    <update id="update" parameterType="cn.dataAnalysis.model.ShCommunityInfo"></update>
+    <update id="updateByPrimaryKey" parameterType="cn.dataAnalysis.model.ShCommunityInfo">
+        UPDATE sh_community_info
+        <set>
+            <!--<if test="id != null">
+                id = #{id},
+            </if>-->
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="coordinateLng != null">
+                coordinate_lng = #{coordinateLng},
+            </if>
+            <if test="coordinateLat != null">
+                coordinate_lat = #{coordinateLat}
+            </if>
+        </set>
+        WHERE id = #{id};
+    </update>
 
 </mapper>

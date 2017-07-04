@@ -16,5 +16,5 @@ public interface ShCommunityInfoMapper {
 
     List<ShCommunityInfo> getByParams(Map<String,Object> params);
 
-    boolean update(ShCommunityInfo shCommunityInfo);
+    boolean updateByPrimaryKey(ShCommunityInfo shCommunityInfo);
 }

@@ -30,7 +30,7 @@ public class ShCommunityInfoServiceImpl implements ShCommunityInfoService {
 
     @Override
     public boolean update(ShCommunityInfo shCommunityInfo) {
-        return shCommunityInfoDao.saveOrUpdate(shCommunityInfo);
+        return shCommunityInfoDao.update(shCommunityInfo);
     }
 
 }
