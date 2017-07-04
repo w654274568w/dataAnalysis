@@ -42,6 +42,7 @@ public class ShCommunityController {
 
     @RequestMapping("/community.html")
     public String communityList(HttpServletRequest request){
+        request.setAttribute("ak",Constants.AK);
         return "/community/community";
     }
 

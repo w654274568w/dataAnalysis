@@ -9,6 +9,7 @@
 </head>
 <body>
 <%@ include file="/common/navbar.jsp" %>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=${ak}"></script>
 
 <div class="main-container" id="main-container">
     <script type="text/javascript">
@@ -27,13 +28,13 @@
                 <div class="space-6" style="padding-top: 20px"></div>
                 <table style="padding-bottom: 20px">
                     <tr>
-                        <td> 开始时间:</td>
-                        <td><input type="text" id="loanName" name="loanName" width="400px"/></td>
+                        <td> 小区名称:</td>
+                        <td><input type="text" id="name" name="name" width="400px" placeholder="输入完整小区名"/></td>
                         <td>
                             <span class="input-group-btn">
                                 <button onclick="gridReload()" type="button" class="btn btn-primary btn-sm">
-                                  处理
-                                  <i class="icon-beaker icon-on-right bigger-110"></i>
+                                  查询
+                                  <i class="icon-search icon-on-right bigger-110"></i>
                                 </button>
                             </span>
                         </td>
@@ -45,7 +46,8 @@
                 <!-- 分页 -->
                 <div id="grid-pager"></div>
                 <div class="row">
-                    <div class="col-xs-12" style="padding-left:5px;">
+                    <div class="col-xs-12" style="padding-left:5px;" align="center">
+                        <div style="width:1000px;height:500px;border:#ccc solid 1px;font-size:12px" id="map"></div>
                     </div>
                 </div>
             </div>
@@ -67,14 +69,14 @@
 <script type="text/javascript">
     //查询
     function gridReload() {
-        /*var loanName = jQuery("#loanName").val() || null;
-        var status = jQuery("#status").val() || null;*/
+        var name = jQuery("#name").val() || null;
+        //var status = jQuery("#status").val() || null;
         jQuery("#grid-table").jqGrid('setGridParam', {
             url: "${ctx}/community/communityList.json",
             mtype: "post",
             page: 1,
             /*postData: {loanName: loanName, status: status}*/
-            postData: {}
+            postData: {name:name}
         }).trigger("reloadGrid");
     }
     jQuery(function ($) {
@@ -124,10 +126,10 @@
                     name: '',
                     index: '',
                     width: 80,
-                    fixed:true,
-                    sortable:false,
-                    formatter: function(value, options, rowObject){
-                        return "<a href=\"javascript: queryAppInfo("+rowObject['id']+")\">查看详情</a>";
+                    fixed: true,
+                    sortable: false,
+                    formatter: function (value, options, rowObject) {
+                        return "<a href=\"javascript: initMap(" + rowObject['coordinateLng'] + "," + rowObject['coordinateLat'] + ",19" + ")\">地图显示</a>";
                     }
                 }
 
@@ -161,6 +163,7 @@
                     .datepicker({format: 'yyyy-mm-dd', autoclose: true});
             }, 0);
         }
+
         // 修改默认按钮功能
         $(grid_selector).jqGrid("navGrid", pager_selector, {
             edit: false,
@@ -217,6 +220,89 @@
             $(table).find('.ui-pg-div').tooltip({container: 'body'});
         }
     });
+</script>
+<script type="text/javascript">
+    //创建和初始化地图函数：
+    function initMap(lng, lat, level) {
+        //alert(name);
+        createMap(lng, lat, level);//创建地图
+        setMapEvent();//设置地图事件
+        addMapControl();//向地图添加控件
+        addMapOverlay();//向地图添加覆盖物
+        if (!(lng == 121.480524 && lat == 31.23595)) {
+            addMapOverlay(lng, lat);//添加标记
+        }
+    }
+    function createMap(lng, lat, level) {
+        map = new BMap.Map("map");
+        map.centerAndZoom(new BMap.Point(lng, lat), level);
+    }
+    function setMapEvent() {
+        map.enableScrollWheelZoom();
+        map.enableKeyboard();
+        map.enableDragging();
+        map.enableDoubleClickZoom()
+    }
+    function addClickHandler(target, window) {
+        target.addEventListener("click", function () {
+            target.openInfoWindow(window);
+        });
+    }
+    function addMapOverlay() {
+    }
+    //向地图添加控件
+    function addMapControl() {
+        var scaleControl = new BMap.ScaleControl({anchor: BMAP_ANCHOR_BOTTOM_LEFT});
+        scaleControl.setUnit(BMAP_UNIT_IMPERIAL);
+        map.addControl(scaleControl);
+        var navControl = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_LEFT, type: 1});
+        map.addControl(navControl);
+        var overviewControl = new BMap.OverviewMapControl({anchor: BMAP_ANCHOR_BOTTOM_RIGHT, isOpen: true});
+        map.addControl(overviewControl);
+    }
+
+    function addMapOverlay(lng, lat) {
+        var markers = [
+            {content: "", title: "", imageOffset: {width: 0, height: 3}, position: {lat: lat, lng: lng}}
+        ];
+        for (var index = 0; index < markers.length; index++) {
+            var point = new BMap.Point(markers[index].position.lng, markers[index].position.lat);
+            var marker = new BMap.Marker(point, {
+                icon: new BMap.Icon("http://api.map.baidu.com/lbsapi/createmap/images/icon.png", new BMap.Size(20, 25), {
+                    imageOffset: new BMap.Size(markers[index].imageOffset.width, markers[index].imageOffset.height)
+                })
+            });
+            var label = new BMap.Label(markers[index].title, {offset: new BMap.Size(25, 5)});
+            var opts = {
+                width: 200,
+                title: markers[index].title,
+                enableMessage: false
+            };
+            var infoWindow = new BMap.InfoWindow(markers[index].content, opts);
+            marker.setLabel(label);
+            addClickHandler(marker, infoWindow);
+            map.addOverlay(marker);
+        }
+        ;
+        var labels = [];
+        for (var index = 0; index < labels.length; index++) {
+            var opt = {position: new BMap.Point(labels[index].position.lng, labels[index].position.lat)};
+            var label = new BMap.Label(labels[index].content, opt);
+            map.addOverlay(label);
+        }
+        ;
+        var plOpts = [];
+        var plPath = [];
+        for (var index = 0; index < plOpts.length; index++) {
+            var polyline = new BMap.Polyline(plPath[index], plOpts[index]);
+            map.addOverlay(polyline);
+        }
+    }
+    var map;
+    var lng = 121.480524;
+    var lat = 31.23595;
+    var level = 12;
+    initMap(lng, lat, level);
 </script>
 </body>
 </html>
