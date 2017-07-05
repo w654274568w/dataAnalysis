@@ -30,21 +30,42 @@
         <li>
             <a href="#" class="dropdown-toggle">
                 <i class="icon-desktop"></i>
-                <span class="menu-text"> 手动数据分析 </span>
+                <span class="menu-text"> 主功能模块 </span>
                 <b class="arrow icon-angle-down"></b>
             </a>
             <ul class="submenu">
                 <li>
                     <a href="${ctx}/analysis/dataCountByDate.html">
                         <i class="icon-double-angle-right"></i>
-                        原始数据解析
+                        数据解析模块
                     </a>
                 </li>
-                <li>
+                <%--<li>
                     <a href="${ctx}/community/community.html">
                         <i class="icon-double-angle-right"></i>
                         上海小区信息
                     </a>
+                </li>--%>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-double-angle-right"></i>
+                        社区信息模块
+                        <b class="arrow icon-angle-down"></b>
+                    </a>
+                    <ul class="submenu">
+                        <li>
+                            <a href="${ctx}/community/communityLocationInfo.html">
+                                <i class="icon-leaf"></i>
+                                社区位置展示
+                            </a>
+                        </li>
+                        <li>
+                            <a href="${ctx}/community/communityPriceInfo.html">
+                                <i class="icon-pencil"></i>
+                                社区价格信息
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li>
                     <a href="treeview.html">

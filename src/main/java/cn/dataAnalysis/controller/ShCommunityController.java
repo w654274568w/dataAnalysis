@@ -3,8 +3,11 @@ package cn.dataAnalysis.controller;
 import cn.dataAnalysis.common.Constants;
 import cn.dataAnalysis.common.page.JqGridPage;
 import cn.dataAnalysis.common.page.PageUtils;
+import cn.dataAnalysis.model.DataCountByCommunity;
 import cn.dataAnalysis.model.ResponseDataBaidu;
+import cn.dataAnalysis.model.SecondhandhouseNew;
 import cn.dataAnalysis.model.ShCommunityInfo;
+import cn.dataAnalysis.service.DataCountByCommunityService;
 import cn.dataAnalysis.service.SecondhandhouseNewService;
 import cn.dataAnalysis.service.ShCommunityInfoService;
 import cn.dataAnalysis.utils.ListUtils;
@@ -19,10 +22,10 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by feng on 2017/7/3.
@@ -38,17 +41,21 @@ public class ShCommunityController {
     private ShCommunityInfoService shCommunityInfoService;
 
     @Autowired
+    private DataCountByCommunityService dataCountByCommunityService;
+
+
+    @Autowired
     private RestTemplate restTemplate;
 
-    @RequestMapping("/community.html")
-    public String communityList(HttpServletRequest request){
-        request.setAttribute("ak",Constants.AK);
-        return "/community/community";
+    @RequestMapping("/communityLocationInfo.html")
+    public String communityLocationInfo(HttpServletRequest request) {
+        request.setAttribute("ak", Constants.AK);
+        return "/community/communityLocation";
     }
 
-    @RequestMapping("/communityList.json")
+    @RequestMapping("/communityLocationInfoList.json")
     @ResponseBody
-    public JqGridPage communityListJson(HttpServletRequest request){
+    public JqGridPage communityLocationInfoListJson(HttpServletRequest request) {
         //分页码
         int page = Integer.parseInt(request.getParameter("page")) - 1;
         int rows = Integer.parseInt(request.getParameter("rows"));
@@ -57,12 +64,38 @@ public class ShCommunityController {
         Map<String, Object> map = new HashMap<>();
         map.put("begin", page * rows);
         map.put("rows", rows);
-        if(!StringUtil.isEmpty(name)){
-            map.put("name",name);
+        if (!StringUtil.isEmpty(name)) {
+            map.put("name", name);
         }
         List<ShCommunityInfo> shCommunityInfos = shCommunityInfoService.getByParams(map);
         int countAll = shCommunityInfoService.getCountByParams(map);
         return PageUtils.setListToJqGridPage(shCommunityInfos, page + 1, countAll, rows);
+    }
+
+    @RequestMapping("/communityPriceInfo.html")
+    public String communityPriceInfo(HttpServletRequest request) {
+        return "/community/communityPrice";
+    }
+
+    @RequestMapping("/communityPriceInfo.json")
+    @ResponseBody
+    public JqGridPage communityPriceInfoJson(HttpServletRequest request) {
+        //分页码
+        int page = Integer.parseInt(request.getParameter("page")) - 1;
+        int rows = Integer.parseInt(request.getParameter("rows"));
+        String name = request.getParameter("name");
+        //分页参数
+        Map<String, Object> map = new HashMap<>();
+        map.put("begin", page * rows);
+        map.put("rows", rows);
+        if (!StringUtil.isEmpty(name)) {
+            map.put("name", name);
+        }
+        /*实体集合*/
+        List<DataCountByCommunity> dataCountByCommunities = dataCountByCommunityService.getByParams(map);
+        /*分页参数*/
+        int countAll = dataCountByCommunityService.countByParams(map);
+        return PageUtils.setListToJqGridPage(dataCountByCommunities, page + 1, countAll, rows);
     }
 
     /**
@@ -94,7 +127,7 @@ public class ShCommunityController {
             shCommunityInfo.setName(str);
             shCommunityInfoService.insert(shCommunityInfo);
         }
-        view.setViewName("index");
+        view.setViewName("/community.html");
         Long endTime = System.currentTimeMillis();
         System.out.print("共处理数据：" + nameListInsert.size() + "条,使用时间：" + (endTime - beginTime));
         return view;
@@ -116,15 +149,15 @@ public class ShCommunityController {
         list = shCommunityInfoService.getByParams(params);
         int countAll = list.size();
         int countEfect = 0;
-        for(ShCommunityInfo shCommunityInfo: list){
-            //ShCommunityInfo shCommunityInfo = list.get(0);
+        /*遍历插入*/
+        for (ShCommunityInfo shCommunityInfo : list) {
             String url = Constants.BAIDU_COORDINATE_URL +
-                    "?ak=" + Constants.AK + "&address=" + "上海市" + shCommunityInfo.getName()+"&output=json&callback=showLocation";
+                    "?ak=" + Constants.AK + "&address=" + "上海市" + shCommunityInfo.getName() + "&output=json&callback=showLocation";
             String res = restTemplate.getForObject(url, String.class);
-            if(null != res){
+            if (null != res) {
                 /*解析百度接口返回值*/
-                Map<String,String> map = this.queryCoordinate(res);
-                if(null != map){
+                Map<String, String> map = this.queryCoordinate(res);
+                if (null != map) {
                     shCommunityInfo.setCoordinateLng(map.get("lng"));
                     shCommunityInfo.setCoordinateLat(map.get("lat"));
                     shCommunityInfoService.update(shCommunityInfo);
@@ -132,43 +165,98 @@ public class ShCommunityController {
                 }
             }
         }
-        /*for(ShCommunityInfo shCommunityInfo:list){
-            shCommunityInfoService.update(shCommunityInfo);
-        }*/
-        System.out.print("分析总数为："+countAll+",有效分析数为："+countEfect);
-        view.setViewName("");
+        System.out.print("分析总数为：" + countAll + ",有效分析数为：" + countEfect);
+        view.setViewName("/community.html");
         return view;
     }
 
     /**
      *
+     * 按期更新小区价格信息
+     *
+     * @param request
+     * @throws Exception
+     */
+    @RequestMapping("/queryCommunityPrice.do")
+    public void queryCommunityPrice(HttpServletRequest request) throws Exception {
+        String beginDateStr = request.getParameter("beginDateStr");
+        String endDateStr = request.getParameter("endDateStr");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date beginDate = df.parse(beginDateStr);
+        Date endDate = df.parse(endDateStr);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("beginDate", beginDate);
+        map.put("endDate", endDate);
+        List<SecondhandhouseNew> secondhandhouseNewList = secondhandhouseNewService.findByRegionNameAndDate(map);
+        List<ShCommunityInfo> shCommunityInfoList = shCommunityInfoService.getByParams(map);
+        List<DataCountByCommunity> dataCountByCommunityList = new ArrayList<DataCountByCommunity>();
+        /*初始化社区数组对象*/
+        for (ShCommunityInfo shCommunityInfo : shCommunityInfoList) {
+            DataCountByCommunity dataCountByCommunity = new DataCountByCommunity();
+            dataCountByCommunity.setInfoId(shCommunityInfo.getId());
+            dataCountByCommunity.setCommunityName(shCommunityInfo.getName());
+            dataCountByCommunity.setAveragePerPrice(0.00);
+            dataCountByCommunity.setAverageTotalPrice(0.00);
+            dataCountByCommunity.setNumber(0l);
+            dataCountByCommunityList.add(dataCountByCommunity);
+        }
+        /*初始化实体信息*/
+        for (SecondhandhouseNew secondhandhouseNew : secondhandhouseNewList) {
+            if (!StringUtil.isEmpty(secondhandhouseNew.getCommunityName())) {
+                for (DataCountByCommunity dataCountByCommunity : dataCountByCommunityList) {
+                    if (secondhandhouseNew.equals(dataCountByCommunity.getCommunityName())) {
+                        dataCountByCommunity.setNumber(dataCountByCommunity.getNumber() + 1);
+                        dataCountByCommunity.setAveragePerPrice(
+                                dataCountByCommunity.getAveragePerPrice() + secondhandhouseNew.getAveragePrice());
+                        dataCountByCommunity.setAverageTotalPrice(
+                                dataCountByCommunity.getAverageTotalPrice() + secondhandhouseNew.getTotalPrice());
+                    }
+                }
+            }
+        }
+        /*最终确定实体对象信息*/
+        for (DataCountByCommunity dataCountByCommunity : dataCountByCommunityList) {
+            if (dataCountByCommunity.getNumber() > 0) {
+                dataCountByCommunity.setAverageTotalPrice(
+                        dataCountByCommunity.getAverageTotalPrice() / dataCountByCommunity.getNumber());
+                dataCountByCommunity.setAveragePerPrice(
+                        dataCountByCommunity.getAveragePerPrice()/ dataCountByCommunity.getNumber());
+            }
+        }
+        /*将生成的对象集合插入数据库中*/
+
+
+    }
+
+
+    /**
      * 用于解析百度API的返回数据queryCoordinat
      *
      * @param res
      * @return
      */
-    public Map<String,String> queryCoordinate(String res){
+    public Map<String, String> queryCoordinate(String res) {
 
-        /*showLocation&&showLocation({"status":0,"result":{"location":{"lng":121.35211001234807,"lat":31.42105725341699},"precise":1,"confidence":80,"level":"地产小区"}})*/
-        Map<String,String> map = new HashMap<String,String>();
+        /*showLocation&&showLocation({"status":0,"result":{"location":
+        {"lng":121.35211001234807,"lat":31.42105725341699},"precise":1,"confidence":80,"level":"地产小区"}})*/
+        Map<String, String> map = new HashMap<String, String>();
         int start = res.indexOf("\"status\":");
-        int end = res.indexOf(",\"",1);
-        String status = res.substring(start+9,end);
+        int end = res.indexOf(",\"", 1);
+        String status = res.substring(start + 9, end);
         /*判断返回参数是否符合要求*/
-        if(status.equals("0")){
+        if (status.equals("0")) {
             start = res.indexOf("\"lng\":");
             end = res.indexOf(",\"lat\":");
-            String lng = res.substring(start+6,end);
+            String lng = res.substring(start + 6, end);
             start = res.indexOf(",\"lat\":");
             end = res.indexOf("},\"");
-            String lat = res.substring(start+7,end);
-            map.put("lng",lng);
-            map.put("lat",lat);
+            String lat = res.substring(start + 7, end);
+            map.put("lng", lng);
+            map.put("lat", lat);
             return map;
         }
         return null;
     }
-
 
 
 }

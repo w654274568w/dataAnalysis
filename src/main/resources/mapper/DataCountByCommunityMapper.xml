@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dataAnalysis.mapper.DataCountByCommunity">
+    <resultMap id="BaseResultMap" type="cn.dataAnalysis.model.DataCountByCommunity">
+        <id property="id" column="id"/>
+        <id property="infoId" column="info_id"/>
+        <id property="communityName" column="community_name"/>
+        <id property="number" column="number"/>
+        <id property="averageTotalPrice" column="average_total_price"/>
+        <id property="averagePerPrice" column="average_per_price"/>
+        <id property="captureTime" column="capture_time"/>
+    </resultMap>
+    <!--插入新数据-->
+    <insert id="insert" parameterType="cn.dataAnalysis.model.DataCountByCommunity" useGeneratedKeys="true" keyProperty="id">
+        INSERT  INTO  data_count_by_community
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="infoId != null">
+                info_id,
+            </if>
+            <if test="communityName != null">
+                community_name,
+            </if>
+            <if test="number != null">
+                number,
+            </if>
+            <if test="averageTotalPrice != null">
+                average_total_price,
+            </if>
+            <if test="averagePerPrice != null">
+                average_per_price,
+            </if>
+            <if test="captureTime != null">
+                capture_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="infoId != null">
+                #{infoId},
+            </if>
+            <if test="communityName != null">
+                #{communityName},
+            </if>
+            <if test="number != null">
+                #{number},
+            </if>
+            <if test="averageTotalPrice != null">
+                #{averageTotalPrice},
+            </if>
+            <if test="averagePerPrice != null">
+                #{averagePerPrice},
+            </if>
+            <if test="captureTime != null">
+                #{captureTime},
+            </if>
+        </trim>
+    </insert>
+
+    <!--批量插入数据-->
+    <insert id ="insertList" parameterType="java.util.List" >
+        <selectKey resultType ="java.lang.Integer" keyProperty= "id"
+                   order= "AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey >
+        insert into data_count_by_community
+        (bach_id, code, type, facevalue,create_user,create_time)
+        values
+        <foreach collection ="list" item="dataCountByCommunity" index= "index" separator =",">
+            (
+            #{reddemCode.batchId}, #{reddemCode.code},
+            #{reddemCode.type},
+            #{reddemCode.facevalue},
+            #{reddemCode.createUser}, #{reddemCode.createTime}
+            )
+        </foreach >
+    </insert >
+
+    <select id="getByParams" parameterType="map" resultMap="BaseResultMap">
+        SELECT * FROM data_count_by_community
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="infoId != null">
+                AND info_id = #{infoId}
+            </if>
+            <if test="communityName != null">
+                AND community_name = #{communityName}
+            </if>
+            <if test="number != null">
+                AND number = #{number}
+            </if>
+            <if test="averageTotalPrice != null">
+                AND average_total_price = #{averageTotalPrice}
+            </if>
+            <if test="averagePerPrice != null">
+                AND average_per_price = #{averagePerPrice}
+            </if>
+            <if test="beginDate != null and endDate != null">
+                AND capture_time BETWEEN #{beginDate} and #{endDate}
+            </if>
+        </where>
+    </select>
+
+    <select id="countByParams" parameterType="map" resultType="int">
+        SELECT count(1) FROM data_count_by_community
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="infoId != null">
+                AND info_id = #{infoId}
+            </if>
+            <if test="communityName != null">
+                AND community_name = #{communityName}
+            </if>
+            <if test="number != null">
+                AND number = #{number}
+            </if>
+            <if test="averageTotalPrice != null">
+                AND average_total_price = #{averageTotalPrice}
+            </if>
+            <if test="averagePerPrice != null">
+                AND average_per_price = #{averagePerPrice}
+            </if>
+            <if test="beginDate != null and endDate != null">
+                AND capture_time BETWEEN #{beginDate} and #{endDate}
+            </if>
+        </where>
+    </select>
+</mapper>

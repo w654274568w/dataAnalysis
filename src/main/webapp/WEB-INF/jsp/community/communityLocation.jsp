@@ -47,11 +47,10 @@
                 <div id="grid-pager"></div>
                 <div class="row">
                     <div class="col-xs-12" style="padding-left:5px;" align="center">
-                        <div style="width:1000px;height:500px;border:#ccc solid 1px;font-size:12px" id="map"></div>
+                        <div  style="width:1000px;height:500px;border:#ccc solid 1px;font-size:12px;" id="map"></div>
                     </div>
                 </div>
             </div>
-
             <!-- /.page-content -->
         </div><!-- /.main-content -->
 
@@ -72,7 +71,7 @@
         var name = jQuery("#name").val() || null;
         //var status = jQuery("#status").val() || null;
         jQuery("#grid-table").jqGrid('setGridParam', {
-            url: "${ctx}/community/communityList.json",
+            url: "${ctx}/community/communityLocationInfoList.json",
             mtype: "post",
             page: 1,
             /*postData: {loanName: loanName, status: status}*/
@@ -92,7 +91,7 @@
         var grid_selector = "#grid-table";
         var pager_selector = "#grid-pager";
         jQuery(grid_selector).jqGrid({
-            url: '${ctx}/community/communityList.json',
+            url: '${ctx}/community/communityLocationInfoList.json',
             datatype: "json",
             mtype: "post",
             height: 330,
@@ -230,6 +229,7 @@
         addMapControl();//向地图添加控件
         addMapOverlay();//向地图添加覆盖物
         if (!(lng == 121.480524 && lat == 31.23595)) {
+            /*$("#map").css("display","block");*/
             addMapOverlay(lng, lat);//添加标记
         }
     }
