@@ -65,6 +65,12 @@
                                 社区价格信息
                             </a>
                         </li>
+                        <li>
+                            <a href="${ctx}/community/communityMatch.html">
+                                <i class="icon-pencil"></i>
+                                社区模糊匹配
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li>

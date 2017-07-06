@@ -23,7 +23,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -47,12 +46,26 @@ public class ShCommunityController {
     @Autowired
     private RestTemplate restTemplate;
 
+    /**
+     *
+     * 社区地址信息页面
+     *
+     * @param request
+     * @return
+     */
     @RequestMapping("/communityLocationInfo.html")
     public String communityLocationInfo(HttpServletRequest request) {
         request.setAttribute("ak", Constants.AK);
         return "/community/communityLocation";
     }
 
+    /**
+     *
+     * 社区地址信息返回数据
+     *
+     * @param request
+     * @return
+     */
     @RequestMapping("/communityLocationInfoList.json")
     @ResponseBody
     public JqGridPage communityLocationInfoListJson(HttpServletRequest request) {
@@ -72,11 +85,25 @@ public class ShCommunityController {
         return PageUtils.setListToJqGridPage(shCommunityInfos, page + 1, countAll, rows);
     }
 
+    /**
+     *
+     * 社区价格信息页面
+     *
+     * @param request
+     * @return
+     */
     @RequestMapping("/communityPriceInfo.html")
     public String communityPriceInfo(HttpServletRequest request) {
         return "/community/communityPrice";
     }
 
+    /**
+     *
+     * 社区价格信息返回数据
+     *
+     * @param request
+     * @return
+     */
     @RequestMapping("/communityPriceInfo.json")
     @ResponseBody
     public JqGridPage communityPriceInfoJson(HttpServletRequest request) {
@@ -97,6 +124,31 @@ public class ShCommunityController {
         /*分页参数*/
         int countAll = dataCountByCommunityService.countByParams(map);
         return PageUtils.setListToJqGridPage(dataCountByCommunities, page + 1, countAll, rows);
+    }
+
+    /**
+     *
+     * 社区匹配页面
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping("/communityMatch.html")
+    public String communityMatch(HttpServletRequest request){
+        return "/community/communityMatch";
+    }
+
+    @RequestMapping("/communityMatch.json")
+    public JqGridPage communityMatchJson(HttpServletRequest request){
+        /*获取所有页面限制条件*/
+        String minCommuteTime = request.getParameter("minCommuteTime");
+        String maxCommuteTime = request.getParameter("maxCommuteTime");
+        String minAveragePerPrice = request.getParameter("minAveragePerPrice");
+        String maxAveragePerPrice = request.getParameter("maxAveragePerPrice");
+        String minAverageArea = request.getParameter("minAverageArea");
+        String maxAverageArea = request.getParameter("maxAverageArea");
+
+        return null;
     }
 
     /**
