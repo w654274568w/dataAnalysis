@@ -83,13 +83,14 @@ public class ShCommunityController {
         //分页码
         int page = Integer.parseInt(request.getParameter("page")) - 1;
         int rows = Integer.parseInt(request.getParameter("rows"));
-        String name = request.getParameter("name");
+        String name = request.getParameter("communityName");
         //分页参数
         Map<String, Object> map = new HashMap<>();
         map.put("begin", page * rows);
         map.put("rows", rows);
+        map.put("minNumber",0);
         if (!StringUtil.isEmpty(name)) {
-            map.put("name", name);
+            map.put("communityName", name);
         }
         /*实体集合*/
         List<DataCountByCommunity> dataCountByCommunities = dataCountByCommunityService.getByParams(map);
@@ -171,7 +172,6 @@ public class ShCommunityController {
     }
 
     /**
-     *
      * 按期更新小区价格信息
      *
      * @param request
@@ -198,20 +198,24 @@ public class ShCommunityController {
             dataCountByCommunity.setAveragePerPrice(0.00);
             dataCountByCommunity.setAverageTotalPrice(0.00);
             dataCountByCommunity.setNumber(0l);
+            dataCountByCommunity.setAverageArea(0.00);
+            dataCountByCommunity.setCaptureTime(secondhandhouseNewList.get(0).getCaptureTime());
             dataCountByCommunityList.add(dataCountByCommunity);
         }
         /*初始化实体信息*/
         for (SecondhandhouseNew secondhandhouseNew : secondhandhouseNewList) {
-            if (!StringUtil.isEmpty(secondhandhouseNew.getCommunityName())) {
+//            if (!StringUtil.isEmpty(secondhandhouseNew.getCommunityName())) {
                 for (DataCountByCommunity dataCountByCommunity : dataCountByCommunityList) {
-                    if (secondhandhouseNew.equals(dataCountByCommunity.getCommunityName())) {
+                    if (secondhandhouseNew.getCommunityName().equals(dataCountByCommunity.getCommunityName())) {
                         dataCountByCommunity.setNumber(dataCountByCommunity.getNumber() + 1);
                         dataCountByCommunity.setAveragePerPrice(
                                 dataCountByCommunity.getAveragePerPrice() + secondhandhouseNew.getAveragePrice());
                         dataCountByCommunity.setAverageTotalPrice(
                                 dataCountByCommunity.getAverageTotalPrice() + secondhandhouseNew.getTotalPrice());
+                        dataCountByCommunity.setAverageArea(
+                                dataCountByCommunity.getAverageArea() + secondhandhouseNew.getArea());
                     }
-                }
+//                }
             }
         }
         /*最终确定实体对象信息*/
@@ -220,11 +224,14 @@ public class ShCommunityController {
                 dataCountByCommunity.setAverageTotalPrice(
                         dataCountByCommunity.getAverageTotalPrice() / dataCountByCommunity.getNumber());
                 dataCountByCommunity.setAveragePerPrice(
-                        dataCountByCommunity.getAveragePerPrice()/ dataCountByCommunity.getNumber());
+                        dataCountByCommunity.getAveragePerPrice() / dataCountByCommunity.getNumber());
+                dataCountByCommunity.setAverageArea(
+                        dataCountByCommunity.getAverageArea() / dataCountByCommunity.getNumber());
             }
         }
         /*将生成的对象集合插入数据库中*/
-
+        int totalInsertNum = dataCountByCommunityService.insertList(dataCountByCommunityList);
+        System.out.print("初始化数据量："+dataCountByCommunityList.size()+",实际插入量："+totalInsertNum);
 
     }
 

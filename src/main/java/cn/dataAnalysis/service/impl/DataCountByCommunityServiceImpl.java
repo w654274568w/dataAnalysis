@@ -32,4 +32,9 @@ public class DataCountByCommunityServiceImpl implements DataCountByCommunityServ
     public int countByParams(Map<String, Object> params) {
         return dataCountByCommunityDao.countByParams(params);
     }
+
+    @Override
+    public int insertList(List<DataCountByCommunity> dataCountByCommunityList) {
+        return dataCountByCommunityDao.insertList(dataCountByCommunityList);
+    }
 }

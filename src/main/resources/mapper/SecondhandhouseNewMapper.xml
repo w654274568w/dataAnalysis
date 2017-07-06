@@ -145,7 +145,7 @@
 
     <!--通过时间区间及区域查询-->
     <select id="findByRegionNameAndDate" parameterType="map" resultMap="BaseResultMap">
-        SELECT id,total_price,average_price FROM secondhandhouse_new
+        SELECT * FROM secondhandhouse_new
         <where>
             <if test="beginDate != null and endDate != null">
                 AND capture_time BETWEEN #{beginDate} and #{endDate}

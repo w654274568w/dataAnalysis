@@ -18,4 +18,6 @@ public interface DataCountByCommunityMapper {
     List<DataCountByCommunity> getByParams(Map<String,Object> params);
 
     int countByParams(Map<String,Object> params);
+
+    int insertList(List<DataCountByCommunity> dataCountByCommunityList);
 }

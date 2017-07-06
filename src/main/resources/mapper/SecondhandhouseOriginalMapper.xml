@@ -16,6 +16,7 @@
         <result property="totalPrice" column="total_price" />
         <result property="averagePrice" column="average_price" />
         <result property="attentionNumber" column="attention_number" />
+        <result property="dataLink" column="data_link" />
         <result property="captureTime" column="capture_time" />
     </resultMap>
 
