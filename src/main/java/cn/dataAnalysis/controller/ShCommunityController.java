@@ -4,7 +4,6 @@ import cn.dataAnalysis.common.Constants;
 import cn.dataAnalysis.common.page.JqGridPage;
 import cn.dataAnalysis.common.page.PageUtils;
 import cn.dataAnalysis.model.DataCountByCommunity;
-import cn.dataAnalysis.model.ResponseDataBaidu;
 import cn.dataAnalysis.model.SecondhandhouseNew;
 import cn.dataAnalysis.model.ShCommunityInfo;
 import cn.dataAnalysis.service.DataCountByCommunityService;
@@ -12,8 +11,6 @@ import cn.dataAnalysis.service.SecondhandhouseNewService;
 import cn.dataAnalysis.service.ShCommunityInfoService;
 import cn.dataAnalysis.utils.ListUtils;
 import cn.dataAnalysis.utils.StringUtil;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -135,9 +132,28 @@ public class ShCommunityController {
      */
     @RequestMapping("/communityMatch.html")
     public String communityMatch(HttpServletRequest request){
+        request.setAttribute("ak", Constants.AK);
         return "/community/communityMatch";
     }
 
+
+    /**
+     *
+     * 获取用户推荐工作地点
+     *
+     * @param request
+     */
+    public void queryDestinationLocation(HttpServletRequest request){
+
+    }
+
+    /**
+     *
+     * 社区匹配结果
+     *
+     * @param request
+     * @return
+     */
     @RequestMapping("/communityMatch.json")
     public JqGridPage communityMatchJson(HttpServletRequest request){
         /*获取所有页面限制条件*/

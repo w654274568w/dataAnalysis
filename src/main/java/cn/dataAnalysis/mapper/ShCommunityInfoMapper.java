@@ -19,4 +19,6 @@ public interface ShCommunityInfoMapper {
     boolean updateByPrimaryKey(ShCommunityInfo shCommunityInfo);
 
     int getCountByParams(Map<String,Object> params);
+
+    ShCommunityInfo selectByPrimaryKey(Integer id);
 }

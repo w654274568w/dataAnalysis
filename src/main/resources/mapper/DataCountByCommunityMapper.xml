@@ -11,7 +11,10 @@
         <id property="averagePerPrice" column="average_per_price"/>
         <id property="averageArea" column="average_area"/>
         <id property="captureTime" column="capture_time"/>
+        <association property="shCommunityInfo" column="info_id"
+                     javaType="cn.dataAnalysis.model.ShCommunityInfo" select="cn.dataAnalysis.mapper.ShCommunityInfoMapper.selectByPrimaryKey" />
     </resultMap>
+
     <!--插入新数据-->
     <insert id="insert" parameterType="cn.dataAnalysis.model.DataCountByCommunity" useGeneratedKeys="true" keyProperty="id">
         INSERT  INTO  data_count_by_community

@@ -104,4 +104,9 @@
         WHERE id = #{id};
     </update>
 
+    <!--根据ID检索实体-->
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT * FROM sh_community_info
+        WHERE id = #{id};
+    </select>
 </mapper>

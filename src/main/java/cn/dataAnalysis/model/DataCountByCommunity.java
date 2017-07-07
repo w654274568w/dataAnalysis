@@ -30,6 +30,8 @@ public class DataCountByCommunity extends BaseEntity{
 
     private Double averageArea;
 
+    private ShCommunityInfo shCommunityInfo;
+
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -97,5 +99,13 @@ public class DataCountByCommunity extends BaseEntity{
 
     public void setAverageArea(Double averageArea) {
         this.averageArea = averageArea;
+    }
+
+    public ShCommunityInfo getShCommunityInfo() {
+        return shCommunityInfo;
+    }
+
+    public void setShCommunityInfo(ShCommunityInfo shCommunityInfo) {
+        this.shCommunityInfo = shCommunityInfo;
     }
 }
