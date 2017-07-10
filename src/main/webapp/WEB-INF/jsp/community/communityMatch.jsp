@@ -651,9 +651,7 @@
 
 
     function houseUrl(dataId) {
-        //http://sh.lianjia.com/ershoufang/sh4578071.html
         window.open("http://sh.lianjia.com/ershoufang/sh"+dataId+".html");
-//        window.location.href="http://sh.lianjia.com/ershoufang/sh"+dataId+",html";
     }
 </script>
 </body>

@@ -174,6 +174,7 @@ public class ShCommunityController {
         String maxAveragePerPrice = request.getParameter("maxAveragePerPrice");
         String minAverageArea = request.getParameter("minAverageArea");
         String maxAverageArea = request.getParameter("maxAverageArea");
+        
         return null;
     }
 
