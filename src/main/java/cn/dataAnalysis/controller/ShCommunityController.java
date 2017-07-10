@@ -3,6 +3,7 @@ package cn.dataAnalysis.controller;
 import cn.dataAnalysis.common.Constants;
 import cn.dataAnalysis.common.page.JqGridPage;
 import cn.dataAnalysis.common.page.PageUtils;
+import cn.dataAnalysis.enums.ResponseMapStatueEnums;
 import cn.dataAnalysis.model.DataCountByCommunity;
 import cn.dataAnalysis.model.SecondhandhouseNew;
 import cn.dataAnalysis.model.ShCommunityInfo;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -44,7 +46,6 @@ public class ShCommunityController {
     private RestTemplate restTemplate;
 
     /**
-     *
      * 社区地址信息页面
      *
      * @param request
@@ -57,7 +58,6 @@ public class ShCommunityController {
     }
 
     /**
-     *
      * 社区地址信息返回数据
      *
      * @param request
@@ -83,7 +83,6 @@ public class ShCommunityController {
     }
 
     /**
-     *
      * 社区价格信息页面
      *
      * @param request
@@ -95,7 +94,6 @@ public class ShCommunityController {
     }
 
     /**
-     *
      * 社区价格信息返回数据
      *
      * @param request
@@ -112,7 +110,7 @@ public class ShCommunityController {
         Map<String, Object> map = new HashMap<>();
         map.put("begin", page * rows);
         map.put("rows", rows);
-        map.put("minNumber",0);
+        map.put("minNumber", 0);
         if (!StringUtil.isEmpty(name)) {
             map.put("communityName", name);
         }
@@ -124,38 +122,51 @@ public class ShCommunityController {
     }
 
     /**
-     *
      * 社区匹配页面
      *
      * @param request
      * @return
      */
     @RequestMapping("/communityMatch.html")
-    public String communityMatch(HttpServletRequest request){
+    public String communityMatch(HttpServletRequest request) {
         request.setAttribute("ak", Constants.AK);
         return "/community/communityMatch";
     }
 
 
     /**
-     *
-     * 获取用户推荐工作地点
+     * 获取用户输入目的地位置
      *
      * @param request
      */
-    public void queryDestinationLocation(HttpServletRequest request){
-
+    @RequestMapping("/queryDestinationLocation.do")
+    @ResponseBody
+    public Map<String, String> queryDestinationLocation(HttpServletRequest request) {
+        String destination = request.getParameter("destination");
+        String url = Constants.BAIDU_COORDINATE_URL +
+                "?ak=" + Constants.AK + "&address=" + "上海市" + destination + "&output=json&callback=showLocation";
+        String res = restTemplate.getForObject(url, String.class);
+        Map<String, String> map = this.queryCoordinate(res);
+        if (null != res) {
+            /*解析百度接口返回值*/
+            map = this.queryCoordinate(res);
+            if (null != map) {
+                map.put("statue", ResponseMapStatueEnums.SUCCESS.getCode());
+            } else {
+                map.put("statue",ResponseMapStatueEnums.FAILED.getCode());
+            }
+        }
+        return map;
     }
 
     /**
-     *
      * 社区匹配结果
      *
      * @param request
      * @return
      */
     @RequestMapping("/communityMatch.json")
-    public JqGridPage communityMatchJson(HttpServletRequest request){
+    public JqGridPage communityMatchJson(HttpServletRequest request) {
         /*获取所有页面限制条件*/
         String minCommuteTime = request.getParameter("minCommuteTime");
         String maxCommuteTime = request.getParameter("maxCommuteTime");
@@ -163,8 +174,39 @@ public class ShCommunityController {
         String maxAveragePerPrice = request.getParameter("maxAveragePerPrice");
         String minAverageArea = request.getParameter("minAverageArea");
         String maxAverageArea = request.getParameter("maxAverageArea");
-
         return null;
+    }
+
+    /**
+     *
+     * 根据社区获取挂牌房产信息
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping("/listedHouse.json")
+    @ResponseBody
+    public JqGridPage listedHouse(HttpServletRequest request) throws Exception {
+        int page = Integer.parseInt(request.getParameter("page")) - 1;
+        int rows = Integer.parseInt(request.getParameter("rows"));
+        /*String beginDateStr = request.getParameter("beginDateStr");
+        String endDateStr = request.getParameter("endDateStr");*/
+        String beginDateStr = "2017-06-25";
+        String endDateStr = "2017-06-30";
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date beginDate = df.parse(beginDateStr);
+        Date endDate = df.parse(endDateStr);
+        String communityName = request.getParameter("communityName");
+        /*查询集合map*/
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("communityName",communityName);
+        map.put("beginDate",beginDate);
+        map.put("endDate",endDate);
+        map.put("begin", page * rows);
+        map.put("rows", rows);
+        List<SecondhandhouseNew> secondhandhouseNewList = secondhandhouseNewService.getByParams(map);
+        int countAll = secondhandhouseNewService.getCountByParams(map);
+        return PageUtils.setListToJqGridPage(secondhandhouseNewList, page + 1, countAll, rows);
     }
 
     /**
@@ -255,7 +297,7 @@ public class ShCommunityController {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("beginDate", beginDate);
         map.put("endDate", endDate);
-        List<SecondhandhouseNew> secondhandhouseNewList = secondhandhouseNewService.findByRegionNameAndDate(map);
+        List<SecondhandhouseNew> secondhandhouseNewList = secondhandhouseNewService.getByParams(map);
         List<ShCommunityInfo> shCommunityInfoList = shCommunityInfoService.getByParams(map);
         List<DataCountByCommunity> dataCountByCommunityList = new ArrayList<DataCountByCommunity>();
         /*初始化社区数组对象*/
@@ -273,16 +315,16 @@ public class ShCommunityController {
         /*初始化实体信息*/
         for (SecondhandhouseNew secondhandhouseNew : secondhandhouseNewList) {
 //            if (!StringUtil.isEmpty(secondhandhouseNew.getCommunityName())) {
-                for (DataCountByCommunity dataCountByCommunity : dataCountByCommunityList) {
-                    if (secondhandhouseNew.getCommunityName().equals(dataCountByCommunity.getCommunityName())) {
-                        dataCountByCommunity.setNumber(dataCountByCommunity.getNumber() + 1);
-                        dataCountByCommunity.setAveragePerPrice(
-                                dataCountByCommunity.getAveragePerPrice() + secondhandhouseNew.getAveragePrice());
-                        dataCountByCommunity.setAverageTotalPrice(
-                                dataCountByCommunity.getAverageTotalPrice() + secondhandhouseNew.getTotalPrice());
-                        dataCountByCommunity.setAverageArea(
-                                dataCountByCommunity.getAverageArea() + secondhandhouseNew.getArea());
-                    }
+            for (DataCountByCommunity dataCountByCommunity : dataCountByCommunityList) {
+                if (secondhandhouseNew.getCommunityName().equals(dataCountByCommunity.getCommunityName())) {
+                    dataCountByCommunity.setNumber(dataCountByCommunity.getNumber() + 1);
+                    dataCountByCommunity.setAveragePerPrice(
+                            dataCountByCommunity.getAveragePerPrice() + secondhandhouseNew.getAveragePrice());
+                    dataCountByCommunity.setAverageTotalPrice(
+                            dataCountByCommunity.getAverageTotalPrice() + secondhandhouseNew.getTotalPrice());
+                    dataCountByCommunity.setAverageArea(
+                            dataCountByCommunity.getAverageArea() + secondhandhouseNew.getArea());
+                }
 //                }
             }
         }
@@ -299,7 +341,7 @@ public class ShCommunityController {
         }
         /*将生成的对象集合插入数据库中*/
         int totalInsertNum = dataCountByCommunityService.insertList(dataCountByCommunityList);
-        System.out.print("初始化数据量："+dataCountByCommunityList.size()+",实际插入量："+totalInsertNum);
+        System.out.print("初始化数据量：" + dataCountByCommunityList.size() + ",实际插入量：" + totalInsertNum);
 
     }
 

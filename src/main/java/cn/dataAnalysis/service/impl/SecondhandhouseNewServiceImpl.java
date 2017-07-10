@@ -38,8 +38,13 @@ public class SecondhandhouseNewServiceImpl implements SecondhandhouseNewService{
 	 * @return
 	 */
 	@Override
-	public List<SecondhandhouseNew> findByRegionNameAndDate(Map<String,Object> params) {
-		return secondhandhouseNewDao.findByRegionNameAndDate(params);
+	public List<SecondhandhouseNew> getByParams(Map<String,Object> params) {
+		return secondhandhouseNewDao.getByParams(params);
+	}
+
+	@Override
+	public int getCountByParams(Map<String, Object> map) {
+		return secondhandhouseNewDao.getCountByParams(map);
 	}
 
 	@Override

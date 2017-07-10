@@ -37,16 +37,8 @@
                                             <a href="#" data-action="reload">
                                                 <i class="icon-refresh"></i>
                                             </a>
-
-                                            <%--<a href="#" data-action="collapse">
-                                                <i class="icon-chevron-up"></i>
-                                            </a>
-                                            <a href="#" data-action="close">
-                                                <i class="icon-remove"></i>
-                                            </a>--%>
                                         </div>
                                     </div>
-
                                     <div class="widget-body">
                                         <div class="widget-main">
                                             <form class="form-horizontal m-t" id="commentForm">
@@ -56,7 +48,7 @@
                                                         <input id="destination"
                                                                style="display: inline-block" type="email"
                                                                class="form-control" name="email" required=""
-                                                               aria-required="true">
+                                                               aria-required="true" onblur="initDestination()">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -101,21 +93,32 @@
                                                                aria-required="true">
                                                     </div>
                                                 </div>
-                                                <%--<div class="form-group">
-                                                    <label class="col-sm-4 control-label">所属区域：</label>
-                                                    <div class="col-sm-8">
-                                                        <select></select>
-                                                        <input id="region" style="display: inline-block;width: 45%" type="email" class="form-control" name="email" required="" aria-required="true">
-                                                        &nbsp;&nbsp;至&nbsp;&nbsp;
-                                                        <input id="regionSecondary" style="display: inline-block;width: 45%" type="email" class="form-control" name="email" required="" aria-required="true">
-                                                    </div>
-                                                </div>--%>
                                                 <div class="form-group">
                                                     <div class="col-sm-4 col-sm-offset-3">
                                                         <button class="btn btn-primary" type="submit">匹配</button>
                                                     </div>
                                                 </div>
                                             </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row"></div>
+                                <div class="widget-box">
+                                    <div class="widget-header">
+                                        <h5> 社区挂牌房源 </h5>
+
+                                        <div class="widget-toolbar">
+                                            <a href="#" data-action="reload">
+                                                <i class="icon-refresh"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="widget-body">
+                                        <div class="widget-main">
+                                            <table class="table table-striped table-bordered table-hover"
+                                                   id="grid-table-house">
+                                            </table>
+                                            <div id="grid-pager-house"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -142,6 +145,7 @@
                     </div>
                 </div>
             </div>
+
             <!-- /.page-content -->
         </div><!-- /.main-content -->
 
@@ -157,6 +161,225 @@
 
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
+    //实时获取用户输入的地址，并在百度地图上显示
+    function initDestination(location) {
+        var destination = $("#destination").val();
+        if (null == destination || "" == destination) {
+            bootbox.confirm({
+                buttons: {
+                    confirm: {
+                        label: '确认',
+                        className: 'btn-primary'
+                    },
+                    cancel: {
+                        label: '取消',
+                        className: 'btn-default'
+                    }
+                },
+                message: '请输入正确的地址信息！',
+                callback: function (result) {
+                    if (result) {
+                        $("#destination").val("");
+                    } else {
+                        $("#destination").val("");
+                    }
+                },
+                //title: "请输入正确的地址信息！",
+            });
+        } else {
+            initLocation(destination);
+        }
+    }
+
+    //检索社区的挂牌房产
+    function queryListedHouse(communityName) {
+//        alert(communityName);
+        //override dialog's title function to allow for HTML titles
+        $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
+            _title: function (title) {
+                var $title = this.options.title || '&nbsp;'
+                if (("title_html" in this.options) && this.options.title_html == true)
+                    title.html($title);
+                else title.text($title);
+            }
+        }));
+        var grid_selector = "#grid-table-house";
+        var pager_selector = "#grid-pager-house";
+        jQuery(grid_selector).jqGrid({
+            url: '${ctx}/community/listedHouse.json',
+            datatype: "json",
+            mtype: "post",
+            postData: {communityName: communityName},
+            height: 330,
+            colNames: [ '面积', '户型','单价(元)', '总价(万元)', '操作'],
+            colModel: [
+                {
+                    name: 'area',
+                    index: 'area',
+                    width: 50,
+                    editable: false
+                },
+                {
+                    name: 'roomType',
+                    index: 'roomType',
+                    width: 50,
+                    editable: false
+                },
+                {
+                    name: 'averagePrice',
+                    index: 'averagePrice',
+                    width: 50,
+                    editable: false
+
+                },
+                {
+                    name: 'totalPrice',
+                    index: 'totalPrice',
+                    width: 50,
+                    editable: false
+
+                },
+                {
+                    name: '',
+                    index: '',
+                    width: 80,
+                    fixed: true,
+                    sortable: false,
+                    formatter: function (value, options, rowObject) {
+//                        var lng = this.parents.
+                        //var lng = rowObject['.shCommunityInfo.coordinateLng'];
+//                        alert(lng);
+                        return "<a href=\"javascript: houseUrl(" + rowObject['dataId'] + ")\">链接</a>";
+                    }
+                }
+
+            ],
+
+            viewrecords: true,
+            rowNum: 10,
+            rowList: [5, 10, 15, 20, 50, 200],
+            pager: pager_selector,
+            altRows: true,
+            toppager: false,
+            multiselect: true,
+            multiboxonly: true,
+            loadComplete: function () {
+                var table = this;
+                setTimeout(function () {
+                    styleCheckbox(table);
+                    updateActionIcons(table);
+                    updatePagerIcons(table);
+                    //enableTooltips(table);
+                }, 0);
+            },
+
+            caption: "房源",
+            autowidth: true
+        });
+        //enable datepicker
+        function pickDate(cellvalue, options, cell) {
+            setTimeout(function () {
+                $(cell).find('input[type=text]')
+                    .datepicker({format: 'yyyy-mm-dd', autoclose: true});
+            }, 0);
+        }
+
+        // 修改默认按钮功能
+        $(grid_selector).jqGrid("navGrid", pager_selector, {
+            edit: false,
+            editicon: 'icon-pencil blue',
+            add: false,
+            addicon: 'icon-plus-sign purple',
+            del: false,
+            delicon: 'icon-trash red',
+            search: false,
+            searchicon: 'icon-search orange',
+            refresh: true,
+            refreshtext: "刷新",
+            refreshicon: 'icon-refresh green',
+            view: false,
+            viewicon: 'icon-zoom-in grey',
+            alerttext: "请选择一条数据"   // 当未选中任何行而点击编辑、删除、查看按钮时，弹出的提示信息
+        }, {// 修改编辑相关的参数
+        }, {// 修改添加相关的参数
+        }, {// 修改删除相关的参数
+        }, {// 修改查询相关的参数
+        }, {// 修改查看相关的参数
+        });
+        /// 对表格式样式进行修改
+        //it causes some flicker when reloading or navigating grid
+        //it may be possible to have some custom formatter to do this as the grid is being created to prevent this
+        //or go back to default browser checkbox styles for the grid
+        function styleCheckbox(table) {
+        }
+
+        //unlike navButtons icons, action icons in rows seem to be hard-coded
+        //you can change them like this in here if you want
+        function updateActionIcons(table) {
+        }
+
+        //replace icons with FontAwesome icons like above
+        function updatePagerIcons(table) {
+            var replacement =
+                {
+                    'ui-icon-seek-first': 'icon-double-angle-left bigger-140',
+                    'ui-icon-seek-prev': 'icon-angle-left bigger-140',
+                    'ui-icon-seek-next': 'icon-angle-right bigger-140',
+                    'ui-icon-seek-end': 'icon-double-angle-right bigger-140'
+                };
+            $('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function () {
+                var icon = $(this);
+                var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
+
+                if ($class in replacement) icon.attr('class', 'ui-icon ' + replacement[$class]);
+            })
+        }
+
+        function enableTooltips(table) {
+            $('.navtable .ui-pg-button').tooltip({container: 'body'});
+            $(table).find('.ui-pg-div').tooltip({container: 'body'});
+        }
+    }
+
+    //后台定位地址坐标
+    function initLocation(location) {
+        $.ajax({
+            type: "post",
+            url: "${domain}/community/queryDestinationLocation.do",
+            data: {"destination": location},
+            async: true,
+            success: function (result) {
+                if (result.statue == 0000) {
+                    initMap(result.lng, result.lat, 19);
+                } else {
+                    bootbox.confirm({
+                        buttons: {
+                            confirm: {
+                                label: '确认',
+                                className: 'btn-primary'
+                            },
+                            cancel: {
+                                label: '取消',
+                                className: 'btn-default'
+                            }
+                        },
+                        message: '请输入正确的地址信息！',
+                        callback: function (result) {
+                            if (result) {
+                                $("#destination").val("");
+                            } else {
+                                $("#destination").val("");
+                                ;
+                            }
+                        },
+                        //title: "请输入正确的地址信息！",
+                    });
+                }
+            },
+            error: function (result) {
+            }
+        })
+    }
     //查询
     function gridReload() {
         var communityName = jQuery("#communityName").val() || null;
@@ -241,7 +464,7 @@
                 {
                     name: '',
                     index: '',
-                    width: 80,
+                    width: 150,
                     fixed: true,
                     sortable: false,
                     formatter: function (value, options, rowObject) {
@@ -249,7 +472,8 @@
                         //var lng = rowObject['.shCommunityInfo.coordinateLng'];
 //                        alert(lng);
                         /*return "<a href=\"javascript: initMap(" + rowObject['coordinateLng'] + "," + rowObject['coordinateLat'] + ",19" + ")\">地图显示</a>";*/
-                        return "<a href=\"javascript: initMap(" + rowObject['shCommunityInfo.coordinateLng'] + "," + rowObject['shCommunityInfo.coordinateLat'] + ",19" + ")\">地图显示</a>";
+                        return "<a href=\"javascript: initMap(" + rowObject['shCommunityInfo']['coordinateLng'] + "," + rowObject['shCommunityInfo']['coordinateLat'] + ",19" + ")\">地图显示</a>" +
+                            "&nbsp;&nbsp;<a href='javascript:queryListedHouse(" + "\"" + rowObject['communityName'] + "\"" + ")'>查看挂牌房源</href>";
                     }
                 }
 
@@ -424,6 +648,13 @@
     var lat = 31.23595;
     var level = 12;
     initMap(lng, lat, level);
+
+
+    function houseUrl(dataId) {
+        //http://sh.lianjia.com/ershoufang/sh4578071.html
+        window.open("http://sh.lianjia.com/ershoufang/sh"+dataId+".html");
+//        window.location.href="http://sh.lianjia.com/ershoufang/sh"+dataId+",html";
+    }
 </script>
 </body>
 </html>

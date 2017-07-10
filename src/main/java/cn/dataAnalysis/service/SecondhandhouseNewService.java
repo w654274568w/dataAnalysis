@@ -21,11 +21,13 @@ public interface SecondhandhouseNewService {
 	int countAllData(Map<String,Object> params);
 
 	/**
-	 * 通过时间及区域名查找
+	 * 通过map条件集合查找
 	 *
      * @return
      */
-	List<SecondhandhouseNew> findByRegionNameAndDate(Map<String,Object> params);
+	List<SecondhandhouseNew> getByParams(Map<String,Object> params);
+
+	int getCountByParams(Map<String,Object> map);
 
 	/**
 	 *

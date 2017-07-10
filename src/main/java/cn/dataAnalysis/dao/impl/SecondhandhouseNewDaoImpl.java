@@ -30,8 +30,13 @@ public class SecondhandhouseNewDaoImpl implements SecondhandhouseNewDao{
     }
 
     @Override
-    public List<SecondhandhouseNew> findByRegionNameAndDate(Map<String, Object> params) {
-        return secondhandhouseNewMapper.findByRegionNameAndDate(params);
+    public List<SecondhandhouseNew> getByParams(Map<String, Object> params) {
+        return secondhandhouseNewMapper.getByParams(params);
+    }
+
+    @Override
+    public int getCountByParams(Map<String, Object> map) {
+        return secondhandhouseNewMapper.getCountByParams(map);
     }
 
     @Override

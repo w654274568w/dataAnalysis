@@ -14,8 +14,13 @@ public interface SecondhandhouseNewDao{
 
     void insert(SecondhandhouseNew sn);
 
-    List<SecondhandhouseNew> findByRegionNameAndDate(Map<String,Object> params);
+    List<SecondhandhouseNew> getByParams(Map<String,Object> params);
+
+    int getCountByParams(Map<String,Object> map);
 
     List<String> getAllCommunityName();
+
+
+
 
 }

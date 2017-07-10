@@ -47,7 +47,7 @@ public class DataCountByAreaController {
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("beginDate",beginDate);
 		params.put("endDate",endDate);
-		List<SecondhandhouseNew> secondhandhouseNewList = secondhandhouseNewService.findByRegionNameAndDate(params);
+		List<SecondhandhouseNew> secondhandhouseNewList = secondhandhouseNewService.getByParams(params);
 		//遍历生成面积范围参数
 //		int area = 30;
 		//数据中间储存量

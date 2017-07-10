@@ -46,7 +46,7 @@ public class DataCountByMetroStationController {
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("beginDate",beginDate);
 		params.put("endDate",endDate);
-		List<SecondhandhouseNew> secondhandhouseNewList = secondhandhouseNewService.findByRegionNameAndDate(params);
+		List<SecondhandhouseNew> secondhandhouseNewList = secondhandhouseNewService.getByParams(params);
 		//获取所有地铁站店名
 		List<ShanghaiMetroStationDetails> shanghaiMetroStationDetailsList =
 				shanghaiMetroStationDetailsService.findAll();

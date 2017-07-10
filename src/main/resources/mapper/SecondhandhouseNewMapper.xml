@@ -143,10 +143,37 @@
         SELECT count(*) FROM secondhandhouse_new;
     </select>
 
-    <!--通过时间区间及区域查询-->
-    <select id="findByRegionNameAndDate" parameterType="map" resultMap="BaseResultMap">
+    <!--通过map参数集查询-->
+    <select id="getByParams" parameterType="map" resultMap="BaseResultMap">
         SELECT * FROM secondhandhouse_new
         <where>
+            <if test="stationName != null">
+                AND station_name = #{stationName}
+            </if>
+            <if test="communityName != null">
+                AND community_name LIKE CONCAT('%', #{communityName}, '%')
+            </if>
+            <if test="beginDate != null and endDate != null">
+                AND capture_time BETWEEN #{beginDate} and #{endDate}
+            </if>
+            <if test="regionName != null">
+                AND region_name = #{regionName}
+            </if>
+        </where>
+        <if test="begin != null and rows != null" >
+            limit #{begin},#{rows};
+        </if>
+    </select>
+
+    <select id="getCountByParams" parameterType="map" resultType="int">
+        SELECT count(*) FROM secondhandhouse_new
+        <where>
+            <if test="stationName != null">
+                AND station_name = #{stationName}
+            </if>
+            <if test="communityName != null">
+                AND community_name LIKE CONCAT('%', #{communityName}, '%')
+            </if>
             <if test="beginDate != null and endDate != null">
                 AND capture_time BETWEEN #{beginDate} and #{endDate}
             </if>

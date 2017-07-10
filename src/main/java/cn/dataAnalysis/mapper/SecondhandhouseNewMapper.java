@@ -15,8 +15,10 @@ public interface SecondhandhouseNewMapper {
 
     int countAllData();
 
-    List<SecondhandhouseNew> findByRegionNameAndDate(Map<String,Object> params);
+    List<SecondhandhouseNew> getByParams(Map<String,Object> params);
 
     List<String> getAllCommunityName();
+
+    int getCountByParams(Map<String,Object> map);
 
 }

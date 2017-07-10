@@ -97,7 +97,7 @@ public class AnalysisController {
             dataCountByRegion.setRegionName(regionShanghaiEnum.getDesc());
             //查询单一区域数据信息
             params.put("regionName", regionShanghaiEnum.getDesc());
-            secondhandhouseNewList = secondhandhouseNewService.findByRegionNameAndDate(params);
+            secondhandhouseNewList = secondhandhouseNewService.getByParams(params);
             Double totalPriceAmount = 0.0;
             Double averagePriceAmount = 0.0;
             //Long attentionNumAmount = 0l;
