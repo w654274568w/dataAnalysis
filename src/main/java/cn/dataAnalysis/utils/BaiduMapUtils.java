@@ -16,8 +16,12 @@ public class BaiduMapUtils {
     static double DEF_PI180 = 0.01745329252; // PI/180.0
     static double DEF_R = 6370693.5; // 地球半径
 
-    /*
-    适用于近距离计算两坐标系距离
+    /**
+     * @param lon1
+     * @param lat1
+     * @param lon2
+     * @param lat2
+     * @return
      */
     public static double getShortDistance(double lon1, double lat1, double lon2, double lat2) {
         double ew1, ns1, ew2, ns2;
@@ -43,6 +47,11 @@ public class BaiduMapUtils {
         return distance;
     }
 
+    /**
+     * @param map1
+     * @param map2
+     * @return
+     */
     public static double getShortDistance(Map<String, String> map1, Map<String, String> map2) {
         double lng1 = Double.valueOf(map1.get("lng"));
         double lng2 = Double.valueOf(map2.get("lng"));
@@ -68,22 +77,36 @@ public class BaiduMapUtils {
         return distance;
     }
 
+    /**
+     * @param map      初始坐标
+     * @param distance 直线距离
+     * @return
+     */
+    public static Map<String, String> get(Map<String, String> map, Integer distance) {
+        double lng = Double.valueOf(map.get("lng"));
+        double lat = Double.valueOf(map.get("lat"));
+
+
+        return null;
+    }
+
+
     public static void main(String[] args) {
         Map<String, String> map1 = new HashMap<String, String>();
-        map1.put("lng", "121.35776105917565");
-        map1.put("lat", "31.428721770061228");
+        map1.put("lng", "121.935");
+        map1.put("lat", "31.834");
         Map<String, String> map2 = new HashMap<String, String>();
-        map2.put("lng", "121.480524");
-        map2.put("lat", "31.23595");
+        map2.put("lng", "121.935");
+        map2.put("lat", "30.934");
 
-        double distance =  BaiduMapUtils.getShortDistance(map1,map2);
+        double distance = BaiduMapUtils.getShortDistance(map1, map2);
 
-        System.out.print("工具类 两点间的距离为："+ distance + "米");
+        System.out.println("工具类 两点间的距离为：" + distance + "米");
+        double a = 31.834 - 30.934;
+        /*每10公里对应的距离*/
 
-        /**
-         * 调用百度地图API计算两点间距离
-         */
-
+        double b = a/10;
+        System.out.println("每10KM两点的经度差：" + b + "");
     }
 
 }

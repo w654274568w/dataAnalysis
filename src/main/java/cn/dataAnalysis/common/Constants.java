@@ -17,6 +17,21 @@ public class Constants {
      */
     public static final String BAIDU_COORDINATE_URL = "http://api.map.baidu.com/geocoder/v2/";
 
+
+    /**
+     * 单位距离百度坐标系纬度差
+     */
+    public static final double BAIDU_LAT_10KM = 0.09;
+    public static final double BAIDU_LAT_5KM = 0.045;
+    public static final double BAIDU_LAT_1KM = 0.009;
+
+    /**
+     * 单位距离百度坐标系経度差
+     */
+    public static final double BAIDU_LNG_10KM = 0.1059;
+    public static final double BAIDU_LNG_5KM = 0.05295;
+    public static final double BAIDU_LNG_1KM = 0.01059;
+
     /**
      * 查询路径前缀V
      */
