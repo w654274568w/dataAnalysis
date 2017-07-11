@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dataAnalysis.mapper.ShGeographyBlockMapper">
+    <resultMap id="BaseResultMap" type="cn.dataAnalysis.model.ShGeographyBlock">
+        <id property="id" column="id"/>
+        <id property="coordinateLng1" column="coordinate_lng1"/>
+        <id property="coordinateLat1" column="coordinate_lat1"/>
+        <id property="coordinateLng2" column="coordinate_lng2"/>
+        <id property="coordinateLat2" column="coordinate_lat2"/>
+        <id property="leval" column="leval"/>
+        <id property="superId" column="super_id"/>
+    </resultMap>
+    <!--插入新数据-->
+   <!-- `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `coordinate_lng1` decimal(20,16) DEFAULT NULL COMMENT '经度1',
+    `coordinate_lat1` decimal(20,16) DEFAULT NULL COMMENT '纬度1',
+    `coordinate_lng2` decimal(20,16) DEFAULT NULL COMMENT '经度2',
+    `coordinate_lat2` decimal(20,16) DEFAULT NULL COMMENT '纬度2',
+    `leval` int(11) DEFAULT NULL COMMENT '地理尺度',
+    `super_id` int(11) DEFAULT NULL COMMENT '上一层级ID',-->
+    <insert id="insertOne" parameterType="cn.dataAnalysis.model.ShGeographyBlock" useGeneratedKeys="true" keyProperty="id">
+        insert into sh_geography_block
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="coordinateLng1 != null">
+                coordinate_lng1,
+            </if>
+            <if test="coordinateLat1 != null">
+                coordinate_lat1
+            </if>
+            <if test="coordinateLng2 != null">
+                coordinate_lng2,
+            </if>
+            <if test="coordinateLat2 != null">
+                coordinate_lat2,
+            </if>
+            <if test="leval != null">
+                leval,
+            </if>
+            <if test="superId != null">
+                super_id
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="coordinateLng1 != null">
+                #{coordinateLng1},
+            </if>
+            <if test="coordinateLat1 != null">
+                #{coordinateLat1},
+            </if>
+            <if test="coordinateLng2 != null">
+                #{coordinateLng2},
+            </if>
+            <if test="coordinateLat2 != null">
+                #{coordinateLat2},
+            </if>
+            <if test="leval != null">
+                #{leval},
+            </if>
+            <if test="superId != null">
+                #{superId}
+            </if>
+        </trim>
+    </insert>
+
+    <!--批量插入-->
+    <!--批量插入数据-->
+    <insert id ="insertList" parameterType="java.util.List" >
+        insert into sh_geography_block
+        (coordinate_lng1, coordinate_lat1, coordinate_lng2, coordinate_lat2,leval,super_id)
+        values
+        <foreach collection ="list" item="shGeographyBlock" index= "index" separator =",">
+            (
+            #{shGeographyBlock.coordinateLng1},#{shGeographyBlock.coordinateLat1},
+            #{shGeographyBlock.coordinateLng2},#{shGeographyBlock.coordinateLat2},
+            #{shGeographyBlock.leval},#{shGeographyBlock.superId}
+            )
+        </foreach >
+    </insert>
+
+    <!--根据参数获取集合-->
+    <select id="getByParams" resultMap="BaseResultMap" parameterType="map">
+        SELECT id,name,coordinate_lng,coordinate_lat FROM sh_community_info
+    </select>
+    <select id="getCountByParams" parameterType="map" resultType="int">
+        SELECT count(1) FROM sh_community_info
+    </select>
+
+    <!--根据id主键更新数据-->
+    <update id="updateByPrimaryKey" parameterType="cn.dataAnalysis.model.ShCommunityInfo">
+        UPDATE sh_community_info
+        <set>
+            <!--<if test="id != null">
+                id = #{id},
+            </if>-->
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="coordinateLng != null">
+                coordinate_lng = #{coordinateLng},
+            </if>
+            <if test="coordinateLat != null">
+                coordinate_lat = #{coordinateLat}
+            </if>
+        </set>
+        WHERE id = #{id};
+    </update>
+
+    <!--根据ID检索实体-->
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT * FROM sh_community_info
+        WHERE id = #{id};
+    </select>
+</mapper>
