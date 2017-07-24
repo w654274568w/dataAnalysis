@@ -1,6 +1,5 @@
 package cn.dataAnalysis.common.page;
 
-import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.common.utils.bean.PageBean;
 import org.common.utils.bean.PageParameters;
@@ -51,19 +50,19 @@ public class PageUtils {
         return jqGridPage;
     }
 
-    public static JqGridPage toJqGridPage(PageInfo<? extends Serializable> pageInfo){
+    /*public static JqGridPage toJqGridPage(PageInfo<? extends Serializable> pageInfo){
         JqGridPage jqGridPage = new JqGridPage();
         // 注意spring data pagess是第一页是从0开始的，所以此处+1了
-        /*jqGridPage.setPage(pagess.getNumber() + 1);
+        *//*jqGridPage.setPage(pagess.getNumber() + 1);
         jqGridPage.setTotal(pagess.getTotalPages());
         jqGridPage.setRecords(pagess.getTotalElements());
-        jqGridPage.setRows(pagess.getContent());*/
+        jqGridPage.setRows(pagess.getContent());*//*
         jqGridPage.setPage(pageInfo.getPageNum());
         jqGridPage.setTotal((int)pageInfo.getTotal());
         jqGridPage.setRecords(pageInfo.getTotal());
         jqGridPage.setRows(pageInfo.getList());
         return jqGridPage;
-    }
+    }*/
     
     public static JqGridPage toJqGridPage(PageBean<? extends Serializable> pageBean){
     	JqGridPage jqGridPage = new JqGridPage();

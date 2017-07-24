@@ -2,27 +2,19 @@ package cn.dataAnalysis.controller;
 
 
 import cn.dataAnalysis.model.DataCountByArea;
-import cn.dataAnalysis.model.DataCountByDate;
 import cn.dataAnalysis.model.SecondhandhouseNew;
-import cn.dataAnalysis.model.SecondhandhouseOriginal;
 import cn.dataAnalysis.service.DataCountByAreaService;
-import cn.dataAnalysis.service.DataCountByDateService;
 import cn.dataAnalysis.service.SecondhandhouseNewService;
-import cn.dataAnalysis.service.SecondhandhouseOriginalService;
-import cn.dataAnalysis.utils.ConvertUtils;
 import cn.dataAnalysis.utils.DateUtils;
 import cn.dataAnalysis.utils.MathUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;

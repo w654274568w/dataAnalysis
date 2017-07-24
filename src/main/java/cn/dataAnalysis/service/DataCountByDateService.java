@@ -1,7 +1,6 @@
 package cn.dataAnalysis.service;
 
 import cn.dataAnalysis.model.DataCountByDate;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Map;
@@ -15,7 +14,7 @@ public interface DataCountByDateService {
      * 保存
      * @param dataCountByDate
      */
-    DataCountByDate save(DataCountByDate dataCountByDate);
+    int save(DataCountByDate dataCountByDate);
 
     /**
      * 后台分页查询

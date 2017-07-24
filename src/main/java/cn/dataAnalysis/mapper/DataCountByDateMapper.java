@@ -16,4 +16,6 @@ public interface DataCountByDateMapper {
 
     int getForPageCountAll(Map<String,Object> map);
 
+    int insert(DataCountByDate dataCountByDate);
+
 }

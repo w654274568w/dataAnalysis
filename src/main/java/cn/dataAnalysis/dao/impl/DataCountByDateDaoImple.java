@@ -27,4 +27,9 @@ public class DataCountByDateDaoImple implements DataCountByDateDao{
     public int getForPageCountAll(Map<String, Object> map) {
         return dataCountByDateMapper.getForPageCountAll(map);
     }
+
+    @Override
+    public int save(DataCountByDate dataCountByDate) {
+        return dataCountByDateMapper.insert(dataCountByDate);
+    }
 }

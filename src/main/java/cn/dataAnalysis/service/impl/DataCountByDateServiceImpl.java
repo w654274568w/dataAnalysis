@@ -28,8 +28,8 @@ public class DataCountByDateServiceImpl implements DataCountByDateService{
      * @param dataCountByDate
      */
     @Override
-    public DataCountByDate save(DataCountByDate dataCountByDate) {
-        return null;
+    public int save(DataCountByDate dataCountByDate) {
+        return dataCountByDateDao.save(dataCountByDate);
     }
 
     /**

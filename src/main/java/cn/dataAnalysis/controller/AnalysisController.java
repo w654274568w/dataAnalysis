@@ -7,8 +7,6 @@ import cn.dataAnalysis.model.*;
 import cn.dataAnalysis.service.*;
 import cn.dataAnalysis.utils.DateUtils;
 import cn.dataAnalysis.utils.MathUtil;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,16 +1,12 @@
 package cn.dataAnalysis.controller;
 
 
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import javax.servlet.http.HttpServletRequest;
-
 import cn.dataAnalysis.model.DataCountByDate;
+import cn.dataAnalysis.model.SecondhandhouseNew;
+import cn.dataAnalysis.model.SecondhandhouseOriginal;
 import cn.dataAnalysis.service.DataCountByDateService;
+import cn.dataAnalysis.service.SecondhandhouseNewService;
+import cn.dataAnalysis.service.SecondhandhouseOriginalService;
 import cn.dataAnalysis.utils.ConvertUtils;
 import cn.dataAnalysis.utils.DateUtils;
 import cn.dataAnalysis.utils.MathUtil;
@@ -20,13 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-
-import cn.dataAnalysis.model.SecondhandhouseNew;
-import cn.dataAnalysis.model.SecondhandhouseOriginal;
-import cn.dataAnalysis.service.SecondhandhouseNewService;
-import cn.dataAnalysis.service.SecondhandhouseOriginalService;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 public class SecondhandhouseOriginalController {
@@ -138,7 +134,7 @@ public class SecondhandhouseOriginalController {
 		dataCountByDate.setNumber(Long.valueOf(snList.size()));
 		dataCountByDate.setAverageTotalPrice(averageTotalPrice / snList.size());
 		dataCountByDate.setAveragePerPrice(averagePerPrice / snList.size());
-//		dataCountByDateService.save(dataCountByDate);
+		dataCountByDateService.save(dataCountByDate);
 		Long endTime = System.currentTimeMillis();
 		System.out.println("————————————————————————————————————————这是分割线————————————————————————————————————————");
 		System.out.println("共处理"+soList.size()+"条数据，使用时间为"+(beginTime-endTime));
