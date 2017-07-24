@@ -85,7 +85,7 @@
             #{dataCountByCommunity.captureTime}
             )
         </foreach >
-    </insert >
+    </insert>
 
     <select id="getByParams" parameterType="map" resultMap="BaseResultMap">
         SELECT * FROM data_count_by_community

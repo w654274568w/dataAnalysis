@@ -649,7 +649,6 @@
     var level = 12;
     initMap(lng, lat, level);
 
-
     function houseUrl(dataId) {
         window.open("http://sh.lianjia.com/ershoufang/sh"+dataId+".html");
     }
