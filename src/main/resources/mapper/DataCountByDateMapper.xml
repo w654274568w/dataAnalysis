@@ -23,10 +23,10 @@
                 number,
             </if>
             <if test="average_total_price != null">
-                averageTotalPrice,
+                average_total_price,
             </if>
             <if test="average_per_price != null">
-                averagePerPrice,
+                average_per_price,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
