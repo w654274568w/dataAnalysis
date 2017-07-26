@@ -71,15 +71,15 @@
 
     <!--批量插入-->
     <!--批量插入数据-->
-    <insert id ="insertList" parameterType="java.util.List" >
+    <insert id ="insertList" useGeneratedKeys="true" parameterType="java.util.List" >
         insert into sh_geography_block
-        (coordinate_lng1, coordinate_lat1, coordinate_lng2, coordinate_lat2,leval,super_id)
+        (coordinate_lng1, coordinate_lat1, coordinate_lng2, coordinate_lat2,leval)
         values
         <foreach collection ="list" item="shGeographyBlock" index= "index" separator =",">
             (
             #{shGeographyBlock.coordinateLng1},#{shGeographyBlock.coordinateLat1},
             #{shGeographyBlock.coordinateLng2},#{shGeographyBlock.coordinateLat2},
-            #{shGeographyBlock.leval},#{shGeographyBlock.superId}
+            #{shGeographyBlock.leval}
             )
         </foreach >
     </insert>

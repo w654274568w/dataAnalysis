@@ -73,16 +73,18 @@ public class ShGeographyBlockController {
         }
         /*初始化区块对象参数*/
         List<ShGeographyBlock> shGeographyBlocks = new ArrayList<ShGeographyBlock>();
-        for (int j = 0; j < latList.size(); j++) {
-            for (int k = 0; k < lngList.size(); k++) {
+        for (int j = 0; j < latList.size()-1; j++) {
+            for (int k = 0; k < lngList.size()-1; k++) {
                 ShGeographyBlock shGeographyBlock = new ShGeographyBlock();
                 shGeographyBlock.setCoordinateLat1(latList.get(j));
                 shGeographyBlock.setCoordinateLng1(lngList.get(k));
-                shGeographyBlock.setCoordinateLat1(latList.get(j+1));
+                shGeographyBlock.setCoordinateLat2(latList.get(j+1));
                 shGeographyBlock.setCoordinateLng2(lngList.get(k+1));
                 shGeographyBlock.setLeval(leval);
+                shGeographyBlocks.add(shGeographyBlock);
             }
         }
-
+        /*批量插入数据*/
+        shGeographyBlockService.insertList(shGeographyBlocks);
     }
 }
