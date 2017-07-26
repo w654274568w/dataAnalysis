@@ -1,5 +1,7 @@
 package cn.dataAnalysis.api;
 
+import cn.dataAnalysis.common.Constants;
+import cn.dataAnalysis.service.DataCountByDateService;
 import cn.dataAnalysis.utils.DateUtils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -7,12 +9,12 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.regex.Pattern;
 
 /**
  * Created by feng on 2017/7/26.
@@ -20,6 +22,9 @@ import java.util.regex.Pattern;
 @RestController
 @RequestMapping("/api/v1")
 public class DataAnalysisApiController {
+
+    @Autowired
+    private DataCountByDateService dataCountByDateService;
 
     private final Logger logger = LoggerFactory.getLogger(DataAnalysisApiController.class);
 
@@ -38,22 +43,47 @@ public class DataAnalysisApiController {
             @RequestParam String beginDateStr,
             @RequestParam String endDateStr) {
         ApiDto resultDto = new ApiDto();
-        Pattern p = Pattern.compile("^[0-9]{4,4}-[0-1][0-9]-[0-3][0-9]$ ");
         /*校验regionName是否存在*/
-        if(StringUtils.isBlank(regionName)){
+        if (StringUtils.isBlank(regionName)) {
             resultDto.setErrNum(1);
             resultDto.setErrMsg("请输入城区名");
             return resultDto;
         }
-        if(StringUtils.isBlank(beginDateStr)){
+        if(StringUtils.contains(regionName,"区")){
+            regionName = StringUtils.replace(regionName,"区","");
+        }
+        boolean falge = false;
+        for(String str : Constants.REGION){
+            if(str.equals(regionName)){
+                falge = true;
+            }
+        }
+        if(!falge){
+            resultDto.setErrNum(1);
+            resultDto.setErrMsg("请输入正确的区域名");
+            return resultDto;
+        }
+        if (StringUtils.isBlank(beginDateStr)) {
             resultDto.setErrNum(1);
             resultDto.setErrMsg("请输入查询开始日期(如:2017-01-01)");
             return resultDto;
         }
-        if(!DateUtils.isValidDate(beginDateStr)){
+        if (!DateUtils.isValidDate(beginDateStr)) {
             resultDto.setErrNum(1);
             resultDto.setErrMsg("请输入正确的开始日期(如:2017-01-01)");
             return resultDto;
+        }
+        if (!StringUtils.isBlank(endDateStr)) {
+            if(!DateUtils.isValidDate(endDateStr)){
+                resultDto.setErrNum(1);
+                resultDto.setErrMsg("请输入正确查询结束日期(如:2017-01-01)");
+                return resultDto;
+            }
+        }
+        try{
+
+        } catch (Exception e){
+
         }
         return resultDto;
     }
