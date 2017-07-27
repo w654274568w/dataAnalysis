@@ -6,6 +6,9 @@ import cn.dataAnalysis.model.DataCountByRegion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by feng on 2017/6/28.
  */
@@ -18,5 +21,10 @@ public class DataCountByRegionDaoImpl implements DataCountByRegionDao{
     @Override
     public int insert(DataCountByRegion dataCountByRegion) {
         return dataCountByRegionMapper.insert(dataCountByRegion);
+    }
+
+    @Override
+    public List<DataCountByRegion> getByParams(Map<String, Object> params) {
+        return dataCountByRegionMapper.getByParams(params);
     }
 }

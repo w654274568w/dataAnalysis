@@ -6,6 +6,9 @@ import cn.dataAnalysis.service.DataCountByRegionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by admin on 2017/4/7.
  */
@@ -23,5 +26,10 @@ public class DataCountByRegionServiceImpl implements DataCountByRegionService{
     @Override
     public int save(DataCountByRegion dataCountByRegion) {
         return dataCountByRegionDao.insert(dataCountByRegion);
+    }
+
+    @Override
+    public List<DataCountByRegion> getByParams(Map<String, Object> params) {
+        return dataCountByRegionDao.getByParams(params);
     }
 }

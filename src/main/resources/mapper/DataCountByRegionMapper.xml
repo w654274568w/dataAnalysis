@@ -14,7 +14,7 @@
     </resultMap>
     <!--插入新数据-->
     <insert id="insert" parameterType="cn.dataAnalysis.model.DataCountByDate" useGeneratedKeys="true" keyProperty="id">
-        INSERT  INTO  data_count_by_region
+        INSERT INTO data_count_by_region
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -68,4 +68,30 @@
             </if>
         </trim>
     </insert>
+    <select id="getByParams" parameterType="map" resultMap="BaseResultMap">
+        SELECT * FROM data_count_by_region
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="regionName != null">
+                AND region_name = #{regionName}
+            </if>
+            <if test="regionCode != null">
+                AND region_code = #{regionCode}
+            </if>
+            <!--<if test="averageTotalPrice != null">
+                AND average_total_price = #{averageTotalPrice}
+            </if>-->
+            <if test="beginDateStr != null">
+                AND capture_time  <![CDATA[ >= ]]> #{beginDateStr}
+            </if>
+            <if test="endDateStr">
+                AND capture_time <![CDATA[ <= ]]> #{endDateStr}
+            </if>
+        </where>
+        <if test="begin != null and rows != null">
+            limit #{begin},#{rows};
+        </if>
+    </select>
 </mapper>

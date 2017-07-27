@@ -47,7 +47,6 @@
             </if>
         </trim>
     </insert>
-
     <!--查找分页-->
     <select id="getForPage" parameterType="map" resultMap="BaseResultMap">
         SELECT * FROM data_count_by_date
