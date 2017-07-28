@@ -1,9 +1,9 @@
-package cn.dataAnalysis.api;
+package cn.dataAnalysis.api.dto;
 
 /**
  * Created by msi on 2017/6/29.
  */
-public class ApiDto<T> {
+public class ApiDTO<T> {
 
     private   int errNum;
     private   String errMsg;

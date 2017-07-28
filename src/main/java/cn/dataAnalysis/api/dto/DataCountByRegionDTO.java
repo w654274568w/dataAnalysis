@@ -1,14 +1,13 @@
-package cn.dataAnalysis.model;
+package cn.dataAnalysis.api.dto;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import cn.dataAnalysis.model.BaseEntity;
 
-import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Created by feng on 2017/4/6.
  */
-public class DataCountByRegion extends BaseEntity{
+public class DataCountByRegionDTO extends BaseEntity{
 
 
     private static final long serialVersionUID = 1L;
@@ -17,7 +16,7 @@ public class DataCountByRegion extends BaseEntity{
 
     private String regionCode;
 
-    private Date captureTime;
+    private String captureTime;
 
     private Long number;
 
@@ -49,11 +48,11 @@ public class DataCountByRegion extends BaseEntity{
         this.regionCode = regionCode;
     }
 
-    public Date getCaptureTime() {
+    public String getCaptureTime() {
         return captureTime;
     }
 
-    public void setCaptureTime(Date captureTime) {
+    public void setCaptureTime(String captureTime) {
         this.captureTime = captureTime;
     }
 

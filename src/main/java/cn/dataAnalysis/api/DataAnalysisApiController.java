@@ -1,8 +1,10 @@
 package cn.dataAnalysis.api;
 
+import cn.dataAnalysis.api.dto.ApiDTO;
+import cn.dataAnalysis.api.dto.DataCountByRegionDTO;
+import cn.dataAnalysis.api.dto.convert.DataCountByRegionConvert;
 import cn.dataAnalysis.common.Constants;
 import cn.dataAnalysis.model.DataCountByRegion;
-import cn.dataAnalysis.service.DataCountByDateService;
 import cn.dataAnalysis.service.DataCountByRegionService;
 import cn.dataAnalysis.utils.DateUtils;
 import io.swagger.annotations.ApiImplicitParam;
@@ -42,12 +44,12 @@ public class DataAnalysisApiController {
     @RequestMapping(value = "/getRegionPriceInfo", method = RequestMethod.POST)
     @ResponseBody
     @Transactional
-    public ApiDto getRegionPriceInfo(
+    public ApiDTO getRegionPriceInfo(
             HttpServletRequest request, HttpServletResponse response,
             @RequestParam String regionName,
             @RequestParam String beginDateStr,
             @RequestParam String endDateStr) {
-        ApiDto resultDto = new ApiDto();
+        ApiDTO resultDto = new ApiDTO();
         Map<String, Object> params = new HashMap<String, Object>();
         /*校验regionName是否存在*/
         if (StringUtils.isBlank(regionName)) {
@@ -91,9 +93,11 @@ public class DataAnalysisApiController {
         params.put("endDateStr",endDateStr);
         try {
             List<DataCountByRegion> dataCountByRegionList = dataCountByRegionService.getByParams(params);
+            List<DataCountByRegionDTO> dataCountByRegionDTOS =
+                    DataCountByRegionConvert.convertToDTOs(dataCountByRegionList);
             resultDto.setErrNum(0);
             resultDto.setErrMsg("查询成功！");
-            resultDto.setRetData(dataCountByRegionList);
+            resultDto.setRetData(dataCountByRegionDTOS);
         } catch (Exception e) {
             resultDto.setErrNum(1);
             resultDto.setErrMsg("查询失败！");

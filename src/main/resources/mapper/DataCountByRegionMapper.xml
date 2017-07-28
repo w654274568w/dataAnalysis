@@ -9,7 +9,7 @@
         <id property="number" column="number"/>
         <id property="averageTotalPrice" column="average_total_price"/>
         <id property="averagePerPrice" column="average_per_price"/>
-        <id property="captureTime" column="capture_time"/>
+        <id property="captureTime" column="capture_time" jdbcType="VARCHAR"/>
         <id property="attentionNumber" column="attention_number"/>
     </resultMap>
     <!--插入新数据-->
