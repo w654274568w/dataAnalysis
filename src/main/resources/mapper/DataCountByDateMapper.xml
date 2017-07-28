@@ -22,10 +22,10 @@
             <if test="number != null">
                 number,
             </if>
-            <if test="average_total_price != null">
+            <if test="averageTotalPrice != null">
                 average_total_price,
             </if>
-            <if test="average_per_price != null">
+            <if test="averagePerPrice != null">
                 average_per_price,
             </if>
         </trim>
