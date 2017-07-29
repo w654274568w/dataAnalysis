@@ -18,4 +18,6 @@ public interface DataCountByDateMapper {
 
     int insert(DataCountByDate dataCountByDate);
 
+    int deleteByParams(Map<String,Object> map);
+
 }

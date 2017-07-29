@@ -48,5 +48,10 @@ public class DataCountByDateServiceImpl implements DataCountByDateService{
         return dataCountByDateDao.getForPageCountAll(map);
     }
 
+    @Override
+    public int deleteByParams(Map<String, Object> map) {
+        return dataCountByDateDao.deleteByParams(map);
+    }
+
 
 }

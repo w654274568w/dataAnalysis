@@ -47,15 +47,26 @@
             </if>
         </trim>
     </insert>
+    <delete id="deleteByParams" parameterType="java.lang.Integer">
+        DELETE FROM data_count_by_date
+        <where>
+            <if test="beginDate != null">
+                AND capture_time  <![CDATA[ >= ]]> #{beginDate}
+            </if>
+            <if test="endDate != null">
+                AND capture_time <![CDATA[ <= ]]> #{endDate}
+            </if>
+        </where>
+    </delete>
     <!--查找分页-->
     <select id="getForPage" parameterType="map" resultMap="BaseResultMap">
         SELECT * FROM data_count_by_date
         <where>
             <if test="beginDate != null">
-                AND capture_time  <![CDATA[ >= ]]> #{beginDateStr}
+                AND capture_time  <![CDATA[ >= ]]> #{beginDate}
             </if>
-            <if test="endDate">
-                AND capture_time <![CDATA[ <= ]]> #{endDateStr}
+            <if test="endDate != null">
+                AND capture_time <![CDATA[ <= ]]> #{endDate}
             </if>
         </where>
         <if test="begin != null and rows != null" >

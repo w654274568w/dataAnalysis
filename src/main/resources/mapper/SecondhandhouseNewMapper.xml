@@ -153,11 +153,11 @@
             <if test="communityName != null">
                 AND community_name LIKE CONCAT('%', #{communityName}, '%')
             </if>
-            <if test="beginDateStr != null">
-                AND capture_time  <![CDATA[ >= ]]> #{beginDateStr}
+            <if test="beginDate != null">
+                AND capture_time  <![CDATA[ >= ]]> #{beginDate}
             </if>
-            <if test="endDateStr">
-                AND capture_time <![CDATA[ <= ]]> #{endDateStr}
+            <if test="endDate">
+                AND capture_time <![CDATA[ <= ]]> #{endDate}
             </if>
             <if test="regionName != null">
                 AND region_name = #{regionName}

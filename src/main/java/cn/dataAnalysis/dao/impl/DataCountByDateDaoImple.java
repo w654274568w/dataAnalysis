@@ -32,4 +32,9 @@ public class DataCountByDateDaoImple implements DataCountByDateDao{
     public int save(DataCountByDate dataCountByDate) {
         return dataCountByDateMapper.insert(dataCountByDate);
     }
+
+    @Override
+    public int deleteByParams(Map<String, Object> map) {
+        return dataCountByDateMapper.deleteByParams(map);
+    }
 }

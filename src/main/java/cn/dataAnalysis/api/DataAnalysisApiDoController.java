@@ -11,6 +11,7 @@ import cn.dataAnalysis.service.DataCountByDateService;
 import cn.dataAnalysis.service.DataCountByRegionService;
 import cn.dataAnalysis.service.SecondhandhouseNewService;
 import cn.dataAnalysis.utils.DateUtils;
+import cn.dataAnalysis.utils.MathUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -23,6 +24,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,9 +39,6 @@ import java.util.Map;
 public class DataAnalysisApiDoController {
 
     @Autowired
-    private DataCountByRegionService dataCountByRegionService;
-
-    @Autowired
     private DataCountByDateService dataCountByDateService;
 
     @Autowired
@@ -46,7 +47,7 @@ public class DataAnalysisApiDoController {
     private final Logger logger = LoggerFactory.getLogger(DataAnalysisApiDoController.class);
 
 
-    @ApiOperation(value = "getPriceInfo", notes = "城区名房价信息")
+    @ApiOperation(value = "/queryPriceInfo.do", notes = "生成总房价信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "beginDateStr", value = "开始时间(如:2017-07-01)", required = true, paramType = "query", dataType = "String"),
             @ApiImplicitParam(name = "endDateStr", value = "结束时间(如:2017-07-01)", required = true, paramType = "query", dataType = "String")
@@ -79,7 +80,25 @@ public class DataAnalysisApiDoController {
         }
         params.put("endDate", endDateStr);
         try {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Date beginDate = df.parse(beginDateStr);
+            /*首先删除系统已存在的内容*/
+            dataCountByDateService.deleteByParams(params);
             List<SecondhandhouseNew> secondhandhouseNewList = secondhandhouseNewService.getByParams(params);
+            if (secondhandhouseNewList.size() > 0) {
+                DataCountByDate dataCountByDate = new DataCountByDate();
+                Double averageTotalPrice = 0.0;
+                Double averagePerPrice = 0.0;
+                for (SecondhandhouseNew secondhandhouseNew : secondhandhouseNewList) {
+                    averagePerPrice = MathUtil.add(averagePerPrice,secondhandhouseNew.getAveragePrice());
+                    averageTotalPrice = MathUtil.add(averageTotalPrice,secondhandhouseNew.getTotalPrice());
+                }
+                dataCountByDate.setCaptureTime(DateUtils.addDay(beginDate, 1));
+                dataCountByDate.setNumber(Long.valueOf(secondhandhouseNewList.size()));
+                dataCountByDate.setAverageTotalPrice(averageTotalPrice / secondhandhouseNewList.size());
+                dataCountByDate.setAveragePerPrice(averagePerPrice / secondhandhouseNewList.size());
+                dataCountByDateService.save(dataCountByDate);
+            }
             resultDto.setErrNum(1);
             resultDto.setErrMsg("操作成功！");
         } catch (Exception e) {

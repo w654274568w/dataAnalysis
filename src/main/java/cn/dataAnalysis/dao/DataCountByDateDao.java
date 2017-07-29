@@ -15,4 +15,6 @@ public interface DataCountByDateDao{
     int getForPageCountAll(Map<String,Object> map);
 
     int save(DataCountByDate dataCountByDate);
+
+    int deleteByParams(Map<String,Object> map);
 }

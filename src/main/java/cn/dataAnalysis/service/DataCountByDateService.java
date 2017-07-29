@@ -26,4 +26,5 @@ public interface DataCountByDateService {
 
     int findForPageCountAll(Map<String,Object> map);
 
+    int deleteByParams(Map<String,Object> map);
 }

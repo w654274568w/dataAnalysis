@@ -84,10 +84,10 @@
                 AND average_total_price = #{averageTotalPrice}
             </if>-->
             <if test="beginDate != null">
-                AND capture_time  <![CDATA[ >= ]]> #{beginDateStr}
+                AND capture_time  <![CDATA[ >= ]]> #{beginDate}
             </if>
-            <if test="endDate">
-                AND capture_time <![CDATA[ <= ]]> #{endDateStr}
+            <if test="endDate != null">
+                AND capture_time <![CDATA[ <= ]]> #{endDate}
             </if>
         </where>
         <if test="begin != null and rows != null">
