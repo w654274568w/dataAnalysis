@@ -50,7 +50,14 @@
     <!--查找分页-->
     <select id="getForPage" parameterType="map" resultMap="BaseResultMap">
         SELECT * FROM data_count_by_date
-        ORDER BY id DESC
+        <where>
+            <if test="beginDate != null">
+                AND capture_time  <![CDATA[ >= ]]> #{beginDateStr}
+            </if>
+            <if test="endDate">
+                AND capture_time <![CDATA[ <= ]]> #{endDateStr}
+            </if>
+        </where>
         <if test="begin != null and rows != null" >
             limit #{begin},#{rows};
         </if>

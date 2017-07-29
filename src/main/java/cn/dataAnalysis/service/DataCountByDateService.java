@@ -16,6 +16,7 @@ public interface DataCountByDateService {
      */
     int save(DataCountByDate dataCountByDate);
 
+
     /**
      * 后台分页查询
      * @param map
