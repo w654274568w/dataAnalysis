@@ -1,5 +1,6 @@
 package cn.dataAnalysis.utils;
 
+import cn.dataAnalysis.common.Constants;
 import org.aspectj.apache.bcel.util.ClassLoaderRepository;
 
 import java.util.HashMap;
@@ -90,6 +91,23 @@ public class BaiduMapUtils {
         return null;
     }
 
+    /**
+     * 判断位置是否在上海范围内
+     * @param lat
+     * @param lng
+     * @return
+     */
+    public static Boolean checkIsInSh(String lat,String lng){
+        boolean flage = false;
+        if(Double.valueOf(lat) >= Constants.BAIDU_SH_MIN_LAT &&
+                Double.valueOf(lat) <= Constants.BAIDU_SH_MAX_LAT &&
+                Double.valueOf(lng) >= Constants.BAIDU_SH_MIN_LNG &&
+                Double.valueOf(lng) <= Constants.BAIDU_SH_MAX_LNG){
+            flage =true;
+        }
+        return flage;
+    }
+
 
     public static void main(String[] args) {
         Map<String, String> map1 = new HashMap<String, String>();
@@ -108,5 +126,6 @@ public class BaiduMapUtils {
         double b = a/10;
         System.out.println("每10KM两点的经度差：" + b + "");
     }
+
 
 }

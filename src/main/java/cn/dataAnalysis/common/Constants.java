@@ -17,6 +17,9 @@ public class Constants {
      */
     public static final String BAIDU_COORDINATE_URL = "http://api.map.baidu.com/geocoder/v2/";
 
+    /*获取两个位置之间的驾车距离*/
+    public static final String BAIDU_ROUTEMATRIX_DRIVE_URL = "http://api.map.baidu.com/routematrix/v2/driving";
+
     /**
      * 上海默认的坐标范围
      */
