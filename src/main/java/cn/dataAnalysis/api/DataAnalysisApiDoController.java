@@ -4,6 +4,7 @@ import cn.dataAnalysis.api.dto.ApiDTO;
 import cn.dataAnalysis.api.dto.DataCountByRegionDTO;
 import cn.dataAnalysis.api.dto.convert.DataCountByRegionConvert;
 import cn.dataAnalysis.common.Constants;
+import cn.dataAnalysis.enums.RegionShanghaiEnum;
 import cn.dataAnalysis.model.DataCountByDate;
 import cn.dataAnalysis.model.DataCountByRegion;
 import cn.dataAnalysis.model.SecondhandhouseNew;
@@ -26,10 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by feng on 2017/7/26.
@@ -43,6 +41,9 @@ public class DataAnalysisApiDoController {
 
     @Autowired
     private SecondhandhouseNewService secondhandhouseNewService;
+
+    @Autowired
+    private DataCountByRegionService dataCountByRegionService;
 
     private final Logger logger = LoggerFactory.getLogger(DataAnalysisApiDoController.class);
 
@@ -108,5 +109,75 @@ public class DataAnalysisApiDoController {
         return resultDto;
     }
 
+    @ApiOperation(value = "/queryRegionPriceInfo.do", notes = "生成城区房价信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "beginDateStr", value = "开始时间(如:2017-07-01)", required = true, paramType = "query", dataType = "String"),
+            @ApiImplicitParam(name = "endDateStr", value = "结束时间(如:2017-07-01)", required = true, paramType = "query", dataType = "String")
+    })
+    @RequestMapping(value = "/queryRegionPriceInfo.do", method = RequestMethod.POST)
+    @ResponseBody
+    @Transactional
+    public ApiDTO queryRegionPriceInfo(
+            HttpServletRequest request, HttpServletResponse response,
+            @RequestParam String beginDateStr,
+            @RequestParam String endDateStr){
+        ApiDTO resultDto = new ApiDTO();
+        Map<String, Object> params = new HashMap<String, Object>();
+        if (StringUtils.isBlank(beginDateStr)) {
+            resultDto.setErrNum(1);
+            resultDto.setErrMsg("请输入查询开始日期(如:2017-01-01)");
+            return resultDto;
+        }
+        if (!DateUtils.isValidDate(beginDateStr)) {
+            resultDto.setErrNum(1);
+            resultDto.setErrMsg("请输入正确的开始日期(如:2017-01-01)");
+            return resultDto;
+        }
+        params.put("beginDate", beginDateStr);
+        if (!StringUtils.isBlank(endDateStr)) {
+            if (!DateUtils.isValidDate(endDateStr)) {
+                resultDto.setErrNum(1);
+                resultDto.setErrMsg("请输入正确查询结束日期(如:2017-01-01)");
+                return resultDto;
+            }
+        }
+        params.put("endDate", endDateStr);
+        try {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Date beginDate = df.parse(beginDateStr);
+            dataCountByRegionService.deleteByParams(params);
+            List<SecondhandhouseNew> secondhandhouseNewList = new ArrayList<SecondhandhouseNew>();
+            for (RegionShanghaiEnum regionShanghaiEnum : RegionShanghaiEnum.values()) {
+                DataCountByRegion dataCountByRegion = new DataCountByRegion();
+                dataCountByRegion.setRegionCode(regionShanghaiEnum.getCode());
+                dataCountByRegion.setRegionName(regionShanghaiEnum.getDesc());
+                //查询单一区域数据信息
+                params.put("regionName", regionShanghaiEnum.getDesc());
+                secondhandhouseNewList = secondhandhouseNewService.getByParams(params);
+                Double totalPriceAmount = 0.0;
+                Double averagePriceAmount = 0.0;
+                //Long attentionNumAmount = 0l;
+                Long number = 0l;
+                if (null != secondhandhouseNewList && secondhandhouseNewList.size() > 0) {
+                    for (SecondhandhouseNew secondhandhouseNew : secondhandhouseNewList) {
+                        totalPriceAmount = MathUtil.add(totalPriceAmount, secondhandhouseNew.getTotalPrice());
+                        averagePriceAmount = MathUtil.add(averagePriceAmount, secondhandhouseNew.getAveragePrice());
+                        number += 1;
+                    }
+                    dataCountByRegion.setAverageTotalPrice(totalPriceAmount / secondhandhouseNewList.size());
+                    dataCountByRegion.setAveragePerPrice(averagePriceAmount / secondhandhouseNewList.size());
+                    dataCountByRegion.setNumber(number);
+                    dataCountByRegion.setCaptureTime(DateUtils.addDay(beginDate, 1));
+                    dataCountByRegionService.save(dataCountByRegion);
+                }
+            }
+            resultDto.setErrNum(1);
+            resultDto.setErrMsg("操作成功！");
+        } catch (Exception e) {
+            resultDto.setErrNum(0);
+            resultDto.setErrMsg("操作失败！");
+        }
+        return resultDto;
+    }
 
 }

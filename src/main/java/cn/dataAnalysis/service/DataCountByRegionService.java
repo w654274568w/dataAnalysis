@@ -23,4 +23,6 @@ public interface DataCountByRegionService {
      * @return
      */
     List<DataCountByRegion> getByParams(Map<String,Object> params);
+
+    int deleteByParams(Map<String,Object> map);
 }

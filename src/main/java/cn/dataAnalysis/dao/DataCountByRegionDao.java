@@ -14,4 +14,6 @@ public interface DataCountByRegionDao {
 
     List<DataCountByRegion> getByParams(Map<String,Object> params);
 
+    int deleteByParams(Map<String,Object> map);
+
 }

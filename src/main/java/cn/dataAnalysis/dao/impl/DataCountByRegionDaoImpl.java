@@ -27,4 +27,9 @@ public class DataCountByRegionDaoImpl implements DataCountByRegionDao{
     public List<DataCountByRegion> getByParams(Map<String, Object> params) {
         return dataCountByRegionMapper.getByParams(params);
     }
+
+    @Override
+    public int deleteByParams(Map<String, Object> map) {
+        return dataCountByRegionMapper.deleteByParams(map);
+    }
 }

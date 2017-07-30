@@ -23,7 +23,7 @@
                 region_code,
             </if>
             <if test="regionName != null">
-                region_name
+                region_name,
             </if>
             <if test="number != null">
                 number,
@@ -55,16 +55,16 @@
                 #{number},
             </if>
             <if test="averageTotalPrice != null">
-                #{average_total_price},
+                #{averageTotalPrice},
             </if>
             <if test="averagePerPrice != null">
-                #{average_per_price},
+                #{averagePerPrice},
             </if>
             <if test="captureTime != null">
-                #{capture_time},
+                #{captureTime},
             </if>
             <if test="attentionNumber != null">
-                #{attention_number}
+                #{attentionNumber}
             </if>
         </trim>
     </insert>
@@ -94,4 +94,16 @@
             limit #{begin},#{rows};
         </if>
     </select>
+
+    <delete id="deleteByParams" parameterType="java.lang.Integer">
+        DELETE FROM data_count_by_region
+        <where>
+            <if test="beginDate != null">
+                AND capture_time  <![CDATA[ >= ]]> #{beginDate}
+            </if>
+            <if test="endDate != null">
+                AND capture_time <![CDATA[ <= ]]> #{endDate}
+            </if>
+        </where>
+    </delete>
 </mapper>

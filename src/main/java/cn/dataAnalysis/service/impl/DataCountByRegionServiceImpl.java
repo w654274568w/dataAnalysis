@@ -40,4 +40,9 @@ public class DataCountByRegionServiceImpl implements DataCountByRegionService{
         }
         return dataCountByRegionList;
     }
+
+    @Override
+    public int deleteByParams(Map<String, Object> map) {
+        return dataCountByRegionDao.deleteByParams(map);
+    }
 }
