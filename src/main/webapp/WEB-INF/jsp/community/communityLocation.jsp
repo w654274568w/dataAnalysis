@@ -21,7 +21,8 @@
 
     <div class="main-container-inner">
         <!-- sidebar -->
-        <c:import url="${ctx}/sidebar.html"/>
+        <%--<c:import url="${ctx}/sidebar.html"/>--%>
+        <%@ include file="/WEB-INF/jsp/menus/sidebar.jsp" %>
         <!-- main-content -->
         <div class="main-content">
             <div class="page-content">
