@@ -1,8 +1,8 @@
-package cn.dataAnalysis.api;
+package cn.dataAnalysis.apiController;
 
-import cn.dataAnalysis.api.dto.ApiDTO;
-import cn.dataAnalysis.api.dto.DataCountByRegionDTO;
-import cn.dataAnalysis.api.dto.convert.DataCountByRegionConvert;
+import cn.dataAnalysis.apiController.dto.ApiResult;
+import cn.dataAnalysis.apiController.dto.DataCountByRegionDTO;
+import cn.dataAnalysis.apiController.dto.convert.DataCountByRegionConvert;
 import cn.dataAnalysis.common.Constants;
 import cn.dataAnalysis.model.DataCountByDate;
 import cn.dataAnalysis.model.DataCountByRegion;
@@ -31,7 +31,8 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/v1")
-public class DataAnalysisApiController {
+@Api(description = "查询接口")
+public class QueryApiController {
 
     @Autowired
     private DataCountByRegionService dataCountByRegionService;
@@ -39,7 +40,7 @@ public class DataAnalysisApiController {
     @Autowired
     private DataCountByDateService dataCountByDateService;
 
-    private final Logger logger = LoggerFactory.getLogger(DataAnalysisApiController.class);
+    private final Logger logger = LoggerFactory.getLogger(QueryApiController.class);
 
     /**
      * 查询时间轴
@@ -59,13 +60,12 @@ public class DataAnalysisApiController {
     })
     @RequestMapping(value = "/getRegionPriceInfo", method = RequestMethod.POST)
     @ResponseBody
-    @Transactional
-    public ApiDTO getRegionPriceInfo(
+    public ApiResult getRegionPriceInfo(
             HttpServletRequest request, HttpServletResponse response,
             @RequestParam String regionName,
             @RequestParam String beginDateStr,
             @RequestParam String endDateStr) {
-        ApiDTO resultDto = new ApiDTO();
+        ApiResult resultDto = new ApiResult();
         Map<String, Object> params = new HashMap<String, Object>();
         /*校验regionName是否存在*/
         if (StringUtils.isBlank(regionName)) {
@@ -115,7 +115,7 @@ public class DataAnalysisApiController {
             resultDto.setErrMsg("查询成功！");
             resultDto.setRetData(dataCountByRegionDTOS);
         } catch (Exception e) {
-            resultDto.setErrNum(1);
+            resultDto.setErrNum(-1);
             resultDto.setErrMsg("查询失败！");
         }
         return resultDto;
@@ -129,10 +129,10 @@ public class DataAnalysisApiController {
     @RequestMapping(value = "/getPriceInfo", method = RequestMethod.POST)
     @ResponseBody
     @Transactional
-    public ApiDTO getPriceInfo(HttpServletRequest request, HttpServletResponse response,
+    public ApiResult getPriceInfo(HttpServletRequest request, HttpServletResponse response,
                                @RequestParam String beginDateStr,
                                @RequestParam String endDateStr) {
-        ApiDTO resultDto = new ApiDTO();
+        ApiResult resultDto = new ApiResult();
         Map<String, Object> params = new HashMap<String, Object>();
         if (StringUtils.isBlank(beginDateStr)) {
             resultDto.setErrNum(1);

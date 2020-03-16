@@ -1,4 +1,4 @@
-package cn.dataAnalysis.controller;
+package cn.dataAnalysis.webController;
 
 import cn.dataAnalysis.common.Constants;
 import cn.dataAnalysis.common.page.JqGridPage;
@@ -21,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 

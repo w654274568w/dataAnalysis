@@ -1,8 +1,6 @@
-package cn.dataAnalysis.api.dto;
+package cn.dataAnalysis.apiController.dto;
 
 import cn.dataAnalysis.model.BaseEntity;
-
-import java.util.Date;
 
 /**
  * Created by feng on 2017/4/6.

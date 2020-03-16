@@ -1,6 +1,6 @@
-package cn.dataAnalysis.api.dto.convert;
+package cn.dataAnalysis.apiController.dto.convert;
 
-import cn.dataAnalysis.api.dto.DataCountByRegionDTO;
+import cn.dataAnalysis.apiController.dto.DataCountByRegionDTO;
 import cn.dataAnalysis.model.DataCountByRegion;
 
 import java.text.SimpleDateFormat;

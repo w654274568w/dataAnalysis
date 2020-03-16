@@ -1,4 +1,4 @@
-package cn.dataAnalysis.controller;
+package cn.dataAnalysis.webController;
 
 
 import cn.dataAnalysis.model.DataCountByMetroStation;

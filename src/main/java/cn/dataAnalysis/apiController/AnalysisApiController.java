@@ -1,8 +1,6 @@
-package cn.dataAnalysis.api;
+package cn.dataAnalysis.apiController;
 
-import cn.dataAnalysis.api.dto.ApiDTO;
-import cn.dataAnalysis.api.dto.DataCountByRegionDTO;
-import cn.dataAnalysis.api.dto.convert.DataCountByRegionConvert;
+import cn.dataAnalysis.apiController.dto.ApiResult;
 import cn.dataAnalysis.common.Constants;
 import cn.dataAnalysis.enums.RegionShanghaiEnum;
 import cn.dataAnalysis.model.DataCountByDate;
@@ -16,7 +14,7 @@ import cn.dataAnalysis.utils.DateUtils;
 import cn.dataAnalysis.utils.MathUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.sun.corba.se.spi.ior.ObjectKey;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -39,7 +37,8 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/api/v1")
-public class DataAnalysisApiDoController {
+@Api(description = "清结算API")
+public class AnalysisApiController {
 
     @Autowired
     private DataCountByDateService dataCountByDateService;
@@ -53,7 +52,7 @@ public class DataAnalysisApiDoController {
     @Autowired
     private RestTemplate restTemplate;
 
-    private final Logger logger = LoggerFactory.getLogger(DataAnalysisApiDoController.class);
+    private final Logger logger = LoggerFactory.getLogger(AnalysisApiController.class);
 
 
     @ApiOperation(value = "/queryPriceInfo.do", notes = "生成总房价信息")
@@ -64,10 +63,10 @@ public class DataAnalysisApiDoController {
     @RequestMapping(value = "/queryPriceInfo.do", method = RequestMethod.POST)
     @ResponseBody
     @Transactional
-    public ApiDTO getPriceInfo(HttpServletRequest request, HttpServletResponse response,
+    public ApiResult getPriceInfo(HttpServletRequest request, HttpServletResponse response,
                                @RequestParam String beginDateStr,
                                @RequestParam String endDateStr) {
-        ApiDTO resultDto = new ApiDTO();
+        ApiResult resultDto = new ApiResult();
         Map<String, Object> params = new HashMap<String, Object>();
         if (StringUtils.isBlank(beginDateStr)) {
             resultDto.setErrNum(1);
@@ -134,11 +133,11 @@ public class DataAnalysisApiDoController {
     @RequestMapping(value = "/queryRegionPriceInfo.do", method = RequestMethod.POST)
     @ResponseBody
     @Transactional
-    public ApiDTO queryRegionPriceInfo(
+    public ApiResult queryRegionPriceInfo(
             HttpServletRequest request, HttpServletResponse response,
             @RequestParam String beginDateStr,
             @RequestParam String endDateStr) {
-        ApiDTO resultDto = new ApiDTO();
+        ApiResult resultDto = new ApiResult();
         Map<String, Object> params = new HashMap<String, Object>();
         if (StringUtils.isBlank(beginDateStr)) {
             resultDto.setErrNum(1);
@@ -207,35 +206,35 @@ public class DataAnalysisApiDoController {
     @RequestMapping(value = "/queryCommuteInfo.do", method = RequestMethod.POST)
     @ResponseBody
     @Transactional
-    public ApiDTO queryCommuteInfo(
+    public ApiResult queryCommuteInfo(
             HttpServletRequest request, HttpServletResponse response,
             @RequestParam String location1,
             @RequestParam String locatuon2) {
-        ApiDTO apiDTO = new ApiDTO();
+        ApiResult ApiResult = new ApiResult();
         /*校验坐标系参数*/
         if (2 != location1.split(",").length) {
-            apiDTO.setErrNum(1);
-            apiDTO.setErrMsg("请输出正确的位置坐标1");
-            return apiDTO;
+            ApiResult.setErrNum(1);
+            ApiResult.setErrMsg("请输出正确的位置坐标1");
+            return ApiResult;
         }
         if (2 != locatuon2.split(",").length) {
-            apiDTO.setErrNum(1);
-            apiDTO.setErrMsg("请输出正确的位置坐标2");
-            return apiDTO;
+            ApiResult.setErrNum(1);
+            ApiResult.setErrMsg("请输出正确的位置坐标2");
+            return ApiResult;
         }
         String lat1 = location1.split(",")[0];
         String lng1 = location1.split(",")[1];
         String lat2 = locatuon2.split(",")[0];
         String lng2 = locatuon2.split(",")[1];
         if (!BaiduMapUtils.checkIsInSh(lat1, lng1)) {
-            apiDTO.setErrNum(1);
-            apiDTO.setErrMsg("位置坐标1，超出上海范围！");
-            return apiDTO;
+            ApiResult.setErrNum(1);
+            ApiResult.setErrMsg("位置坐标1，超出上海范围！");
+            return ApiResult;
         }
         if (!BaiduMapUtils.checkIsInSh(lat2, lng2)) {
-            apiDTO.setErrNum(1);
-            apiDTO.setErrMsg("位置坐标2，超出上海范围！");
-            return apiDTO;
+            ApiResult.setErrNum(1);
+            ApiResult.setErrMsg("位置坐标2，超出上海范围！");
+            return ApiResult;
         }
         /*拼接数据，请求百度地图API*/
         String url = Constants.BAIDU_ROUTEMATRIX_DRIVE_URL + "?ak=" + Constants.AK + "&output=json"+"&origins="+
@@ -244,14 +243,14 @@ public class DataAnalysisApiDoController {
         JSONObject result = JSON.parseObject(res);
         String status = result.get("status").toString();
         if ("0".equals(result.get("status").toString())) {
-            apiDTO.setErrNum(0);
-            apiDTO.setErrMsg("查询成功");
-            apiDTO.setRetData(result);
+            ApiResult.setErrNum(0);
+            ApiResult.setErrMsg("查询成功");
+            ApiResult.setRetData(result);
         } else {
-            apiDTO.setErrNum(1);
-            apiDTO.setErrMsg("查询失败");
+            ApiResult.setErrNum(1);
+            ApiResult.setErrMsg("查询失败");
         }
-        return apiDTO;
+        return ApiResult;
     }
 
 

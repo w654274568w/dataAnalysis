@@ -268,7 +268,7 @@
         for (var index = 0; index < markers.length; index++) {
             var point = new BMap.Point(markers[index].position.lng, markers[index].position.lat);
             var marker = new BMap.Marker(point, {
-                icon: new BMap.Icon("http://api.map.baidu.com/lbsapi/createmap/images/icon.png", new BMap.Size(20, 25), {
+                icon: new BMap.Icon("http://apiController.map.baidu.com/lbsapi/createmap/images/icon.png", new BMap.Size(20, 25), {
                     imageOffset: new BMap.Size(markers[index].imageOffset.width, markers[index].imageOffset.height)
                 })
             });

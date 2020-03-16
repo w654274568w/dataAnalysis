@@ -1,4 +1,4 @@
-package cn.dataAnalysis.controller;
+package cn.dataAnalysis.webController;
 
 import cn.dataAnalysis.common.page.JqGridPage;
 import cn.dataAnalysis.common.page.PageUtils;
@@ -60,7 +60,6 @@ public class AnalysisController {
         map.put("beginDate", beginDate);
         map.put("endDate", endDate);
         List<SecondhandhouseOriginal> soList = secondhandhouseOriginalService.findByCaptureTime(map);
-
         Long endTime = System.currentTimeMillis();
         System.out.println("————————————————————————————————————————这是分割线————————————————————————————————————————");
         System.out.println("共处理" + soList.size() + "条数据，使用时间为" + (beginTime - endTime));

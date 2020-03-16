@@ -1,13 +1,9 @@
-package cn.dataAnalysis.controller;
+package cn.dataAnalysis.webController;
 
-import cn.dataAnalysis.model.SecondhandhouseNew;
 import cn.dataAnalysis.service.SecondhandhouseNewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -32,8 +28,8 @@ public class IndexController {
     public String index(HttpServletRequest request){
         Map<String,Object> params = new HashMap<String,Object>();
         //已采集（有效）数据量表单！！
-        int totalDataNum = secondhandhouseNewService.countAllData(params);
-        request.setAttribute("totalDataNum",totalDataNum);
+//        int totalDataNum = secondhandhouseNewService.countAllData(params);
+//        request.setAttribute("totalDataNum",totalDataNum);
         return "index";
     }
 }

@@ -1,8 +1,6 @@
 package cn.dataAnalysis.common.page;
 
 import org.apache.commons.lang3.StringUtils;
-import org.common.utils.bean.PageBean;
-import org.common.utils.bean.PageParameters;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -64,14 +62,14 @@ public class PageUtils {
         return jqGridPage;
     }*/
     
-    public static JqGridPage toJqGridPage(PageBean<? extends Serializable> pageBean){
+    /*public static JqGridPage toJqGridPage(PageBean<? extends Serializable> pageBean){
     	JqGridPage jqGridPage = new JqGridPage();
         jqGridPage.setPage(pageBean.getPage());
         jqGridPage.setTotal(pageBean.getTotal());
         jqGridPage.setRecords(pageBean.getRecords());
         jqGridPage.setRows(pageBean.getRows());
         return jqGridPage;
-    }
+    }*/
     
     public static JqGridPage setListToJqGridPage(List<? extends Serializable> pageBean, int page, int total,int rows){
         JqGridPage jqGridPage = new JqGridPage();
@@ -88,7 +86,7 @@ public class PageUtils {
         return jqGridPage;
     }
     
-    public static Pageable toPageable(PageParameters bean) {
+    /*public static Pageable toPageable(PageParameters bean) {
 		Integer page = bean.getPage();
 		Integer rows = bean.getRows();
 		String sidx = bean.getSidx();
@@ -103,5 +101,5 @@ public class PageUtils {
 		// 注意spring data pageable是第一页是从0开始的，所以此处-1了
 		Pageable pageable = new PageRequest(page - 1, rows, sort);
 		return pageable;
-	}
+	}*/
 }
