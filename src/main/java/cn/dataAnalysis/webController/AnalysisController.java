@@ -139,17 +139,17 @@ public class AnalysisController {
         //遍历生成站点信息
         List<String> stationNames = new ArrayList<>();
         List<String> transferSubwayCodes = new ArrayList<>();
-//        int i = 0 ;//初始code
+        //int i = 0 ;//初始code
         Boolean flage = false;
         for (SecondhandhouseNew secondhandhouseNew : secondhandhouseNewList) {
             //获取每条数据的交通信息
             //判断信息的有无
-//            if (null != secondhandhouseNew.getTrafficLocation()) {
-//                trafficLocation = secondhandhouseNew.getTrafficLocation();
-//                //遍历地铁站点集合，并且去重
-//                trafficLocationList = this.splitTrafficLocation(trafficLocation);
-//                stationNames.add(trafficLocationList.get(0));
-//            }
+            /*if (null != secondhandhouseNew.getTrafficLocation()) {
+                trafficLocation = secondhandhouseNew.getTrafficLocation();
+                //遍历地铁站点集合，并且去重
+                trafficLocationList = this.splitTrafficLocation(trafficLocation);
+                stationNames.add(trafficLocationList.get(0));
+            }*/
         }
         //插入地铁站点表
         int insertCountList = 0;
@@ -210,7 +210,7 @@ public class AnalysisController {
         int n = 0;
         for (SecondhandhouseNew secondhandhouseNew : secondhandhouseNews) {
             //距离8号线成山路站531米
-//            trafficLocation = secondhandhouseNew.getTrafficLocation();
+            //trafficLocation = secondhandhouseNew.getTrafficLocation();
             if (trafficLocation != null && !"".equals(trafficLocation)) {
                 stationName = trafficLocation.substring(
                         trafficLocation.indexOf("线") + 1, trafficLocation.lastIndexOf("站") + 1
